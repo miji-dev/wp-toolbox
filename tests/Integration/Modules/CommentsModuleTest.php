@@ -22,6 +22,14 @@ final class CommentsModuleTest extends WP_UnitTestCase {
 		$this->post = self::factory()->post->create(['comment_status' => 'open', 'ping_status' => 'open']);
 	}
 
+	public function tear_down(): void {
+		// widgets, post types and their supports are global and not restored by the test case
+		register_widget('WP_Widget_Recent_Comments');
+		unregister_post_type('wptb_book');
+		create_initial_post_types();
+		parent::tear_down();
+	}
+
 	private function enable(bool $on = true): void {
 		$this->module->register(new Settings([$this->module], ['comments' => ['disable' => $on]]));
 	}

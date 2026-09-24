@@ -36,7 +36,7 @@ final class PluginTest extends WP_UnitTestCase {
 	}
 
 	public function tear_down(): void {
-		$this->isolateSettingsRegistration();
+		$this->restoreSettingsRegistration();
 		parent::tear_down();
 	}
 

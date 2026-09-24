@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<!-- PHPUnit 9.6: the WordPress test library doesn't support PHPUnit 10+ yet. -->
+<!-- PHPUnit 9.6: the WordPress test library doesn't support PHPUnit 10+ yet.
+     Random order catches tests that leak global state; rerun a failure with the printed seed: phpunit \-\-random-order-seed=N -->
 <phpunit
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
@@ -11,6 +12,8 @@
 	failOnRisky="true"
 	beStrictAboutOutputDuringTests="true"
 	beStrictAboutTestsThatDoNotTestAnything="true"
+	executionOrder="random"
+	resolveDependencies="true"
 >
 	<testsuites>
 		<testsuite name="unit">

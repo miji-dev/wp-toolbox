@@ -15,6 +15,7 @@ WordPress plugin, PHP 8.3+, WordPress 7.1+ (latest only), single site only.
 - `tests/Unit`: pure logic. `tests/Integration`: `WP_UnitTestCase` against real WordPress on SQLite (see `tests/bootstrap.php`).
 - Test both states of every setting: off = core behaviour unchanged, on = intended behaviour.
 - Tests that build their own `Settings`/`Plugin` use `IsolatesSettingsRegistration` (the real plugin is loaded by the bootstrap).
+- Tests run in random order. The WP test case restores hooks and the database, but not other globals (post types, taxonomies, widgets, settings registry, REST server): restore whatever you change in `tear_down()`.
 - PHPUnit is 9.6 because the WordPress test library doesn't support 10+ yet.
 
 ## Security

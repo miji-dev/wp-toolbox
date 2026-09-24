@@ -7,9 +7,9 @@ namespace Miji\Toolbox\Modules\Comments;
 use Miji\Toolbox\Module;
 use Miji\Toolbox\Settings\Field;
 use Miji\Toolbox\Settings\Settings;
+use Miji\Toolbox\Support\HiddenBlocks;
+use Miji\Toolbox\Support\NotFound;
 use WP_Admin_Bar;
-use WP_Block_Type_Registry;
-use WP_Query;
 
 /**
  * Turns comments, pingbacks and trackbacks off everywhere. Existing comments stay in the database.
@@ -102,8 +102,7 @@ final class CommentsModule implements Module {
 		add_action('widgets_init', [$this, 'unregisterWidgets'], PHP_INT_MAX);
 
 		// blocks
-		add_filter('pre_render_block', [$this, 'skipCommentBlocks'], 10, 2);
-		add_action('enqueue_block_editor_assets', [$this, 'hideBlocksInEditor']);
+		$this->blocks()->register();
 	}
 
 	public function removePostTypeSupport(): void {
@@ -151,17 +150,9 @@ final class CommentsModule implements Module {
 	}
 
 	public function blockCommentFeeds(): void {
-		global $wp_query;
-		if (!$wp_query instanceof WP_Query || !is_comment_feed()) {
-			return;
+		if (is_comment_feed()) {
+			NotFound::send();
 		}
-
-		$wp_query->set_404();
-		// set_404() keeps the feed flags, and WordPress would render the feed anyway
-		$wp_query->is_feed = false;
-		$wp_query->is_comment_feed = false;
-		status_header(404);
-		nocache_headers();
 	}
 
 	public function removeAdminPages(): void {
@@ -194,26 +185,12 @@ final class CommentsModule implements Module {
 		unregister_widget('WP_Widget_Recent_Comments');
 	}
 
-	/**
-	 * @param string|null $output
-	 * @param array<string, mixed> $block
-	 */
-	public function skipCommentBlocks(?string $output, array $block): ?string {
-		return is_string($block['blockName'] ?? null) && self::isCommentBlock($block['blockName']) ? '' : $output;
+	public function hideBlocksInEditor(): void {
+		$this->blocks()->enqueueEditorScript();
 	}
 
-	public function hideBlocksInEditor(): void {
-		$blocks = array_values(array_filter(
-			array_keys(WP_Block_Type_Registry::get_instance()->get_all_registered()),
-			[self::class, 'isCommentBlock'],
-		));
-
-		wp_register_script(self::EDITOR_SCRIPT, false, ['wp-blocks', 'wp-dom-ready'], false, true);
-		wp_add_inline_script(self::EDITOR_SCRIPT, sprintf(
-			'wp.domReady(function () { %s.forEach(function (name) { if (wp.blocks.getBlockType(name)) { wp.blocks.unregisterBlockType(name); } }); });',
-			wp_json_encode($blocks),
-		));
-		wp_enqueue_script(self::EDITOR_SCRIPT);
+	private function blocks(): HiddenBlocks {
+		return new HiddenBlocks(self::EDITOR_SCRIPT, self::isCommentBlock(...));
 	}
 
 	public static function isCommentBlock(string $name): bool {

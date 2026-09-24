@@ -19,6 +19,11 @@ final class SettingsTest extends WP_UnitTestCase {
 		$this->isolateSettingsRegistration();
 	}
 
+	public function tear_down(): void {
+		$this->restoreSettingsRegistration();
+		parent::tear_down();
+	}
+
 	private function settings(array $overrides = []): Settings {
 		return new Settings([
 			new FakeModule('comments', [
