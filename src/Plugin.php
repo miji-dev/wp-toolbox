@@ -8,7 +8,7 @@ use Miji\Toolbox\Settings\Settings;
 use Miji\Toolbox\Updater\GitHubUpdater;
 
 final class Plugin {
-	public const VERSION = '4.0.0-dev';
+	public const VERSION = '4.0.0-alpha.1';
 	public const REPO = 'miji-dev/wp-toolbox';
 
 	private readonly Settings $settings;
