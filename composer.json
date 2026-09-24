@@ -1,0 +1,72 @@
+{
+    "name": "miji-dev/wp-toolbox",
+    "description": "Removes WordPress bloat and adds small, sensible enhancements. Everything switchable and explained.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Michael Stahl",
+            "homepage": "https://www.miji.dev"
+        }
+    ],
+    "require": {
+        "php": ">=8.3"
+    },
+    "require-dev": {
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.2",
+        "phpunit/phpunit": "^9.6",
+        "roots/wordpress-no-content": "7.1.*",
+        "szepeviktor/phpstan-wordpress": "^2.0",
+        "wp-coding-standards/wpcs": "^3.4",
+        "wp-phpunit/wp-phpunit": "7.1.*",
+        "wpackagist-plugin/sqlite-database-integration": "*",
+        "yoast/phpunit-polyfills": "^4.0"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org",
+            "only": [
+                "wpackagist-plugin/*"
+            ]
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Miji\\Toolbox\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Miji\\Toolbox\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "roots/wordpress-core-installer": false,
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "extra": {
+        "installer-paths": {
+            "vendor/wp-plugins/{$name}/": [
+                "type:wordpress-plugin"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan analyse --no-progress --memory-limit=1G",
+        "lint": "phpcs",
+        "check": [
+            "@lint",
+            "@analyse",
+            "@test"
+        ],
+        "build": "bin/build-zip.sh"
+    }
+}

@@ -1,0 +1,13 @@
+parameters:
+    level: max
+    paths:
+        - src
+        - uninstall.php
+    # wp-toolbox.php is not analysed on purpose: its version guard must run on *old* PHP and WordPress
+    # versions, which PHPStan (analysing for PHP 8.3+) rightly reports as impossible. It only boots src/.
+    bootstrapFiles:
+        - tests/phpstan-bootstrap.php
+    # optional constants from wp-config.php: may be anything, or not defined at all
+    dynamicConstantNames:
+        WPTB_SETTINGS: mixed
+        WPTB_UPDATE_CHANNEL: mixed

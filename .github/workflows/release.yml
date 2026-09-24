@@ -1,0 +1,49 @@
+name: Release
+
+# Push a tag like v4.0.0 (or v4.1.0-beta.1 for a prerelease) to publish a release.
+# Sites pick it up through WordPress' normal update check (GitHubUpdater).
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_sqlite, sqlite3
+          coverage: none
+          tools: composer
+
+      - name: Tag, plugin header and Plugin::VERSION must match
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          header=$(sed -nE 's/^ \* Version: +//p' wp-toolbox.php | tr -d '[:space:]')
+          code=$(sed -nE "s/.*const VERSION = '([^']+)'.*/\1/p" src/Plugin.php)
+          if [[ "$tag" != "$header" || "$tag" != "$code" ]]; then
+            echo "::error::tag $tag, header $header, Plugin::VERSION $code"
+            exit 1
+          fi
+
+      - run: composer install --no-interaction --no-progress
+      - run: composer check
+      - run: bin/build-zip.sh
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          php_req=$(sed -nE 's/^ \* Requires PHP: +//p' wp-toolbox.php | tr -d '[:space:]')
+          wp_req=$(sed -nE 's/^ \* Requires at least: +//p' wp-toolbox.php | tr -d '[:space:]')
+          # GitHubUpdater reads these two lines to tell WordPress about the requirements
+          printf 'Requires PHP: %s\nRequires at least: %s\n\n' "$php_req" "$wp_req" > notes.md
+          flags=()
+          [[ "$GITHUB_REF_NAME" == *-* ]] && flags+=(--prerelease)
+          gh release create "$GITHUB_REF_NAME" build/wp-toolbox.zip \
+            --title "$GITHUB_REF_NAME" --notes-file notes.md --generate-notes --verify-tag "${flags[@]}"

@@ -1,0 +1,17 @@
+/.git
+/.github
+/.gitignore
+/.distignore
+/.editorconfig
+/.phpunit.cache
+/bin
+/build
+/tests
+/vendor
+/node_modules
+/phpunit.xml.dist
+/phpstan.neon.dist
+/phpcs.xml.dist
+/CLAUDE.md
+/README.md
+.DS_Store
