@@ -3,7 +3,7 @@
 WordPress plugin, PHP 8.3+, WordPress 7.1+ (latest only), single site only.
 
 ## Architecture
-- `wp-toolbox.php` only checks PHP/WP versions (in old-PHP-compatible syntax) and calls `Plugin::boot()` on `plugins_loaded` (priority 20).
+- `wp-toolbox.php` only checks PHP/WP versions (in old-PHP-compatible syntax) and calls `Plugin::boot()` on `init` priority 0: translations work, other plugins and the theme are loaded, and post types registered on init 10 come after (hook later priorities for those).
 - Every feature area is a `Module` (`src/Module.php`) in `src/Modules/<Name>/`. It declares its settings as `Field`s and adds hooks in `register()`. No side effects in constructors, no singletons, no global state.
 - All settings live in one option, `wptb_settings` (`src/Settings/Settings.php`). The JSON schema is generated from the fields and validates REST, CLI and direct writes. `WPTB_SETTINGS` in wp-config.php locks values.
 - Every `Field` needs `description` (what it does). Add `why` and `sideEffects` whenever they aren't obvious. These texts are the documentation users see.

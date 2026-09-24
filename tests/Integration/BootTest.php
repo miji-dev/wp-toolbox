@@ -31,9 +31,17 @@ final class BootTest extends WP_UnitTestCase {
 		$this->assertArrayHasKey(Settings::OPTION, get_registered_settings());
 	}
 
-	public function test_boot_happens_after_other_plugins_are_loaded(): void {
-		// modules may depend on other plugins (Elementor) that initialise on plugins_loaded
-		$this->assertSame(1, did_action('plugins_loaded'));
+	public function test_boots_early_on_init(): void {
+		// after plugins_loaded/after_setup_theme (translations, other plugins), before post types register on init 10
+		$this->assertNotFalse(has_action('init'));
 		$this->assertTrue(class_exists(Plugin::class, false));
+		$this->assertSame(1, did_action('init'));
+	}
+
+	public function test_all_modules_are_part_of_the_settings(): void {
+		$ids = array_map(static fn ($m) => $m->id(), Plugin::modules());
+
+		$this->assertContains('comments', $ids);
+		$this->assertSame($ids, array_unique($ids));
 	}
 }

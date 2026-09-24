@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Miji\Toolbox;
 
+use Miji\Toolbox\Modules\Comments\CommentsModule;
 use Miji\Toolbox\Settings\Settings;
 use Miji\Toolbox\Updater\GitHubUpdater;
 
@@ -22,9 +23,12 @@ final class Plugin {
 	}
 
 	/**
-	 * Entry point, called from the main plugin file on plugins_loaded.
+	 * Entry point, called from the main plugin file on init (priority 0): translations can be loaded,
+	 * other plugins and the theme are set up, and post types registered at the default priority come later.
 	 */
 	public static function boot(string $file): void {
+		load_plugin_textdomain('wptb', false, dirname(plugin_basename($file)) . '/languages');
+
 		$overrides = defined('WPTB_SETTINGS') && is_array(WPTB_SETTINGS) ? WPTB_SETTINGS : [];
 
 		(new self(self::modules(), $overrides))->register();
@@ -40,7 +44,9 @@ final class Plugin {
 	 * @return list<Module>
 	 */
 	public static function modules(): array {
-		return [];
+		return [
+			new CommentsModule(),
+		];
 	}
 
 	public function register(): void {

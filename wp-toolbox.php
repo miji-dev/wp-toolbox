@@ -36,6 +36,6 @@ if (!is_readable(__DIR__ . '/vendor/autoload.php')) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-add_action('plugins_loaded', function () {
+add_action('init', function () {
 	\Miji\Toolbox\Plugin::boot(__FILE__);
-}, 20);
+}, 0);

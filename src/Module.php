@@ -26,6 +26,6 @@ interface Module {
 	/** False if the module can't work here, e.g. a required plugin isn't active. Its settings are kept anyway. */
 	public function isAvailable(): bool;
 
-	/** Add hooks according to the settings. Called once, on plugins_loaded. */
+	/** Add hooks according to the settings. Called once, early on init (priority 0). */
 	public function register(Settings $settings): void;
 }
