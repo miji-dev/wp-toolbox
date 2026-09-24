@@ -49,6 +49,9 @@
             "roots/wordpress-core-installer": false,
             "phpstan/extension-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "platform": {
+            "php": "8.3.0"
         }
     },
     "extra": {
