@@ -41,7 +41,8 @@ composer check     # all of the above
 composer build     # build/wp-toolbox.zip
 ```
 
-Releasing: `bin/set-version.sh 4.1.0`, commit, `git tag v4.1.0`, `git push --follow-tags`.
+Releasing: `bin/set-version.sh 4.1.0`, commit, then `git tag v4.1.0 && git push && git push origin v4.1.0`
+(a version with a suffix like `4.1.0-beta.1` becomes a prerelease).
 The release workflow runs all checks, builds the zip and publishes the GitHub release.
 
 ## History
