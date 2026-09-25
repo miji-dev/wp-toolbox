@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Miji\Toolbox;
 
 use Miji\Toolbox\Admin\SettingsController;
+use Miji\Toolbox\Cli\SettingsCommand;
+use Miji\Toolbox\Cli\SettingsTool;
 use Miji\Toolbox\Admin\SettingsPage;
 use Miji\Toolbox\Modules\Admin\AdminModule;
 use Miji\Toolbox\Modules\Blog\BlogModule;
@@ -49,6 +51,10 @@ final class Plugin {
 		(new SettingsController($plugin->settings))->register();
 		(new SettingsPage($plugin->settings, $file))->register();
 		(new PageCache())->register();
+
+		if (defined('WP_CLI') && WP_CLI) {
+			\WP_CLI::add_command('toolbox settings', new SettingsCommand(new SettingsTool($plugin->settings, self::VERSION)));
+		}
 
 		(new GitHubUpdater(
 			plugin_basename($file),

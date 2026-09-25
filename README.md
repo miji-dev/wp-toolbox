@@ -1,10 +1,12 @@
 # wp toolbox
 
 A WordPress plugin that removes bloat from a default WordPress install and adds a few small, sensible enhancements.
-Every feature is a switch with a plain-language explanation: what it does, why you'd want it, and what else changes.
+Every feature is a switch with a plain-language explanation: what it does, how, why you'd want it, and what else changes.
+Cleanups that suit almost every site are on by default.
 
 Built for sites that run the latest WordPress and don't need the old-school blog machinery
-(comments, pingbacks, author/date/tag archives, feeds, …).
+(comments, pingbacks, author/date/tag archives, feeds, …), and made to work alongside Yoast SEO, Wordfence,
+WP-Optimize and Elementor without duplicating what they do.
 
 ## Requirements
 
@@ -29,6 +31,22 @@ define('WPTB_SETTINGS', [
 // Also offer prereleases (alpha/beta) as updates.
 define('WPTB_UPDATE_CHANNEL', 'beta');
 ```
+
+## Settings
+
+In wp-admin under *Settings → Toolbox*, or with WP-CLI:
+
+```sh
+wp toolbox settings list                             # all settings, their value, default and source
+wp toolbox settings set comments.disable true
+wp toolbox settings set blog.remove_archives author,date
+wp toolbox settings reset blog                       # a whole module, or single settings
+wp toolbox settings export --file=toolbox.json       # same format as the export on the settings page
+wp toolbox settings import toolbox.json              # all or nothing; - reads from STDIN
+```
+
+To give several sites the same setup: export once, then `wp toolbox settings import` on each site
+(or `wp @all toolbox settings import …` with WP-CLI aliases).
 
 ## Development
 

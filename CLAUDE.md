@@ -7,6 +7,7 @@ WordPress plugin, PHP 8.3+, WordPress 7.1+ (latest only), single site only.
 - Every feature area is a `Module` (`src/Module.php`) in `src/Modules/<Name>/`. It declares its settings as `Field`s and adds hooks in `register()`. No side effects in constructors, no singletons, no global state.
 - All settings live in one option, `wptb_settings` (`src/Settings/Settings.php`). The JSON schema is generated from the fields and validates REST, CLI and direct writes. `WPTB_SETTINGS` in wp-config.php locks values.
 - Every `Field` needs `description` (what it does). Add `why` and `sideEffects` whenever they aren't obvious. These texts are the documentation users see.
+- WP-CLI: `wp toolbox settings …` (`src/Cli`). The logic is in `SettingsTool` (tested without WP-CLI), `SettingsCommand` only adapts it.
 - Updates: `src/Updater` (GitHub releases via the `Update URI` header).
 - Settings page: `src/Admin` (page, REST route `wptb/v1/settings`) plus a React app in `assets/src/settings` built with `@wordpress/scripts` into `assets/build` (not committed; built in CI and for the zip). It renders every module and field generically from `SettingsPage::data()`, so new fields need no JS changes. Keep logic that can be tested without a browser in `utils.js`.
 - No runtime dependencies: the plugin ships its own autoloader (`wp-toolbox.php`) and no `vendor/`. Composer is for development tools only.
