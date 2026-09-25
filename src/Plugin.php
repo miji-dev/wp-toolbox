@@ -27,7 +27,7 @@ use Miji\Toolbox\Support\PageCache;
 use Miji\Toolbox\Updater\GitHubUpdater;
 
 final class Plugin {
-	public const VERSION = '4.0.0-alpha.1';
+	public const VERSION = '4.0.0-beta.1';
 	public const REPO = 'miji-dev/wp-toolbox';
 
 	private readonly Settings $settings;
