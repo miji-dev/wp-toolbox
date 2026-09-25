@@ -5,6 +5,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 out=build/wp-toolbox.zip
+[[ -f vendor/composer/installed.json ]] || { echo "run composer install first" >&2; exit 1; }
 stage=$(mktemp -d)
 trap 'rm -rf "$stage"' EXIT
 

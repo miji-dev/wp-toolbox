@@ -40,6 +40,7 @@ jobs:
           php-version: '8.3'
           coverage: none
           tools: composer
+      - run: composer install --no-interaction --no-progress
       - run: bin/build-zip.sh
       - uses: actions/upload-artifact@v4
         with:
