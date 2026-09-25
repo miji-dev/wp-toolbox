@@ -104,6 +104,8 @@ final class SettingsToolTest extends WP_UnitTestCase {
 			'not an option' => ['media.sizes', 'large, huge', 'huge'],
 			'not a colour' => ['media.bg', 'red', 'media.bg'],
 			'not an id' => ['media.logo', '12abc', 'number'],
+			'list with non-text items' => ['media.sizes', '["large", 5]', 'JSON array of strings'],
+			'broken JSON list' => ['media.sizes', '["large"', 'JSON array of strings'],
 			'locked' => ['comments.mode', '404', 'wp-config.php'],
 		];
 	}
@@ -127,6 +129,21 @@ final class SettingsToolTest extends WP_UnitTestCase {
 
 		$this->tool->reset(['media']);
 		$this->assertSame(0, $this->settings->get('media', 'logo'), 'a whole module');
+	}
+
+	public function test_choices_must_be_one_of_the_options(): void {
+		$tool = new SettingsTool(new Settings([new FakeModule('blog', [
+			Field::choice('response', ['404' => 'Not found', 'home' => 'Home'], '404', 'Response', 'W.', 'H.', 'Y.'),
+		])]), '4.0.0');
+
+		$tool->set('blog.response', 'home');
+		$this->expectExceptionMessage('blog.response: "gone" is not an option. Options: 404, home.');
+		$tool->set('blog.response', 'gone');
+	}
+
+	public function test_resetting_an_unknown_module_is_an_error(): void {
+		$this->expectExceptionMessage('Unknown module "nope"');
+		$this->tool->reset(['nope']);
 	}
 
 	public function test_export_has_the_settings_page_format_without_locked_values(): void {

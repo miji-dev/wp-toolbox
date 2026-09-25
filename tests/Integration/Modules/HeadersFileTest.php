@@ -99,4 +99,17 @@ final class HeadersFileTest extends WP_UnitTestCase {
 		(new HeadersFile($this->file, apache: true))->sync(true);
 		$this->assertStringContainsString('# BEGIN wp-toolbox', $this->content());
 	}
+
+	public function test_a_read_only_file_is_left_alone_without_errors(): void {
+		chmod($this->file, 0444);
+		try {
+			(new HeadersFile($this->file, apache: true))->sync(true);
+			$this->assertSame(self::EXISTING, $this->content());
+
+			(new HeadersFile($this->file, apache: true))->remove();
+			$this->assertSame(self::EXISTING, $this->content());
+		} finally {
+			chmod($this->file, 0644);
+		}
+	}
 }

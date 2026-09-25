@@ -12,6 +12,7 @@
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.63.0",
+		"@vitest/coverage-v8": "^5.0.2",
 		"@wordpress/api-fetch": "^7.56.0",
 		"@wordpress/components": "^41.0.0",
 		"@wordpress/element": "^8.8.0",

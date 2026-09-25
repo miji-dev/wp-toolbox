@@ -131,6 +131,18 @@ async function openSectionWithoutReload( page, name ) {
 	await page.getByRole( 'navigation', { name: 'Sections' } ).getByRole( 'button', { name } ).click();
 }
 
+test( 'another website cannot change settings with the administrator\'s login (CSRF)', async ( { page } ) => {
+	// the browser sends the login cookies, but only the settings page knows the nonce
+	const response = await page.request.post( '/?rest_route=/wptb/v1/settings', {
+		data: { values: { comments: { disable: true } } },
+	} );
+	expect( [ 401, 403 ] ).toContain( response.status() );
+
+	await page.goto( PAGE );
+	await openSectionWithoutReload( page, 'Comments' );
+	await expect( setting( page, 'comments.disable' ).getByRole( 'checkbox' ) ).not.toBeChecked();
+} );
+
 test( 'only administrators can open the page', async ( { page, playwright, baseURL } ) => {
 	const visitor = await playwright.request.newContext( { baseURL } );
 	const response = await visitor.post( '/?rest_route=/wptb/v1/settings', { data: { values: { comments: { disable: true } } } } );

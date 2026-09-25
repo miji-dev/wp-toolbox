@@ -115,6 +115,33 @@ final class BlogModuleTest extends WP_UnitTestCase {
 		$this->assertFalse(is_404(), 'pages still work');
 	}
 
+	/**
+	 * @dataProvider listsOfPosts
+	 */
+	public function test_hidden_posts_are_not_listed_anywhere_else(string $what): void {
+		// author, date and category archives and the main feed list posts even if the type isn't public
+		$post = self::factory()->post->create(['post_title' => 'Secret post', 'post_author' => $this->author, 'post_date' => '2026-01-15 10:00:00']);
+		$this->enable(['disable_posts' => true]);
+
+		$this->visit(match ($what) {
+			'feed' => home_url('/?feed=rss2'),
+			'author archive' => get_author_posts_url($this->author),
+			'date archive' => home_url('/?m=202601'),
+			'category archive' => (string) get_category_link(1),
+		});
+
+		$this->assertTrue(is_404(), $what);
+		$this->assertFalse(have_posts(), $what);
+		wp_delete_post($post, true);
+	}
+
+	/**
+	 * @return array<string, array{string}>
+	 */
+	public static function listsOfPosts(): array {
+		return ['feed' => ['feed'], 'author archive' => ['author archive'], 'date archive' => ['date archive'], 'category archive' => ['category archive']];
+	}
+
 	public function test_posts_are_excluded_from_search_and_sitemaps(): void {
 		$this->enable(['disable_posts' => true]);
 

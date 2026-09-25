@@ -153,7 +153,12 @@ final class Settings {
 			return $valid;
 		}
 
-		update_option(self::OPTION, $this->prepare($input));
+		$values = $this->prepare($input);
+		update_option(self::OPTION, $values);
+		// update_option() runs the registered sanitizing again and silently keeps the old value if it fails
+		if (get_option(self::OPTION) !== $values) {
+			return new WP_Error('wptb_not_saved', __('The settings could not be saved.', 'wptb'));
+		}
 		return true;
 	}
 
@@ -230,6 +235,11 @@ final class Settings {
 					}
 				} else {
 					$value = array_key_exists($key, $stored[$module] ?? []) ? $stored[$module][$key] : $field->default;
+					if ($field->type === FieldType::Multi && is_array($value)) {
+						// e.g. the post type of a deactivated plugin: dropped, it would make the whole set invalid
+						$options = array_map('strval', array_keys($field->options()));
+						$value = array_values(array_filter($value, static fn (mixed $item): bool => in_array($item, $options, true)));
+					}
 				}
 				$result[$module][$key] = $value;
 			}

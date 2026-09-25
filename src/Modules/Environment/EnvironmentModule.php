@@ -130,6 +130,8 @@ final class EnvironmentModule implements Module {
 		} elseif ($mail === 'redirect' || $mail === 'block') {
 			// before any mail plugin that sends from this filter itself
 			add_filter('pre_wp_mail', '__return_true', PHP_INT_MIN);
+			// in case another plugin overrides that: no recipients left, PHPMailer refuses to send
+			add_action('phpmailer_init', [$this, 'removeRecipients'], PHP_INT_MAX);
 		}
 	}
 
@@ -159,6 +161,10 @@ final class EnvironmentModule implements Module {
 		$mail['subject'] = sprintf(__('[%1$s] %2$s (to: %3$s)', 'wptb'), $this->label(), $subject, $to);
 		$mail['headers'] = self::withoutCopies($mail['headers'] ?? []);
 		return $mail;
+	}
+
+	public function removeRecipients(PHPMailer $mailer): void {
+		$mailer->clearAllRecipients();
 	}
 
 	/**

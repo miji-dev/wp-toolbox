@@ -106,6 +106,9 @@ final class SettingsControllerTest extends WP_UnitTestCase {
 		$this->assertSame(400, $this->request('POST', ['values' => ['nope' => ['x' => true]]])->get_status());
 		$this->assertSame(400, $this->request('POST', ['values' => 'x'])->get_status());
 		$this->assertSame(400, $this->request('POST', [])->get_status());
+		$this->assertSame(400, $this->request('POST', ['values' => [true, false]])->get_status(), 'a list instead of modules');
+		$this->assertSame(400, $this->request('POST', ['values' => ['comments' => ['disable' => ['nested' => true]]]])->get_status());
+		$this->assertFalse(get_option(Settings::OPTION));
 	}
 
 	/**

@@ -18,6 +18,11 @@ final class NotFound {
 		}
 
 		$wp_query->set_404();
+		// set_404() keeps the queried posts; a theme's 404 template must not be able to show them
+		$wp_query->posts = [];
+		$wp_query->post_count = 0;
+		$wp_query->found_posts = 0;
+		$wp_query->post = null;
 		// set_404() keeps the feed flags, and WordPress would render the feed anyway
 		$wp_query->is_feed = false;
 		$wp_query->is_comment_feed = false;

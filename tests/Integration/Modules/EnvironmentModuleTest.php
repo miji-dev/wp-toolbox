@@ -128,6 +128,20 @@ final class EnvironmentModuleTest extends WP_UnitTestCase {
 		$this->assertNull(self::sent());
 	}
 
+	public function test_blocked_mail_stays_blocked_if_another_plugin_overrides_the_block(): void {
+		// e.g. a mail plugin that answers pre_wp_mail itself, ignoring what came before
+		$this->module('staging', ['mail' => 'block']);
+		add_filter('pre_wp_mail', '__return_null', 10);
+
+		wp_mail('client@example.org', 'Order', 'Body', ['Cc: cc@example.org', 'Bcc: b@example.org']);
+
+		// the real PHPMailer refuses to send without recipients; the test double records the attempt
+		$sent = self::sent();
+		$this->assertSame('', $sent['to'] ?? '');
+		$this->assertSame(0, $sent['cc'] ?? 0);
+		$this->assertSame(0, $sent['bcc'] ?? 0);
+	}
+
 	public function test_mail_can_be_redirected_to_one_address(): void {
 		$this->module('development', ['mail' => 'redirect', 'mail_redirect_to' => 'dev@example.org']);
 

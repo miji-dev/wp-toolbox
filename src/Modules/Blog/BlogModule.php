@@ -10,6 +10,7 @@ use Miji\Toolbox\Settings\Settings;
 use Miji\Toolbox\Support\HiddenBlocks;
 use Miji\Toolbox\Support\NotFound;
 use WP_Post_Type;
+use WP_Query;
 use WP_Taxonomy;
 
 /**
@@ -179,7 +180,7 @@ final class BlogModule implements Module {
 			return;
 		}
 
-		if ($this->posts && (is_singular('post') || (is_home() && !is_front_page()) || is_post_type_archive('post'))) {
+		if ($this->posts && (is_singular('post') || (is_home() && !is_front_page()) || is_post_type_archive('post') || self::listsOnlyPosts())) {
 			NotFound::send();
 			return;
 		}
@@ -253,6 +254,19 @@ final class BlogModule implements Module {
 	 */
 	public function filterSitemapTaxonomies(array $taxonomies): array {
 		return array_diff_key($taxonomies, array_flip($this->archives));
+	}
+
+	/**
+	 * Author, date, category, tag and post format archives and the main feed list posts, even when the post type
+	 * isn't public. Listings that a plugin extended to other types (post_type set in the query) are left alone.
+	 */
+	private static function listsOnlyPosts(): bool {
+		global $wp_query;
+		$type = $wp_query instanceof WP_Query ? $wp_query->get('post_type') : '';
+		if (!in_array($type, ['', 'post', ['post']], true)) {
+			return false;
+		}
+		return is_author() || is_date() || is_category() || is_tag() || is_tax('post_format') || (is_feed() && !is_comment_feed());
 	}
 
 	private function isRemovedArchive(): bool {

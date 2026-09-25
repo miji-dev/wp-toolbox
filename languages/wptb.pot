@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-25T14:00:59+00:00\n"
+"POT-Creation-Date: 2026-09-25T19:16:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 3.0.0-alpha-30de3b3\n"
 "X-Domain: wptb\n"
@@ -190,159 +190,159 @@ msgstr ""
 msgid "With automatic updates on, success emails arrive all the time and teach people to ignore them, including the important ones about failures."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:35
+#: src/Modules/Blog/BlogModule.php:36
 msgid "Blog features"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:39
+#: src/Modules/Blog/BlogModule.php:40
 msgid "The classic blog machinery that most company and project sites never use."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:47
+#: src/Modules/Blog/BlogModule.php:48
 msgid "Disable posts"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:48
+#: src/Modules/Blog/BlogModule.php:49
 msgid "Hides the \"Posts\" content type: it disappears from the admin, the toolbar, menus, search, sitemaps and the REST API, and single posts and the posts page show \"not found\". Pages and other content types are not affected."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:49
+#: src/Modules/Blog/BlogModule.php:50
 msgid "Marks the \"post\" post type as not public and hidden in the admin and REST API (it stays registered), answers post URLs with 404, redirects the post list and \"Add new\" in the admin to the dashboard, removes the Latest Posts, Archives and Calendar blocks and widgets and the Quick Draft box, and excludes posts from Yoast SEO's sitemap."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:50
+#: src/Modules/Blog/BlogModule.php:51
 msgid "Sites built from pages only still show an empty \"Posts\" section everywhere, which confuses editors and exposes an unused part of the site."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:51
+#: src/Modules/Blog/BlogModule.php:52
 msgid "Existing posts stay in the database and come back when you switch this off. If your homepage shows your latest posts (Settings → Reading), it still does."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:55
+#: src/Modules/Blog/BlogModule.php:56
 msgid "Categories"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:55
+#: src/Modules/Blog/BlogModule.php:56
 msgid "Tags"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:57
+#: src/Modules/Blog/BlogModule.php:58
 msgid "Remove categories and tags"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:58
+#: src/Modules/Blog/BlogModule.php:59
 msgid "Removes the selected taxonomies from posts, the editor, menus and the admin. Their archive pages are removed too (see below)."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:59
+#: src/Modules/Blog/BlogModule.php:60
 msgid "Detaches the taxonomies from posts and marks them as not public and hidden in the admin and REST API, and removes the Categories and Tag Cloud blocks and widgets."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:60
+#: src/Modules/Blog/BlogModule.php:61
 msgid "Categories and tags only make sense for a blog. Without one they are just clutter in the editor."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:61
+#: src/Modules/Blog/BlogModule.php:62
 msgid "Existing terms and their assignments stay in the database."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:66
+#: src/Modules/Blog/BlogModule.php:67
 msgid "Author archives"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:67
+#: src/Modules/Blog/BlogModule.php:68
 msgid "Date archives"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:68
+#: src/Modules/Blog/BlogModule.php:69
 msgid "Category archives"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:69
+#: src/Modules/Blog/BlogModule.php:70
 msgid "Tag archives"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:70
+#: src/Modules/Blog/BlogModule.php:71
 msgid "Post format archives"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:73
+#: src/Modules/Blog/BlogModule.php:74
 msgid "Remove archive pages"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:74
+#: src/Modules/Blog/BlogModule.php:75
 msgid "The selected automatic archive pages no longer exist, and they are removed from the sitemaps, so search engines are not sent to pages that are gone."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:75
+#: src/Modules/Blog/BlogModule.php:76
 msgid "Answers archive URLs with 404 or a redirect (see below) before WordPress' own redirects run, and removes them from WordPress' sitemap and from Yoast SEO's sitemap."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:76
+#: src/Modules/Blog/BlogModule.php:77
 msgid "WordPress generates these pages automatically. On most sites they are thin duplicate content that search engines rate poorly. Author archives also reveal login names (example.com/?author=1 leads to /author/<login name>/)."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:77
+#: src/Modules/Blog/BlogModule.php:78
 msgid "Links to these pages that the theme or an SEO plugin prints (e.g. an author name linking to the author archive) lead to the \"not found\" page or the homepage."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:81
+#: src/Modules/Blog/BlogModule.php:82
 msgid "Show \"not found\" (404)"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:81
+#: src/Modules/Blog/BlogModule.php:82
 msgid "Redirect to the homepage (301)"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:83
+#: src/Modules/Blog/BlogModule.php:84
 msgid "Removed archive pages"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:84
+#: src/Modules/Blog/BlogModule.php:85
 msgid "What visitors and search engines get when they open a removed archive page."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:85
+#: src/Modules/Blog/BlogModule.php:86
 msgid "Sends status 404 with the theme's \"not found\" page, or a permanent redirect (301) to the homepage."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:86
+#: src/Modules/Blog/BlogModule.php:87
 msgid "\"Not found\" is the honest answer and makes search engines drop the pages. A redirect is friendlier if old archive links are still around."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:91
+#: src/Modules/Blog/BlogModule.php:92
 msgid "Disable attachment pages"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:92
+#: src/Modules/Blog/BlogModule.php:93
 msgid "Every uploaded file has its own page in WordPress. With this on, those addresses lead straight to the file itself."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:93
+#: src/Modules/Blog/BlogModule.php:94
 msgid "Switches off WordPress' own \"attachment pages\" option (which has no switch in the admin), so WordPress redirects to the file. Attachments of content that isn't public get a 404 instead."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:94
+#: src/Modules/Blog/BlogModule.php:95
 msgid "Attachment pages are empty pages with just an image, which search engines index as low-quality content. Sites set up before WordPress 6.4 still have them."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:95
+#: src/Modules/Blog/BlogModule.php:96
 msgid "Yoast SEO does the same with its \"Media pages\" setting (on by default); both together are fine."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:100
+#: src/Modules/Blog/BlogModule.php:101
 msgid "Disable RSS feeds"
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:101
+#: src/Modules/Blog/BlogModule.php:102
 msgid "All RSS and Atom feeds (posts, comments, categories, …) show \"not found\", and the feed links are removed from the page header."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:102
+#: src/Modules/Blog/BlogModule.php:103
 msgid "Answers every feed request with 404 and removes the feed link tags that WordPress prints in the page header."
 msgstr ""
 
-#: src/Modules/Blog/BlogModule.php:103
+#: src/Modules/Blog/BlogModule.php:104
 msgid "Feeds are only useful if people subscribe to a blog. Otherwise they are another copy of your content for scrapers."
 msgstr ""
 
@@ -655,24 +655,24 @@ msgid "See what the site sends (and check it looks right) without anyone else re
 msgstr ""
 
 #. translators: 1: environment, e.g. "Staging", 2: email subject, 3: original recipients
-#: src/Modules/Environment/EnvironmentModule.php:159
+#: src/Modules/Environment/EnvironmentModule.php:161
 #, php-format
 msgid "[%1$s] %2$s (to: %3$s)"
 msgstr ""
 
-#: src/Modules/Environment/EnvironmentModule.php:174
+#: src/Modules/Environment/EnvironmentModule.php:180
 msgid "Staging"
 msgstr ""
 
-#: src/Modules/Environment/EnvironmentModule.php:175
+#: src/Modules/Environment/EnvironmentModule.php:181
 msgid "Development"
 msgstr ""
 
-#: src/Modules/Environment/EnvironmentModule.php:176
+#: src/Modules/Environment/EnvironmentModule.php:182
 msgid "Local"
 msgstr ""
 
-#: src/Modules/Environment/EnvironmentModule.php:177
+#: src/Modules/Environment/EnvironmentModule.php:183
 msgid "Live"
 msgstr ""
 
@@ -988,8 +988,12 @@ msgstr ""
 msgid "XML-RPC services are disabled on this site."
 msgstr ""
 
+#: src/Settings/Settings.php:160
+msgid "The settings could not be saved."
+msgstr ""
+
 #. translators: %s: setting name, e.g. "login.background_color"
-#: src/Settings/Settings.php:196
+#: src/Settings/Settings.php:201
 #, php-format
 msgid "%s has an invalid format."
 msgstr ""

@@ -121,6 +121,14 @@ final class LoginModuleTest extends WP_UnitTestCase {
 		$this->assertStringNotContainsString('")', str_replace('.png")', '', $css), 'only the closing quote of url() itself');
 	}
 
+	public function test_image_urls_with_other_schemes_are_not_used(): void {
+		$logo = $this->image(100, 100);
+		add_filter('wp_get_attachment_url', static fn (): string => 'javascript:alert(1)');
+		$this->enable(['logo' => 'custom', 'logo_image' => $logo]);
+
+		$this->assertStringNotContainsString('background-image', $this->css());
+	}
+
 	public function test_logo_links_to_the_site(): void {
 		$this->enable(['logo_links_home' => true]);
 
