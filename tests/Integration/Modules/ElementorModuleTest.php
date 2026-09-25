@@ -123,11 +123,4 @@ final class ElementorModuleTest extends WP_UnitTestCase {
 
 		$this->assertSame('x', $bar->get_node('edit')?->href);
 	}
-
-	public function test_every_setting_is_explained(): void {
-		foreach ($this->module->fields() as $field) {
-			$this->assertNotEmpty($field->description, $field->key);
-			$this->assertNotEmpty($field->why, $field->key);
-		}
-	}
 }

@@ -204,7 +204,7 @@ final class Settings {
 	 * Schema patterns end in "$", which in PHP also matches before a final line break ("#123456\n").
 	 */
 	private static function endsInLineBreak(Field $field, mixed $value): bool {
-		return in_array($field->type, [FieldType::Color, FieldType::DateTime], true) && is_string($value) && str_contains($value, "\n");
+		return $field->type === FieldType::Color && is_string($value) && str_contains($value, "\n");
 	}
 
 	/**
@@ -227,8 +227,6 @@ final class Settings {
 					$value = rest_sanitize_value_from_schema($input[$module][$key], $field->schema(), "$module.$key");
 					if ($field->type === FieldType::Text) {
 						$value = is_string($value) ? sanitize_text_field($value) : $field->default;
-					} elseif ($field->type === FieldType::Textarea) {
-						$value = is_string($value) ? sanitize_textarea_field($value) : $field->default;
 					}
 				} else {
 					$value = array_key_exists($key, $stored[$module] ?? []) ? $stored[$module][$key] : $field->default;

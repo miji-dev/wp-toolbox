@@ -6,6 +6,7 @@ namespace Miji\Toolbox\Tests\Integration\Modules;
 
 use Miji\Toolbox\Modules\Login\LoginModule;
 use Miji\Toolbox\Settings\Settings;
+use Miji\Toolbox\Tests\Support\DefaultsOff;
 use WP_UnitTestCase;
 
 final class LoginModuleTest extends WP_UnitTestCase {
@@ -30,7 +31,7 @@ final class LoginModuleTest extends WP_UnitTestCase {
 	 * @param array<string, mixed> $values
 	 */
 	private function enable(array $values): void {
-		$this->module->register(new Settings([$this->module], ['login' => $values]));
+		$this->module->register(new Settings([$this->module], ['login' => DefaultsOff::with('login', $values)]));
 	}
 
 	private function css(): string {
@@ -51,7 +52,6 @@ final class LoginModuleTest extends WP_UnitTestCase {
 		$this->assertSame('', $this->css());
 		$this->assertSame('https://wordpress.org/', apply_filters('login_headerurl', 'https://wordpress.org/'));
 		$this->assertSame('Powered by WordPress', apply_filters('login_headertext', 'Powered by WordPress'));
-		$this->assertSame('<a>x</a>', apply_filters('login_site_html_link', '<a>x</a>'));
 		$this->assertTrue(apply_filters('login_display_language_dropdown', true));
 	}
 
@@ -136,11 +136,9 @@ final class LoginModuleTest extends WP_UnitTestCase {
 		$this->assertStringContainsString('body.login{background-color:#1a2b3c}', $this->css());
 	}
 
-	public function test_back_link_and_language_switcher_can_be_hidden(): void {
-		$this->enable(['hide_back_link' => true, 'hide_language_switcher' => true]);
+	public function test_language_switcher_can_be_hidden(): void {
+		$this->enable(['hide_language_switcher' => true]);
 
-		$this->assertSame('', apply_filters('login_site_html_link', '<a href="/">← Go to Site</a>'));
-		$this->assertStringContainsString('#backtoblog{display:none}', $this->css(), 'the empty paragraph would still take space');
 		$this->assertFalse(apply_filters('login_display_language_dropdown', true));
 	}
 
@@ -149,12 +147,5 @@ final class LoginModuleTest extends WP_UnitTestCase {
 		$this->enable(['background_color' => 'red;}</style><script>']);
 
 		$this->assertStringNotContainsString('script', $this->css());
-	}
-
-	public function test_every_setting_is_explained(): void {
-		foreach ($this->module->fields() as $field) {
-			$this->assertNotEmpty($field->description, $field->key);
-			$this->assertNotEmpty($field->why, $field->key);
-		}
 	}
 }

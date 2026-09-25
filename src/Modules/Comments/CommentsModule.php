@@ -49,9 +49,10 @@ final class CommentsModule implements Module {
 				'disable',
 				false,
 				__('Disable comments and pingbacks completely', 'wptb'),
-				__('Turns off comments, pingbacks and trackbacks everywhere: on all post types, in the REST API and XML-RPC, in feeds, in the admin menu and admin bar, and in the block editor. Existing comments are hidden but stay in the database.', 'wptb'),
+				what: __('Turns off comments, pingbacks and trackbacks everywhere: on all content types, in the admin, in the block editor, in feeds and in all interfaces. Existing comments are hidden but stay in the database.', 'wptb'),
+				how: __('Closes comments and pings for every post type and removes comment support from them, answers "closed" for the discussion defaults, hides existing comments, removes the comment routes from the REST API and the pingback methods from XML-RPC, stops outgoing pings, answers comment feeds with 404, and removes the Comments menu, the Discussion settings page, the toolbar item, the comment columns, the Recent Comments widget and the comment blocks.', 'wptb'),
 				why: __('Most business sites never use comments, but WordPress keeps the whole machinery running: open comment forms attract spam, pingbacks can be abused to attack other sites, and the admin shows menus nobody needs.', 'wptb'),
-				sideEffects: __('Comment blocks render nothing and disappear from the block inserter. Comments and Settings → Discussion are no longer reachable. Posts created while this is on are saved with comments closed and stay closed if you switch it off again; everything else comes back, including existing comments.', 'wptb'),
+				sideEffects: __('Comment blocks and widgets (including Elementor\'s "Post Comments") show nothing. Posts created while this is on are saved with comments closed and stay closed if you switch it off again; everything else comes back, including existing comments.', 'wptb'),
 			),
 		];
 	}

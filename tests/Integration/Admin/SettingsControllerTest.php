@@ -23,10 +23,10 @@ final class SettingsControllerTest extends WP_UnitTestCase {
 		$this->isolateSettingsRegistration();
 		$this->settings = new Settings([
 			new FakeModule('comments', [
-				Field::bool('disable', false, 'Disable', 'D.'),
-				Field::choice('mode', ['404' => 'Not found', 'home' => 'Home'], '404', 'Mode', 'D.'),
+				Field::bool('disable', false, 'Disable', 'What.', 'How.', 'Why.'),
+				Field::choice('mode', ['404' => 'Not found', 'home' => 'Home'], '404', 'Mode', 'What.', 'How.', 'Why.'),
 			]),
-			new FakeModule('media', [Field::int('quality', 82, 'Quality', 'D.', min: 1, max: 100)]),
+			new FakeModule('media', [Field::attachment('logo', 'Logo', 'What.', 'How.', 'Why.')]),
 		], ['comments' => ['disable' => true]]);
 
 		// only this test's routes: the real plugin registers the same route on rest_api_init
@@ -65,7 +65,7 @@ final class SettingsControllerTest extends WP_UnitTestCase {
 
 		$this->assertSame(200, $response->get_status());
 		$this->assertSame([
-			'values' => ['comments' => ['disable' => true, 'mode' => '404'], 'media' => ['quality' => 82]],
+			'values' => ['comments' => ['disable' => true, 'mode' => '404'], 'media' => ['logo' => 0]],
 			'locked' => ['comments' => ['disable']],
 			'invalidOverrides' => [],
 		], $response->get_data());
@@ -74,11 +74,11 @@ final class SettingsControllerTest extends WP_UnitTestCase {
 	public function test_admins_can_save_and_get_the_new_state_back(): void {
 		$this->loginAs('administrator');
 
-		$response = $this->request('POST', ['values' => ['comments' => ['mode' => 'home'], 'media' => ['quality' => 70]]]);
+		$response = $this->request('POST', ['values' => ['comments' => ['mode' => 'home'], 'media' => ['logo' => 7]]]);
 
 		$this->assertSame(200, $response->get_status());
 		$this->assertSame('home', $response->get_data()['values']['comments']['mode']);
-		$this->assertSame(70, $this->settings->get('media', 'quality'));
+		$this->assertSame(7, $this->settings->get('media', 'logo'));
 	}
 
 	public function test_locked_values_cannot_be_changed(): void {
@@ -93,7 +93,7 @@ final class SettingsControllerTest extends WP_UnitTestCase {
 	public function test_invalid_values_are_rejected_with_a_message_and_nothing_is_stored(): void {
 		$this->loginAs('administrator');
 
-		$response = $this->request('POST', ['values' => ['media' => ['quality' => 500], 'comments' => ['mode' => 'home']]]);
+		$response = $this->request('POST', ['values' => ['media' => ['logo' => -5], 'comments' => ['mode' => 'home']]]);
 
 		$this->assertSame(400, $response->get_status());
 		$this->assertNotEmpty($response->as_error()?->get_error_message());
@@ -117,7 +117,7 @@ final class SettingsControllerTest extends WP_UnitTestCase {
 		}
 
 		$this->assertSame($status, $this->request('GET')->get_status());
-		$this->assertSame($status, $this->request('POST', ['values' => ['media' => ['quality' => 70]]])->get_status());
+		$this->assertSame($status, $this->request('POST', ['values' => ['media' => ['logo' => 7]]])->get_status());
 		$this->assertFalse(get_option(Settings::OPTION));
 	}
 

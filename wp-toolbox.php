@@ -27,18 +27,21 @@ if (version_compare(PHP_VERSION, '8.3', '<') || version_compare(get_bloginfo('ve
 	return;
 }
 
-if (!is_readable(__DIR__ . '/vendor/autoload.php')) {
-	add_action('admin_notices', function () {
-		echo '<div class="notice notice-error"><p>wp toolbox is incomplete (vendor/autoload.php missing). Install a release zip, or run composer install.</p></div>';
-	});
-	return;
-}
+// the plugin has no runtime dependencies, so it needs no Composer autoloader
+spl_autoload_register(function ($class) {
+	$prefix = 'Miji\\Toolbox\\';
+	if (strncmp($class, $prefix, strlen($prefix)) === 0) {
+		$file = __DIR__ . '/src/' . str_replace('\\', '/', substr($class, strlen($prefix))) . '.php';
+		if (is_readable($file)) {
+			require $file;
+		}
+	}
+});
 
-// runtime libraries under our own namespace (see bin/prefix-vendor.sh), then our classes
-if (is_readable(__DIR__ . '/vendor-prefixed/autoload.php')) {
-	require_once __DIR__ . '/vendor-prefixed/autoload.php';
-}
-require_once __DIR__ . '/vendor/autoload.php';
+// server rules written by the plugin (security headers in .htaccess) must not outlive it
+register_deactivation_hook(__FILE__, function () {
+	(new \Miji\Toolbox\Modules\Security\HeadersFile())->remove();
+});
 
 add_action('init', function () {
 	\Miji\Toolbox\Plugin::boot(__FILE__);

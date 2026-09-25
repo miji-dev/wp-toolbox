@@ -6,6 +6,7 @@ namespace Miji\Toolbox\Tests\Integration\Modules;
 
 use Miji\Toolbox\Modules\Editor\EditorModule;
 use Miji\Toolbox\Settings\Settings;
+use Miji\Toolbox\Tests\Support\DefaultsOff;
 use WP_UnitTestCase;
 
 final class EditorModuleTest extends WP_UnitTestCase {
@@ -16,16 +17,11 @@ final class EditorModuleTest extends WP_UnitTestCase {
 		$this->module = new EditorModule();
 	}
 
-	public function tear_down(): void {
-		add_theme_support('core-block-patterns');
-		parent::tear_down();
-	}
-
 	/**
 	 * @param array<string, mixed> $values
 	 */
 	private function enable(array $values): void {
-		$this->module->register(new Settings([$this->module], ['editor' => $values]));
+		$this->module->register(new Settings([$this->module], ['editor' => DefaultsOff::with('editor', $values)]));
 	}
 
 	public function test_off_changes_nothing(): void {
@@ -35,8 +31,6 @@ final class EditorModuleTest extends WP_UnitTestCase {
 		$this->assertSame(10, has_action('enqueue_block_editor_assets', 'wp_enqueue_editor_block_directory_assets'));
 		$this->assertArrayNotHasKey('enableOpenverseMediaCategory', apply_filters('block_editor_settings_all', [], null));
 		$this->assertTrue(use_block_editor_for_post_type('page'));
-		$this->assertTrue(wp_use_widgets_block_editor());
-		$this->assertFalse(has_action('init', [$this->module, 'removeCorePatterns']));
 	}
 
 	/**
@@ -67,16 +61,6 @@ final class EditorModuleTest extends WP_UnitTestCase {
 		$this->assertSame([], $this->patternRequests());
 	}
 
-	public function test_core_patterns_are_removed_before_core_registers_them(): void {
-		$this->enable(['disable_core_patterns' => true]);
-
-		$priority = has_action('init', [$this->module, 'removeCorePatterns']);
-		$this->assertIsInt($priority);
-		$this->assertLessThan(has_action('init', '_register_core_block_patterns_and_categories'), $priority);
-
-		$this->module->removeCorePatterns();
-		$this->assertFalse(current_theme_supports('core-block-patterns'));
-	}
 
 	public function test_block_directory_is_disabled(): void {
 		$this->enable(['disable_block_directory' => true]);
@@ -107,7 +91,7 @@ final class EditorModuleTest extends WP_UnitTestCase {
 	public function test_post_type_options_are_the_editable_content_types(): void {
 		register_post_type('wptb_event', ['show_ui' => true, 'show_in_rest' => true, 'label' => 'Events']);
 		register_post_type('wptb_hidden', ['show_ui' => false, 'show_in_rest' => true]);
-		$options = $this->module->fields()[4]->options();
+		$options = $this->module->fields()[3]->options();
 		unregister_post_type('wptb_event');
 		unregister_post_type('wptb_hidden');
 
@@ -119,17 +103,4 @@ final class EditorModuleTest extends WP_UnitTestCase {
 		$this->assertArrayNotHasKey('wp_block', $options, 'core\'s own types always need the block editor');
 	}
 
-	public function test_classic_widgets(): void {
-		$this->enable(['classic_widgets' => true]);
-
-		$this->assertFalse(wp_use_widgets_block_editor());
-	}
-
-	public function test_every_setting_is_explained(): void {
-		foreach ($this->module->fields() as $field) {
-			$this->assertFalse(is_bool($field->default) && $field->default, $field->key);
-			$this->assertNotEmpty($field->description, $field->key);
-			$this->assertNotEmpty($field->why, $field->key);
-		}
-	}
 }

@@ -9,18 +9,9 @@ use Miji\Toolbox\Settings\Field;
 use Miji\Toolbox\Settings\Settings;
 
 /**
- * Removes dashboard boxes nobody uses.
+ * Removes dashboard boxes nobody uses, including the ones of common plugins.
  */
 final class DashboardModule implements Module {
-	/** Widget id => context it is registered in by core. */
-	private const WIDGETS = [
-		'dashboard_primary' => 'side',
-		'dashboard_quick_press' => 'side',
-		'dashboard_activity' => 'normal',
-		'dashboard_right_now' => 'normal',
-		'dashboard_site_health' => 'normal',
-	];
-
 	/** @var list<string> */
 	private array $hidden = [];
 
@@ -40,21 +31,43 @@ final class DashboardModule implements Module {
 		return [
 			Field::multi(
 				'hide_widgets',
-				[
-					'welcome_panel' => __('Welcome panel ("Welcome to WordPress!")', 'wptb'),
-					'dashboard_primary' => __('WordPress Events and News', 'wptb'),
-					'dashboard_quick_press' => __('Quick Draft', 'wptb'),
-					'dashboard_activity' => __('Activity (recent posts and comments)', 'wptb'),
-					'dashboard_right_now' => __('At a Glance', 'wptb'),
-					'dashboard_site_health' => __('Site Health Status', 'wptb'),
-				],
-				[],
+				static fn (): array => self::widgets(),
+				['welcome_panel', 'dashboard_primary'],
 				__('Hide dashboard boxes', 'wptb'),
-				__('The selected boxes are removed from the dashboard for everyone. Boxes added by other plugins are not affected.', 'wptb'),
-				why: __('Most of the default boxes are meant for bloggers or advertise wordpress.org. A cleaner start page helps editors find what matters.', 'wptb'),
-				sideEffects: __('Site Health stays available under Tools → Site Health.', 'wptb'),
+				what: __('The selected boxes are removed from the dashboard for everyone. Boxes of Yoast SEO, Wordfence, Elementor and WP-Optimize are listed while those plugins are active.', 'wptb'),
+				how: __('Removes the boxes after WordPress and all plugins have registered theirs (and the welcome panel from its hook), in every dashboard column.', 'wptb'),
+				why: __('Most boxes are meant for bloggers, advertise something or duplicate information available elsewhere. A clean start page helps editors find what matters.', 'wptb'),
+				sideEffects: __('The information itself stays available: Site Health under Tools, Wordfence and WP-Optimize in their own menus.', 'wptb'),
 			),
 		];
+	}
+
+	/**
+	 * @return array<string, string> widget id => label
+	 */
+	private static function widgets(): array {
+		$widgets = [
+			'welcome_panel' => __('Welcome panel ("Welcome to WordPress!")', 'wptb'),
+			'dashboard_primary' => __('WordPress Events and News', 'wptb'),
+			'dashboard_quick_press' => __('Quick Draft', 'wptb'),
+			'dashboard_activity' => __('Activity (recent posts and comments)', 'wptb'),
+			'dashboard_right_now' => __('At a Glance', 'wptb'),
+			'dashboard_site_health' => __('Site Health Status', 'wptb'),
+		];
+		if (defined('WPSEO_VERSION')) {
+			$widgets['wpseo-dashboard-overview'] = __('Yoast SEO: Posts Overview', 'wptb');
+			$widgets['wpseo-wincher-dashboard-overview'] = __('Yoast SEO / Wincher: Top Keyphrases', 'wptb');
+		}
+		if (defined('WORDFENCE_VERSION')) {
+			$widgets['wordfence_activity_report_widget'] = __('Wordfence: activity report', 'wptb');
+		}
+		if (defined('ELEMENTOR_VERSION')) {
+			$widgets['e-dashboard-overview'] = __('Elementor Overview', 'wptb');
+		}
+		if (defined('WPO_VERSION')) {
+			$widgets['wp_optimize_performance'] = __('WP-Optimize: Performance', 'wptb');
+		}
+		return $widgets;
 	}
 
 	public function isAvailable(): bool {
@@ -76,8 +89,9 @@ final class DashboardModule implements Module {
 	}
 
 	public function removeWidgets(): void {
-		foreach (self::WIDGETS as $id => $context) {
-			if (in_array($id, $this->hidden, true)) {
+		foreach ($this->hidden as $id) {
+			// plugins don't always register their box where core does, and users can drag boxes around
+			foreach (['normal', 'side', 'column3', 'column4'] as $context) {
 				remove_meta_box($id, 'dashboard', $context);
 			}
 		}

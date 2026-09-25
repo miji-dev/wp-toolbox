@@ -21,3 +21,5 @@
 /playwright.config.js
 /test-results
 /playwright-report
+/composer.json
+/composer.lock

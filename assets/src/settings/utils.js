@@ -22,7 +22,8 @@ export function matchesSearch( module, field, query ) {
 	const text = [
 		module.title,
 		field.label,
-		field.description,
+		field.what,
+		field.how,
 		field.why,
 		field.sideEffects,
 	]

@@ -15,10 +15,9 @@ final class LoginModule implements Module {
 	private const LOGO_WIDTH = 320;
 	private const LOGO_MAX_HEIGHT = 120;
 
-	private string $logo = 'wordpress';
+	private string $logo = 'site';
 	private int $logoImage = 0;
 	private string $background = '';
-	private bool $hideBackLink = false;
 
 	public function id(): string {
 		return 'login';
@@ -41,45 +40,43 @@ final class LoginModule implements Module {
 					'site' => __('The site\'s logo (or the site icon if there is none)', 'wptb'),
 					'custom' => __('The image chosen below', 'wptb'),
 				],
-				'wordpress',
+				'site',
 				__('Logo', 'wptb'),
-				__('The logo above the login form. "The site\'s logo" uses the logo set in the theme (Site Editor or Customizer), otherwise the site icon (Settings → General). If neither is set, the WordPress logo stays.', 'wptb'),
-				why: __('Clients and users log in to their site, not to WordPress. Their own logo makes the page look familiar and trustworthy.', 'wptb'),
+				what: __('The logo above the login form. "The site\'s logo" is the logo set in the theme (Site Editor, Customizer or Elementor\'s Site Settings), otherwise the site icon (Settings → General). If neither exists, the WordPress logo stays.', 'wptb'),
+				how: __('Replaces the WordPress logo on wp-login.php with the image via a small inline style, sized to fit 320 × 120 pixels without distortion.', 'wptb'),
+				why: __('Clients and editors log in to their site, not to WordPress. Their own logo makes the page look familiar and trustworthy.', 'wptb'),
 			),
 			Field::attachment(
 				'logo_image',
 				__('Logo image', 'wptb'),
-				__('Used when "Logo" is set to "The image chosen below". It is shown at most 320 pixels wide and 120 pixels high.', 'wptb'),
+				what: __('The image used when "Logo" is set to "The image chosen below".', 'wptb'),
+				how: __('Uses a medium-sized version of the image from the media library, shown at most 320 pixels wide and 120 pixels high.', 'wptb'),
 				why: __('For when the login page should show a different logo than the website, e.g. a version that works on the login background.', 'wptb'),
 			),
 			Field::bool(
 				'logo_links_home',
-				false,
+				true,
 				__('Logo links to the website', 'wptb'),
-				__('Clicking the logo opens the website\'s home page instead of wordpress.org. Screen readers announce the site title instead of "Powered by WordPress".', 'wptb'),
-				why: __('A link to wordpress.org is confusing for users who clicked the logo to get back to the website.', 'wptb'),
+				what: __('Clicking the logo on the login page opens the website instead of wordpress.org. Screen readers announce the site title instead of "Powered by WordPress".', 'wptb'),
+				how: __('Changes the link address and the link text of the login logo.', 'wptb'),
+				why: __('A link to wordpress.org confuses users who clicked the logo to get back to the website.', 'wptb'),
 			),
 			Field::color(
 				'background_color',
 				'',
 				__('Background colour', 'wptb'),
-				__('Background colour of the login page. Leave empty for WordPress\' light grey.', 'wptb'),
+				what: __('Background colour of the login page. Leave empty for WordPress\' light grey.', 'wptb'),
+				how: __('Adds the colour to the login page as a small inline style.', 'wptb'),
 				why: __('Matches the login page to the site\'s colours.', 'wptb'),
 				sideEffects: __('Choose a colour the links below the form ("Lost your password?") stay readable on; their colour doesn\'t change.', 'wptb'),
-			),
-			Field::bool(
-				'hide_back_link',
-				false,
-				__('Hide the "← Go to site" link', 'wptb'),
-				__('Removes the link back to the website below the login form.', 'wptb'),
-				why: __('Useful when the login page is only used by editors who don\'t need it, or when the logo already links to the website.', 'wptb'),
 			),
 			Field::bool(
 				'hide_language_switcher',
 				false,
 				__('Hide the language switcher', 'wptb'),
-				__('Removes the language selection at the bottom of the login page (only shown if more than one language is installed). Users still see the login page in the site\'s or their own language.', 'wptb'),
-				why: __('On single-language sites the switcher is unnecessary clutter.', 'wptb'),
+				what: __('Removes the language selection at the bottom of the login page. It appears as soon as a second language (e.g. German) is installed. Users still see the login page in the site\'s language.', 'wptb'),
+				how: __('Answers WordPress\' "show the language dropdown on the login screen?" filter with no.', 'wptb'),
+				why: __('On single-language sites the switcher is clutter that invites users to switch to a language nobody maintains.', 'wptb'),
 			),
 		];
 	}
@@ -90,23 +87,19 @@ final class LoginModule implements Module {
 
 	public function register(Settings $settings): void {
 		$logo = $settings->get('login', 'logo');
-		$this->logo = is_string($logo) ? $logo : 'wordpress';
+		$this->logo = is_string($logo) ? $logo : 'site';
 		$image = $settings->get('login', 'logo_image');
 		$this->logoImage = is_int($image) ? $image : 0;
 		$background = $settings->get('login', 'background_color');
 		// the schema already guarantees this; checked again because it ends up in a <style> block
-		$this->background = is_string($background) && preg_match('/^#[0-9a-fA-F]{6}$/', $background) ? $background : '';
-		$this->hideBackLink = $settings->get('login', 'hide_back_link') === true;
+		$this->background = is_string($background) && preg_match('/^#[0-9a-fA-F]{6}\z/', $background) ? $background : '';
 
-		if ($this->logo !== 'wordpress' || $this->background !== '' || $this->hideBackLink) {
+		if ($this->logo !== 'wordpress' || $this->background !== '') {
 			add_action('login_enqueue_scripts', [$this, 'addStyles']);
 		}
 		if ($settings->get('login', 'logo_links_home') === true) {
 			add_filter('login_headerurl', static fn (): string => home_url('/'));
 			add_filter('login_headertext', static fn (): string => get_bloginfo('name', 'display'));
-		}
-		if ($this->hideBackLink) {
-			add_filter('login_site_html_link', '__return_empty_string');
 		}
 		if ($settings->get('login', 'hide_language_switcher') === true) {
 			add_filter('login_display_language_dropdown', '__return_false');
@@ -129,9 +122,6 @@ final class LoginModule implements Module {
 		}
 		if ($this->background !== '') {
 			$css .= sprintf('body.login{background-color:%s}', $this->background);
-		}
-		if ($this->hideBackLink) {
-			$css .= '#backtoblog{display:none}';
 		}
 
 		if ($css !== '') {

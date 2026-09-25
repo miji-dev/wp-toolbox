@@ -84,13 +84,4 @@ final class DashboardModuleTest extends WP_UnitTestCase {
 
 		$this->assertFalse(has_action('welcome_panel', 'wp_welcome_panel'));
 	}
-
-	public function test_texts(): void {
-		$field = $this->module->fields()[0];
-
-		$this->assertSame('hide_widgets', $field->key);
-		$this->assertSame([], $field->default);
-		$this->assertArrayHasKey('welcome_panel', $field->options());
-		$this->assertNotEmpty($field->why);
-	}
 }

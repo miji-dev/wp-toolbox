@@ -49,7 +49,7 @@ final class BootTest extends WP_UnitTestCase {
 	public function test_all_modules_are_part_of_the_settings(): void {
 		$ids = array_map(static fn ($m) => $m->id(), Plugin::modules());
 
-		$this->assertSame(['comments', 'blog', 'head', 'security', 'admin', 'dashboard', 'media', 'login', 'maintenance', 'environment', 'editor', 'elementor'], $ids);
+		$this->assertSame(['comments', 'blog', 'head', 'security', 'admin', 'dashboard', 'media', 'login', 'environment', 'editor', 'elementor'], $ids);
 		$this->assertSame($ids, array_unique($ids));
 	}
 }

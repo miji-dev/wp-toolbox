@@ -22,62 +22,51 @@ final class HeadModule implements Module {
 	}
 
 	public function description(): string {
-		return __('Tags, links and scripts WordPress adds to every page for features most sites don\'t use.', 'wptb');
+		return __('Tags, links and scripts WordPress adds to every page for features most sites don\'t use. Yoast SEO has similar optional switches under "Crawl optimization"; using both is fine.', 'wptb');
 	}
 
 	public function fields(): array {
 		return [
 			Field::bool(
 				'remove_generator',
-				false,
+				true,
 				__('Hide the WordPress version', 'wptb'),
-				__('Removes the "generator" tag that states the exact WordPress version from pages and feeds.', 'wptb'),
-				why: __('The exact version tells attackers which known vulnerabilities to try. Visitors and search engines don\'t need it.', 'wptb'),
+				what: __('Removes the tag that tells every visitor which WordPress version the site runs.', 'wptb'),
+				how: __('Removes the "generator" meta tag from the page header and the generator line from feeds.', 'wptb'),
+				why: __('The version number helps attackers pick known vulnerabilities; nobody else needs it.', 'wptb'),
 			),
 			Field::bool(
 				'remove_rsd',
-				false,
+				true,
 				__('Remove the RSD link', 'wptb'),
-				__('Removes the "Really Simple Discovery" link, which points old desktop blogging apps to the XML-RPC interface.', 'wptb'),
-				why: __('Those apps are long gone. The link only advertises XML-RPC, a common target for attacks.', 'wptb'),
+				what: __('Removes the "Really Simple Discovery" link from the page header.', 'wptb'),
+				how: __('Removes the rsd_link output from the page header.', 'wptb'),
+				why: __('It only helps old desktop blogging apps find the XML-RPC interface, which hardly anybody uses anymore.', 'wptb'),
 			),
 			Field::bool(
 				'remove_shortlink',
-				false,
-				__('Remove shortlinks', 'wptb'),
-				__('Removes the short "?p=123" link from the page header and the HTTP headers.', 'wptb'),
-				why: __('Nothing uses it anymore, and it reveals internal post IDs.', 'wptb'),
-			),
-			Field::bool(
-				'remove_rest_links',
-				false,
-				__('Remove REST API links', 'wptb'),
-				__('Removes the links that point to the REST API (the site\'s data interface) from the page header and the HTTP headers. The REST API itself keeps working: the block editor and plugins need it.', 'wptb'),
-				why: __('These links advertise the data interface to every visitor and bot without any benefit for the site.', 'wptb'),
+				true,
+				__('Remove the shortlink', 'wptb'),
+				what: __('Removes the ?p=123 short address WordPress announces for every page.', 'wptb'),
+				how: __('Removes the shortlink tag from the page header and the "Link: rel=shortlink" HTTP header.', 'wptb'),
+				why: __('Nothing uses these addresses, and they show internal post IDs.', 'wptb'),
 			),
 			Field::bool(
 				'disable_emojis',
-				false,
-				__('Disable emoji scripts', 'wptb'),
-				__('Removes the script and styles WordPress loads on every page (and in the admin) to replace emojis with images. Emojis still show, using the visitor\'s own system font.', 'wptb'),
-				why: __('Every modern browser shows emojis by itself. The extra script and styles slow down every page.', 'wptb'),
-				sideEffects: __('Emojis look like the visitor\'s system emojis instead of the same images everywhere. Emojis in feeds and emails are no longer converted to images.', 'wptb'),
+				true,
+				__('Disable the emoji script', 'wptb'),
+				what: __('Stops loading WordPress\' emoji script and styles on the website and in the admin. Emojis still show up, drawn by the visitor\'s own device.', 'wptb'),
+				how: __('Removes the emoji detection script, the emoji styles and the emoji conversion in feeds, emails and the classic editor.', 'wptb'),
+				why: __('Every current browser and operating system displays emojis natively. The script is an extra request and inline code on every page for nothing.', 'wptb'),
 			),
 			Field::bool(
 				'disable_embeds',
 				false,
 				__('Don\'t let other sites embed your pages', 'wptb'),
-				__('Other WordPress sites can show your pages as embedded preview cards. This removes the discovery links, the embed interface and the special embed versions of your pages. Embedding YouTube videos and the like in your own content keeps working.', 'wptb'),
-				why: __('Few sites want to be embedded as a card elsewhere. It adds links to every page and an extra version of every page to the site.', 'wptb'),
-				sideEffects: __('Links to your pages pasted into other WordPress sites show as plain links instead of preview cards.', 'wptb'),
-			),
-			Field::bool(
-				'disable_speculative_loading',
-				false,
-				__('Disable speculative loading', 'wptb'),
-				__('Since WordPress 6.8, browsers load a page in advance as soon as a visitor starts clicking a link. This turns that off.', 'wptb'),
-				why: __('It makes navigation feel faster, but causes page loads that never get seen. That means extra server load and can skew statistics.', 'wptb'),
-				sideEffects: __('Navigating between pages may feel a little slower.', 'wptb'),
+				what: __('Other WordPress sites can no longer show your pages as embedded preview cards. Embedding YouTube, Vimeo etc. in your own content keeps working.', 'wptb'),
+				how: __('Removes the oEmbed discovery links and the host script from the page header, removes the /oembed/1.0/embed REST route and answers the /embed/ versions of your pages with 404.', 'wptb'),
+				why: __('Few business sites want to be embedded elsewhere. Without it there are fewer tags on every page and fewer ways to scrape your content.', 'wptb'),
+				sideEffects: __('Links to your site pasted into another WordPress site show as plain links instead of preview cards. Social media previews are not affected (they use Open Graph tags, e.g. from Yoast SEO).', 'wptb'),
 			),
 		];
 	}
@@ -104,11 +93,6 @@ final class HeadModule implements Module {
 			remove_action('template_redirect', 'wp_shortlink_header', 11);
 		}
 
-		if ($on('remove_rest_links')) {
-			remove_action('wp_head', 'rest_output_link_wp_head', 10);
-			remove_action('template_redirect', 'rest_output_link_header', 11);
-		}
-
 		if ($on('disable_emojis')) {
 			remove_action('wp_head', 'print_emoji_detection_script', 7);
 			remove_action('embed_head', 'print_emoji_detection_script');
@@ -129,10 +113,6 @@ final class HeadModule implements Module {
 			remove_action('wp_head', 'wp_oembed_add_host_js');
 			add_filter('rest_endpoints', [$this, 'removeOembedRoute']);
 			add_action('template_redirect', [$this, 'blockEmbedPages'], 0);
-		}
-
-		if ($on('disable_speculative_loading')) {
-			add_filter('wp_speculation_rules_configuration', '__return_null');
 		}
 	}
 

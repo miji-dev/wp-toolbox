@@ -6,7 +6,6 @@ namespace Miji\Toolbox\Admin;
 
 use Miji\Toolbox\Plugin;
 use Miji\Toolbox\Settings\Field;
-use Miji\Toolbox\Settings\Presets;
 use Miji\Toolbox\Settings\Settings;
 
 /**
@@ -83,11 +82,14 @@ final class SettingsPage {
 	public function data(): array {
 		$modules = [];
 		foreach ($this->settings->modules() as $id => $module) {
+			// e.g. Elementor settings on a site without Elementor; their stored values are kept
+			if (!$module->isAvailable()) {
+				continue;
+			}
 			$modules[] = [
 				'id' => $id,
 				'title' => $module->title(),
 				'description' => $module->description(),
-				'available' => $module->isAvailable(),
 				'fields' => array_map(static fn (Field $field): array => $field->toArray(), $module->fields()),
 			];
 		}
@@ -97,7 +99,6 @@ final class SettingsPage {
 			'restPath' => SettingsController::NAMESPACE . SettingsController::ROUTE,
 			'modules' => $modules,
 			'state' => (new SettingsController($this->settings))->state(),
-			'recommended' => Presets::recommended(),
 		];
 	}
 

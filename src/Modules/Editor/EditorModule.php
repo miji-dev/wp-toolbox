@@ -31,32 +31,28 @@ final class EditorModule implements Module {
 		return [
 			Field::bool(
 				'disable_remote_patterns',
-				false,
+				true,
 				__('Don\'t load patterns from wordpress.org', 'wptb'),
-				__('The editor no longer downloads block patterns (ready-made layouts) from the WordPress pattern directory. Patterns from the theme, plugins and your own synced patterns stay available.', 'wptb'),
-				why: __('The directory patterns rarely fit the site\'s design and clutter the inserter. Not loading them also saves a request to wordpress.org.', 'wptb'),
+				what: __('The block editor no longer offers block patterns (ready-made layouts) from the WordPress pattern directory. Patterns from the theme, plugins and your own saved patterns stay available.', 'wptb'),
+				how: __('Answers WordPress\' should_load_remote_block_patterns filter with no, so the pattern directory is never queried.', 'wptb'),
+				why: __('The directory patterns rarely fit the site\'s design and clutter the inserter. Not loading them also saves requests to wordpress.org.', 'wptb'),
 				sideEffects: __('Themes that list directory patterns in their theme.json lose those patterns too.', 'wptb'),
 			),
 			Field::bool(
-				'disable_core_patterns',
-				false,
-				__('Hide WordPress\' built-in patterns', 'wptb'),
-				__('Removes the patterns that come with WordPress itself (e.g. query loops, "social links" layouts). Patterns from the theme and plugins stay.', 'wptb'),
-				why: __('Leaves only the patterns made for this site, so editors pick layouts that fit.', 'wptb'),
-			),
-			Field::bool(
 				'disable_block_directory',
-				false,
+				true,
 				__('Turn off block suggestions from wordpress.org', 'wptb'),
-				__('When a search in the inserter finds nothing, the editor no longer suggests installing blocks from the WordPress plugin directory.', 'wptb'),
-				why: __('Editors shouldn\'t install plugins while writing a post; each installed block is a plugin that has to be maintained.', 'wptb'),
+				what: __('When a search in the block inserter finds nothing, the editor no longer offers to install block plugins from the WordPress plugin directory.', 'wptb'),
+				how: __('Removes the block directory script from the block editor.', 'wptb'),
+				why: __('Editors shouldn\'t install plugins while writing; every installed block is another plugin that has to be maintained and can break.', 'wptb'),
 			),
 			Field::bool(
 				'disable_openverse',
-				false,
+				true,
 				__('Turn off Openverse images', 'wptb'),
-				__('Removes the "Openverse" tab from the media section of the inserter, which searches free images on openverse.org.', 'wptb'),
-				why: __('Images from Openverse come with licence conditions (often attribution) that editors easily overlook. It also avoids requests to openverse.org.', 'wptb'),
+				what: __('Removes the "Openverse" tab from the media section of the block inserter, which searches free images on openverse.org.', 'wptb'),
+				how: __('Sets the block editor setting enableOpenverseMediaCategory to false.', 'wptb'),
+				why: __('Openverse images come with licence conditions (often attribution) that editors easily overlook, and the search sends requests to openverse.org.', 'wptb'),
 			),
 			Field::multi(
 				'classic_editor_for',
@@ -72,16 +68,10 @@ final class EditorModule implements Module {
 				},
 				[],
 				__('Use the classic editor for', 'wptb'),
-				__('Content of the selected types is edited in the classic editor instead of the block editor. Existing content is not changed.', 'wptb'),
-				why: __('Some content types (e.g. simple entries for a custom post type) are easier to edit in the classic editor, or a page builder expects it.', 'wptb'),
+				what: __('Content of the selected types opens in the classic editor instead of the block editor. Pages built with Elementor are not affected: they open in Elementor either way.', 'wptb'),
+				how: __('Answers WordPress\' use_block_editor_for_post_type filter with no for the selected types. If another plugin already turned the block editor off for a type, it stays off.', 'wptb'),
+				why: __('Some content (e.g. simple entries of a custom post type) is easier to edit in the classic editor, and some plugins expect it.', 'wptb'),
 				sideEffects: __('Content already made with blocks is shown as HTML in the classic editor; editing it there can break the blocks.', 'wptb'),
-			),
-			Field::bool(
-				'classic_widgets',
-				false,
-				__('Classic widgets screen', 'wptb'),
-				__('Appearance → Widgets and the Customizer use the classic widget screen instead of the block-based one. Only relevant for themes with widget areas (classic themes).', 'wptb'),
-				why: __('The classic screen is simpler and some widget plugins only work there.', 'wptb'),
 			),
 		];
 	}
@@ -93,9 +83,6 @@ final class EditorModule implements Module {
 	public function register(Settings $settings): void {
 		if ($settings->get('editor', 'disable_remote_patterns') === true) {
 			add_filter('should_load_remote_block_patterns', '__return_false');
-		}
-		if ($settings->get('editor', 'disable_core_patterns') === true) {
-			add_action('init', [$this, 'removeCorePatterns'], 9);
 		}
 		if ($settings->get('editor', 'disable_block_directory') === true) {
 			remove_action('enqueue_block_editor_assets', 'wp_enqueue_editor_block_directory_assets');
@@ -112,17 +99,6 @@ final class EditorModule implements Module {
 		if ($this->classicTypes) {
 			add_filter('use_block_editor_for_post_type', [$this, 'useBlockEditor'], 10, 2);
 		}
-
-		if ($settings->get('editor', 'classic_widgets') === true) {
-			add_filter('use_widgets_block_editor', '__return_false');
-		}
-	}
-
-	/**
-	 * Before core registers its patterns on init 10.
-	 */
-	public function removeCorePatterns(): void {
-		remove_theme_support('core-block-patterns');
 	}
 
 	public function useBlockEditor(mixed $use, mixed $postType): bool {

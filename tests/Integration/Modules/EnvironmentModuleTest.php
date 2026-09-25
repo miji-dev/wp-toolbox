@@ -6,6 +6,7 @@ namespace Miji\Toolbox\Tests\Integration\Modules;
 
 use Miji\Toolbox\Modules\Environment\EnvironmentModule;
 use Miji\Toolbox\Settings\Settings;
+use Miji\Toolbox\Tests\Support\DefaultsOff;
 use WP_Admin_Bar;
 use WP_UnitTestCase;
 
@@ -21,7 +22,7 @@ final class EnvironmentModuleTest extends WP_UnitTestCase {
 	 */
 	private function module(string $environment, array $values = []): EnvironmentModule {
 		$module = new EnvironmentModule($environment);
-		$module->register(new Settings([$module], ['environment' => $values]));
+		$module->register(new Settings([$module], ['environment' => DefaultsOff::with('environment', $values)]));
 		return $module;
 	}
 
@@ -163,12 +164,5 @@ final class EnvironmentModuleTest extends WP_UnitTestCase {
 		wp_mail('client@example.org', 'Order', 'Body');
 
 		$this->assertSame('client@example.org', self::sent()['to'] ?? null);
-	}
-
-	public function test_every_setting_is_explained(): void {
-		foreach ((new EnvironmentModule())->fields() as $field) {
-			$this->assertNotEmpty($field->description, $field->key);
-			$this->assertNotEmpty($field->why, $field->key);
-		}
 	}
 }

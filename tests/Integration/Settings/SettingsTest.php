@@ -27,16 +27,14 @@ final class SettingsTest extends WP_UnitTestCase {
 	private function settings(array $overrides = []): Settings {
 		return new Settings([
 			new FakeModule('comments', [
-				Field::bool('disable', false, 'Disable comments', 'Desc.'),
-				Field::choice('mode', ['404' => 'Not found', '301' => 'Redirect'], '404', 'Mode', 'Desc.'),
+				Field::bool('disable', false, 'Disable comments', 'What.', 'How.', 'Why.'),
+				Field::choice('mode', ['404' => 'Not found', '301' => 'Redirect'], '404', 'Mode', 'What.', 'How.', 'Why.'),
 			]),
 			new FakeModule('media', [
-				Field::int('quality', 82, 'Quality', 'Desc.', min: 1, max: 100),
-				Field::color('bg', '', 'Background', 'Desc.'),
-				Field::multi('roles', ['editor' => 'Editor', 'author' => 'Author'], [], 'Roles', 'Desc.'),
-				Field::text('message', 'Hello', 'Message', 'Desc.'),
-				Field::textarea('notice', '', 'Notice', 'Desc.'),
-				Field::datetime('until', 'Until', 'Desc.'),
+				Field::attachment('logo', 'Logo', 'What.', 'How.', 'Why.'),
+				Field::color('bg', '', 'Background', 'What.', 'How.', 'Why.'),
+				Field::multi('roles', ['editor' => 'Editor', 'author' => 'Author'], [], 'Roles', 'What.', 'How.', 'Why.'),
+				Field::text('message', 'Hello', 'Message', 'What.', 'How.', 'Why.'),
 			]),
 		], $overrides);
 	}
@@ -46,16 +44,16 @@ final class SettingsTest extends WP_UnitTestCase {
 
 		$this->assertFalse($s->get('comments', 'disable'));
 		$this->assertSame('404', $s->get('comments', 'mode'));
-		$this->assertSame(82, $s->get('media', 'quality'));
+		$this->assertSame(0, $s->get('media', 'logo'));
 		$this->assertSame([], $s->get('media', 'roles'));
 	}
 
 	public function test_stored_values_are_returned(): void {
-		update_option(Settings::OPTION, ['comments' => ['disable' => true], 'media' => ['quality' => 70]]);
+		update_option(Settings::OPTION, ['comments' => ['disable' => true], 'media' => ['logo' => 7]]);
 		$s = $this->settings();
 
 		$this->assertTrue($s->get('comments', 'disable'));
-		$this->assertSame(70, $s->get('media', 'quality'));
+		$this->assertSame(7, $s->get('media', 'logo'));
 		$this->assertSame('404', $s->get('comments', 'mode'), 'unset keys fall back to their default');
 	}
 
@@ -65,7 +63,7 @@ final class SettingsTest extends WP_UnitTestCase {
 
 		$this->assertFalse($s->get('comments', 'disable'));
 		$this->assertSame('404', $s->get('comments', 'mode'));
-		$this->assertSame(82, $s->get('media', 'quality'));
+		$this->assertSame(0, $s->get('media', 'logo'));
 	}
 
 	public function test_unknown_setting_throws(): void {
@@ -126,18 +124,13 @@ final class SettingsTest extends WP_UnitTestCase {
 		return [
 			'wrong type' => [['comments' => ['disable' => 'yes']]],
 			'not an option' => [['comments' => ['mode' => '500']]],
-			'out of range' => [['media' => ['quality' => 101]]],
+			'out of range' => [['media' => ['logo' => -1]]],
 			'not a colour' => [['media' => ['bg' => 'red;}</style>']]],
 			'unknown role' => [['media' => ['roles' => ['administrator']]]],
 			'duplicate items' => [['media' => ['roles' => ['editor', 'editor']]]],
 			'text too long' => [['media' => ['message' => str_repeat('x', 501)]]],
-			'textarea too long' => [['media' => ['notice' => str_repeat('x', 2001)]]],
-			'not a date' => [['media' => ['until' => 'tomorrow']]],
 			// PHP's "$" also matches before a final line break
 			'colour with trailing line break' => [['media' => ['bg' => "#123456\n"]]],
-			'date with trailing line break' => [['media' => ['until' => "2026-10-01T10:00\n"]]],
-			'impossible month' => [['media' => ['until' => '2026-13-01T10:00']]],
-			'date with injected text' => [['media' => ['until' => "2026-10-01T10:00\n<script>"]]],
 			'unknown key' => [['comments' => ['nope' => true]]],
 			'unknown module' => [['nope' => ['x' => true]]],
 			'module not an object' => [['comments' => 'x']],
@@ -152,21 +145,7 @@ final class SettingsTest extends WP_UnitTestCase {
 		$this->assertSame('Hi there', $s->get('media', 'message'));
 	}
 
-	public function test_textarea_keeps_line_breaks_but_no_markup(): void {
-		$s = $this->settings();
 
-		$s->update(['media' => ['notice' => "<script>alert(1)</script>Line one\nLine <b>two</b>"]]);
-
-		$this->assertSame("Line one\nLine two", $s->get('media', 'notice'));
-	}
-
-	public function test_dates_are_stored_as_given(): void {
-		$s = $this->settings();
-
-		$this->assertTrue($s->update(['media' => ['until' => '2026-10-01T18:30']]));
-		$this->assertSame('2026-10-01T18:30', $s->get('media', 'until'));
-		$this->assertTrue($s->update(['media' => ['until' => '']]), 'empty = no date');
-	}
 
 	public function test_update_cannot_change_locked_values(): void {
 		$s = $this->settings(['comments' => ['disable' => true]]);
@@ -179,18 +158,18 @@ final class SettingsTest extends WP_UnitTestCase {
 	}
 
 	public function test_all_returns_every_effective_value(): void {
-		update_option(Settings::OPTION, ['media' => ['quality' => 70]]);
+		update_option(Settings::OPTION, ['media' => ['logo' => 7]]);
 		$s = $this->settings(['comments' => ['disable' => true]]);
 
 		$all = $s->all();
 
 		$this->assertSame(['disable' => true, 'mode' => '404'], $all['comments']);
-		$this->assertSame(70, $all['media']['quality']);
-		$this->assertSame('', $all['media']['until']);
+		$this->assertSame(7, $all['media']['logo']);
+		$this->assertSame('', $all['media']['bg']);
 	}
 
 	public function test_locked_lists_the_overridden_keys_per_module(): void {
-		$s = $this->settings(['comments' => ['disable' => true], 'media' => ['bg' => '#000000', 'quality' => 500]]);
+		$s = $this->settings(['comments' => ['disable' => true], 'media' => ['bg' => '#000000', 'logo' => -5]]);
 
 		$this->assertSame(['comments' => ['disable'], 'media' => ['bg']], $s->locked(), 'invalid overrides are not locked');
 	}
@@ -212,6 +191,6 @@ final class SettingsTest extends WP_UnitTestCase {
 
 	public function test_duplicate_field_keys_are_rejected(): void {
 		$this->expectException(\InvalidArgumentException::class);
-		new Settings([new FakeModule('a', [Field::bool('x', false, 'L', 'D'), Field::bool('x', true, 'L', 'D')])]);
+		new Settings([new FakeModule('a', [Field::bool('x', false, 'L', 'What.', 'How.', 'Why.'), Field::bool('x', true, 'L', 'What.', 'How.', 'Why.')])]);
 	}
 }

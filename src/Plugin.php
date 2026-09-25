@@ -15,10 +15,10 @@ use Miji\Toolbox\Modules\Elementor\ElementorModule;
 use Miji\Toolbox\Modules\Environment\EnvironmentModule;
 use Miji\Toolbox\Modules\Head\HeadModule;
 use Miji\Toolbox\Modules\Login\LoginModule;
-use Miji\Toolbox\Modules\Maintenance\MaintenanceModule;
 use Miji\Toolbox\Modules\Media\MediaModule;
 use Miji\Toolbox\Modules\Security\SecurityModule;
 use Miji\Toolbox\Settings\Settings;
+use Miji\Toolbox\Support\PageCache;
 use Miji\Toolbox\Updater\GitHubUpdater;
 
 final class Plugin {
@@ -48,6 +48,7 @@ final class Plugin {
 		$plugin->register();
 		(new SettingsController($plugin->settings))->register();
 		(new SettingsPage($plugin->settings, $file))->register();
+		(new PageCache())->register();
 
 		(new GitHubUpdater(
 			plugin_basename($file),
@@ -69,7 +70,6 @@ final class Plugin {
 			new DashboardModule(),
 			new MediaModule(),
 			new LoginModule(),
-			new MaintenanceModule(),
 			new EnvironmentModule(),
 			new EditorModule(),
 			new ElementorModule(),

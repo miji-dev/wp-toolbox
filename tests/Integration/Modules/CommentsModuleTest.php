@@ -275,13 +275,8 @@ final class CommentsModuleTest extends WP_UnitTestCase {
 		$this->assertTrue(wp_script_is(CommentsModule::EDITOR_SCRIPT, 'enqueued'));
 	}
 
-	public function test_texts_explain_the_setting(): void {
-		$field = $this->module->fields()[0];
-
-		$this->assertSame('disable', $field->key);
-		$this->assertFalse($field->default, 'nothing changes until it is switched on');
-		$this->assertNotEmpty($field->description);
-		$this->assertNotEmpty($field->why);
-		$this->assertNotEmpty($field->sideEffects);
+	public function test_off_by_default(): void {
+		// whether a site has comments is decided per project
+		$this->assertFalse($this->module->fields()[0]->default);
 	}
 }

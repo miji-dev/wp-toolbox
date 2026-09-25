@@ -6,6 +6,7 @@ namespace Miji\Toolbox\Tests\Integration\Modules;
 
 use Miji\Toolbox\Modules\Blog\BlogModule;
 use Miji\Toolbox\Settings\Settings;
+use Miji\Toolbox\Tests\Support\DefaultsOff;
 use Miji\Toolbox\Tests\Support\RedirectException;
 use WP_REST_Request;
 use WP_UnitTestCase;
@@ -44,7 +45,7 @@ final class BlogModuleTest extends WP_UnitTestCase {
 	 * @param array<string, mixed> $values
 	 */
 	private function enable(array $values): void {
-		$this->module->register(new Settings([$this->module], ['blog' => $values]));
+		$this->module->register(new Settings([$this->module], ['blog' => DefaultsOff::with('blog', $values)]));
 		// what the module hooks on init (the test boot already ran it)
 		$this->module->hideContentTypes();
 	}
@@ -296,7 +297,7 @@ final class BlogModuleTest extends WP_UnitTestCase {
 		$this->assertSame(['post_tag'], array_keys($taxonomies));
 	}
 
-	// --- attachments, feeds, search -----------------------------------------------------------------
+	// --- attachments, feeds -------------------------------------------------------------------------
 
 	public function test_attachment_pages_can_be_disabled(): void {
 		update_option('wp_attachment_pages_enabled', '1'); // sites installed before WordPress 6.4
@@ -341,36 +342,46 @@ final class BlogModuleTest extends WP_UnitTestCase {
 		$this->assertFalse(has_action('wp_head', 'feed_links_extra'));
 	}
 
-	public function test_frontend_search_can_be_disabled(): void {
-		global $wp_widget_factory;
-		$this->enable(['disable_search' => true]);
 
-		$this->visit(home_url('/?s=findme'));
-		$this->assertTrue(is_404());
-		$this->assertSame('', get_search_form(['echo' => false]));
-		$this->assertSame('', do_blocks('<!-- wp:search /-->'));
-		$this->module->unregisterWidgets();
-		$this->assertArrayNotHasKey('WP_Widget_Search', $wp_widget_factory->widgets);
-	}
-
-	public function test_rest_search_used_by_the_editor_keeps_working(): void {
-		$this->enable(['disable_search' => true]);
-		wp_set_current_user(self::factory()->user->create(['role' => 'editor']));
-
-		$this->assertSame(200, rest_do_request(new WP_REST_Request('GET', '/wp/v2/search'))->get_status());
-	}
 
 	// --- texts ---------------------------------------------------------------------------------------
 
-	public function test_every_setting_is_explained(): void {
-		foreach ($this->module->fields() as $field) {
-			$this->assertNotEmpty($field->description, $field->key);
-			$this->assertNotEmpty($field->why, $field->key);
-		}
-	}
 
 	private function editorScript(): string {
 		$this->module->hideBlocksInEditor();
 		return implode("\n", (array) wp_scripts()->get_data(BlogModule::EDITOR_SCRIPT, 'after'));
+	}
+
+	// --- Yoast SEO ------------------------------------------------------------------------------------------
+	// Yoast replaces WordPress' sitemap with its own, which would still list the removed archives.
+
+	public function test_removed_archives_are_not_in_yoasts_sitemap(): void {
+		$this->enable(['remove_archives' => ['author', 'category']]);
+
+		$this->assertTrue(apply_filters('wpseo_sitemap_exclude_taxonomy', false, 'category'));
+		$this->assertFalse(apply_filters('wpseo_sitemap_exclude_taxonomy', false, 'post_tag'), 'not removed');
+		$this->assertSame([], apply_filters('wpseo_sitemap_exclude_author', [new \WP_User()]));
+	}
+
+	public function test_removed_taxonomies_are_not_in_yoasts_sitemap(): void {
+		$this->enable(['remove_taxonomies' => ['post_tag']]);
+
+		$this->assertTrue(apply_filters('wpseo_sitemap_exclude_taxonomy', false, 'post_tag'));
+	}
+
+	public function test_disabled_posts_are_not_in_yoasts_sitemap(): void {
+		$this->enable(['disable_posts' => true]);
+
+		$this->assertTrue(apply_filters('wpseo_sitemap_exclude_post_type', false, 'post'));
+		$this->assertFalse(apply_filters('wpseo_sitemap_exclude_post_type', false, 'page'));
+	}
+
+	public function test_yoasts_sitemap_is_untouched_when_off(): void {
+		$this->enable([]);
+
+		$this->assertFalse(apply_filters('wpseo_sitemap_exclude_taxonomy', false, 'category'));
+		$this->assertFalse(apply_filters('wpseo_sitemap_exclude_post_type', false, 'post'));
+		$this->assertCount(1, apply_filters('wpseo_sitemap_exclude_author', [new \WP_User()]));
+		$this->assertTrue(apply_filters('wpseo_sitemap_exclude_taxonomy', true, 'category'), 'an exclusion by someone else stays');
 	}
 }

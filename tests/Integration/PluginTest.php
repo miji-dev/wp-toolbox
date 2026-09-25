@@ -22,10 +22,10 @@ final class PluginTest extends WP_UnitTestCase {
 	public function set_up(): void {
 		parent::set_up();
 		$this->available = new FakeModule('comments', [
-			Field::bool('disable', false, 'Disable comments', 'Desc.'),
-			Field::choice('mode', ['404' => 'Not found', '301' => 'Redirect'], '404', 'Mode', 'Desc.'),
+			Field::bool('disable', false, 'Disable comments', 'What.', 'How.', 'Why.'),
+			Field::choice('mode', ['404' => 'Not found', '301' => 'Redirect'], '404', 'Mode', 'What.', 'How.', 'Why.'),
 		]);
-		$this->unavailable = new FakeModule('elementor', [Field::bool('edit_links', false, 'Edit links', 'Desc.')], available: false);
+		$this->unavailable = new FakeModule('elementor', [Field::bool('edit_links', false, 'Edit links', 'What.', 'How.', 'Why.')], available: false);
 
 		$this->isolateSettingsRegistration();
 		$this->plugin = new Plugin([$this->available, $this->unavailable]);

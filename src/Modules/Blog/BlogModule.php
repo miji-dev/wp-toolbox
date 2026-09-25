@@ -13,7 +13,7 @@ use WP_Post_Type;
 use WP_Taxonomy;
 
 /**
- * Removes the classic blog machinery: posts, categories/tags, archive pages, attachment pages, feeds, search.
+ * Removes the classic blog machinery: posts, categories/tags, archive pages, attachment pages, feeds.
  */
 final class BlogModule implements Module {
 	public const EDITOR_SCRIPT = 'wptb-hide-blog-blocks';
@@ -25,7 +25,6 @@ final class BlogModule implements Module {
 	private array $archives = [];
 	private string $archiveResponse = '404';
 	private bool $feeds = false;
-	private bool $search = false;
 	private bool $attachmentPages = true;
 
 	public function id(): string {
@@ -46,18 +45,20 @@ final class BlogModule implements Module {
 				'disable_posts',
 				false,
 				__('Disable posts', 'wptb'),
-				__('Hides the "Posts" post type: it disappears from the admin menu, the admin bar, menus, search, sitemaps and the REST API. Single posts and the posts page return "not found". Pages and custom post types are not affected.', 'wptb'),
+				what: __('Hides the "Posts" content type: it disappears from the admin, the toolbar, menus, search, sitemaps and the REST API, and single posts and the posts page show "not found". Pages and other content types are not affected.', 'wptb'),
+				how: __('Marks the "post" post type as not public and hidden in the admin and REST API (it stays registered), answers post URLs with 404, redirects the post list and "Add new" in the admin to the dashboard, removes the Latest Posts, Archives and Calendar blocks and widgets and the Quick Draft box, and excludes posts from Yoast SEO\'s sitemap.', 'wptb'),
 				why: __('Sites built from pages only still show an empty "Posts" section everywhere, which confuses editors and exposes an unused part of the site.', 'wptb'),
-				sideEffects: __('Existing posts stay in the database and come back when you switch this off. The Latest Posts, Archives and Calendar blocks and widgets and the Quick Draft dashboard box are removed. If your homepage shows your latest posts (Settings → Reading), it still does.', 'wptb'),
+				sideEffects: __('Existing posts stay in the database and come back when you switch this off. If your homepage shows your latest posts (Settings → Reading), it still does.', 'wptb'),
 			),
 			Field::multi(
 				'remove_taxonomies',
 				['category' => __('Categories', 'wptb'), 'post_tag' => __('Tags', 'wptb')],
 				[],
 				__('Remove categories and tags', 'wptb'),
-				__('Removes the selected taxonomies from posts, the editor, menus, the REST API and the admin. Their archive pages return "not found" (or redirect, see below).', 'wptb'),
+				what: __('Removes the selected taxonomies from posts, the editor, menus and the admin. Their archive pages are removed too (see below).', 'wptb'),
+				how: __('Detaches the taxonomies from posts and marks them as not public and hidden in the admin and REST API, and removes the Categories and Tag Cloud blocks and widgets.', 'wptb'),
 				why: __('Categories and tags only make sense for a blog. Without one they are just clutter in the editor.', 'wptb'),
-				sideEffects: __('Existing terms and their assignments stay in the database. The Categories and Tag Cloud blocks and widgets are removed.', 'wptb'),
+				sideEffects: __('Existing terms and their assignments stay in the database.', 'wptb'),
 			),
 			Field::multi(
 				'remove_archives',
@@ -70,39 +71,36 @@ final class BlogModule implements Module {
 				],
 				[],
 				__('Remove archive pages', 'wptb'),
-				__('The selected archive pages no longer exist. The matching sitemaps are removed as well, so search engines are not sent to pages that are gone.', 'wptb'),
-				why: __('WordPress generates these pages automatically. On most sites they are thin duplicate content. Author archives also reveal login names: example.com/?author=1 redirects to /author/<login name>/.', 'wptb'),
-				sideEffects: __('Links to these pages that your theme prints (e.g. an author name linking to the author archive) will lead to the "not found" page or the homepage.', 'wptb'),
+				what: __('The selected automatic archive pages no longer exist, and they are removed from the sitemaps, so search engines are not sent to pages that are gone.', 'wptb'),
+				how: __('Answers archive URLs with 404 or a redirect (see below) before WordPress\' own redirects run, and removes them from WordPress\' sitemap and from Yoast SEO\'s sitemap.', 'wptb'),
+				why: __('WordPress generates these pages automatically. On most sites they are thin duplicate content that search engines rate poorly. Author archives also reveal login names (example.com/?author=1 leads to /author/<login name>/).', 'wptb'),
+				sideEffects: __('Links to these pages that the theme or an SEO plugin prints (e.g. an author name linking to the author archive) lead to the "not found" page or the homepage.', 'wptb'),
 			),
 			Field::choice(
 				'archive_response',
 				['404' => __('Show "not found" (404)', 'wptb'), 'home' => __('Redirect to the homepage (301)', 'wptb')],
 				'404',
 				__('Removed archive pages', 'wptb'),
-				__('What visitors and search engines get when they open a removed archive page.', 'wptb'),
+				what: __('What visitors and search engines get when they open a removed archive page.', 'wptb'),
+				how: __('Sends status 404 with the theme\'s "not found" page, or a permanent redirect (301) to the homepage.', 'wptb'),
 				why: __('"Not found" is the honest answer and makes search engines drop the pages. A redirect is friendlier if old archive links are still around.', 'wptb'),
 			),
 			Field::bool(
 				'disable_attachment_pages',
 				false,
 				__('Disable attachment pages', 'wptb'),
-				__('Every uploaded file gets its own page in WordPress. With this on, those addresses lead straight to the file itself. This is WordPress\' own setting, which has no switch in the admin.', 'wptb'),
-				why: __('Attachment pages are empty pages with just an image. Search engines index them as low-quality content.', 'wptb'),
-				sideEffects: __('Files attached to content that isn\'t public (e.g. to posts while posts are disabled) show "not found" instead, so the address doesn\'t reveal anything about that content.', 'wptb'),
+				what: __('Every uploaded file has its own page in WordPress. With this on, those addresses lead straight to the file itself.', 'wptb'),
+				how: __('Switches off WordPress\' own "attachment pages" option (which has no switch in the admin), so WordPress redirects to the file. Attachments of content that isn\'t public get a 404 instead.', 'wptb'),
+				why: __('Attachment pages are empty pages with just an image, which search engines index as low-quality content. Sites set up before WordPress 6.4 still have them.', 'wptb'),
+				sideEffects: __('Yoast SEO does the same with its "Media pages" setting (on by default); both together are fine.', 'wptb'),
 			),
 			Field::bool(
 				'disable_feeds',
 				false,
 				__('Disable RSS feeds', 'wptb'),
-				__('All RSS and Atom feeds (posts, comments, categories, …) return "not found", and the feed links are removed from the page header.', 'wptb'),
+				what: __('All RSS and Atom feeds (posts, comments, categories, …) show "not found", and the feed links are removed from the page header.', 'wptb'),
+				how: __('Answers every feed request with 404 and removes the feed link tags that WordPress prints in the page header.', 'wptb'),
 				why: __('Feeds are only useful if people subscribe to a blog. Otherwise they are another copy of your content for scrapers.', 'wptb'),
-			),
-			Field::bool(
-				'disable_search',
-				false,
-				__('Disable frontend search', 'wptb'),
-				__('Search on the website returns "not found", and the search form, block and widget are removed. The search in the admin and in the editor keep working.', 'wptb'),
-				why: __('Small sites don\'t need a search, and WordPress\' built-in search results are rarely helpful. The search URL can also be abused for spam links.', 'wptb'),
 			),
 		];
 	}
@@ -117,7 +115,6 @@ final class BlogModule implements Module {
 		$this->archives = array_values(array_unique([...self::strings($settings->get('blog', 'remove_archives')), ...$this->taxonomies]));
 		$this->archiveResponse = $settings->get('blog', 'archive_response') === 'home' ? 'home' : '404';
 		$this->feeds = $settings->get('blog', 'disable_feeds') === true;
-		$this->search = $settings->get('blog', 'disable_search') === true;
 
 		if ($settings->get('blog', 'disable_attachment_pages') === true) {
 			$this->attachmentPages = false;
@@ -125,7 +122,7 @@ final class BlogModule implements Module {
 			add_action('template_redirect', [$this, 'handleAttachmentPages'], 11);
 		}
 
-		if (!$this->posts && !$this->taxonomies && !$this->archives && !$this->feeds && !$this->search) {
+		if (!$this->posts && !$this->taxonomies && !$this->archives && !$this->feeds) {
 			return;
 		}
 
@@ -139,17 +136,20 @@ final class BlogModule implements Module {
 		if ($this->posts) {
 			add_action('admin_init', [$this, 'blockAdminPages']);
 			add_action('wp_dashboard_setup', [$this, 'removeDashboardWidgets'], PHP_INT_MAX);
+			add_filter('wpseo_sitemap_exclude_post_type', static fn (mixed $excluded, mixed $type): bool => $type === 'post' || $excluded === true, 10, 2);
 		}
 		if ($this->archives) {
 			add_filter('wp_sitemaps_add_provider', [$this, 'filterSitemapProvider'], 10, 2);
 			add_filter('wp_sitemaps_taxonomies', [$this, 'filterSitemapTaxonomies']);
+			// Yoast SEO replaces WordPress' sitemap with its own
+			add_filter('wpseo_sitemap_exclude_taxonomy', fn (mixed $excluded, mixed $taxonomy): bool => in_array($taxonomy, $this->archives, true) || $excluded === true, 10, 2);
+			if (in_array('author', $this->archives, true)) {
+				add_filter('wpseo_sitemap_exclude_author', '__return_empty_array');
+			}
 		}
 		if ($this->feeds) {
 			remove_action('wp_head', 'feed_links', 2);
 			remove_action('wp_head', 'feed_links_extra', 3);
-		}
-		if ($this->search) {
-			add_filter('get_search_form', '__return_empty_string', PHP_INT_MAX);
 		}
 	}
 
@@ -184,10 +184,6 @@ final class BlogModule implements Module {
 			return;
 		}
 		if ($this->feeds && is_feed()) {
-			NotFound::send();
-			return;
-		}
-		if ($this->search && is_search()) {
 			NotFound::send();
 			return;
 		}
@@ -232,9 +228,6 @@ final class BlogModule implements Module {
 		}
 		if (in_array('post_tag', $this->taxonomies, true)) {
 			$widgets[] = 'WP_Widget_Tag_Cloud';
-		}
-		if ($this->search) {
-			$widgets[] = 'WP_Widget_Search';
 		}
 		foreach ($widgets as $widget) {
 			unregister_widget($widget);
@@ -289,9 +282,6 @@ final class BlogModule implements Module {
 		}
 		if (in_array('post_tag', $this->taxonomies, true)) {
 			$names[] = 'core/tag-cloud';
-		}
-		if ($this->search) {
-			$names[] = 'core/search';
 		}
 		return new HiddenBlocks(self::EDITOR_SCRIPT, static fn (string $name): bool => in_array($name, $names, true));
 	}

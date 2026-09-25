@@ -33,10 +33,11 @@ final class ElementorModule implements Module {
 		return [
 			Field::bool(
 				'open_in_elementor',
-				false,
+				true,
 				__('Open Elementor pages in Elementor', 'wptb'),
-				__('For content built with Elementor, the title in the page and post lists and "Edit" in the toolbar open Elementor directly. In the lists, "Edit with Elementor" is replaced by a "WordPress editor" link. Content not built with Elementor keeps opening in the WordPress editor.', 'wptb'),
-				why: __('Editors of Elementor sites almost always want Elementor. Opening the WordPress editor first is an extra step and confusing, because the page content isn\'t editable there.', 'wptb'),
+				what: __('For content built with Elementor, the title in the page and post lists and "Edit" in the toolbar open Elementor directly. In the lists, the duplicate "Edit with Elementor" link is replaced by a "WordPress editor" link. Content not built with Elementor keeps opening in the WordPress editor.', 'wptb'),
+				how: __('Checks Elementor\'s own marker that a post was built with it and, only on the post list screens and for the toolbar\'s "Edit" link, points the edit link to Elementor\'s editor. Other edit links (e.g. redirects after saving) are not changed.', 'wptb'),
+				why: __('Editors of Elementor sites almost always want Elementor. Opening the WordPress editor first is an extra click and confusing, because the page content isn\'t editable there.', 'wptb'),
 			),
 		];
 	}

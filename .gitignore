@@ -3,7 +3,6 @@
 /build/
 /.phpunit.cache/
 .DS_Store
-/vendor-prefixed/
 /assets/build/
 /test-results/
 /playwright-report/

@@ -36,6 +36,10 @@ require_once $root . '/vendor/autoload.php';
 $tests_dir = $root . '/vendor/wp-phpunit/wp-phpunit';
 require_once $tests_dir . '/includes/functions.php';
 
+// The real plugin is loaded below and would switch on its defaults for every test. Tests start from WordPress'
+// own behaviour instead: everything that is on by default is locked off here (CatalogueTest keeps this complete).
+define('WPTB_SETTINGS', require __DIR__ . '/defaults-off.php');
+
 tests_add_filter('muplugins_loaded', static function (): void {
 	// load through the symlink like a real install, so plugin_basename() is "wp-toolbox/wp-toolbox.php"
 	$file = WP_PLUGIN_DIR . '/wp-toolbox/wp-toolbox.php';

@@ -18,8 +18,8 @@ final class SettingsPageTest extends WP_UnitTestCase {
 	public function set_up(): void {
 		parent::set_up();
 		$settings = new Settings([
-			new FakeModule('comments', [Field::bool('disable', false, 'Disable comments', 'Turns </script><script>alert(1)</script> off.')]),
-			new FakeModule('elementor', [Field::bool('open', false, 'Open', 'D.')], available: false),
+			new FakeModule('comments', [Field::bool('disable', false, 'Disable comments', 'Turns </script><script>alert(1)</script> off.', 'How.', 'Why.')]),
+			new FakeModule('elementor', [Field::bool('open', false, 'Open', 'What.', 'How.', 'Why.')], available: false),
 		], ['comments' => ['disable' => true]]);
 		$this->page = new SettingsPage($settings, self::FILE);
 		$this->page->register();
@@ -87,13 +87,10 @@ final class SettingsPageTest extends WP_UnitTestCase {
 
 		$this->assertSame('wptb/v1/settings', $data['restPath']);
 		$this->assertSame(\Miji\Toolbox\Plugin::VERSION, $data['version']);
-		$this->assertSame(['comments', 'elementor'], array_column($data['modules'], 'id'));
-		$this->assertTrue($data['modules'][0]['available']);
-		$this->assertFalse($data['modules'][1]['available']);
+		$this->assertSame(['comments'], array_column($data['modules'], 'id'), 'modules that are not available (e.g. Elementor not active) are not shown');
 		$this->assertSame('disable', $data['modules'][0]['fields'][0]['key']);
 		$this->assertSame(['comments' => ['disable' => true], 'elementor' => ['open' => false]], $data['state']['values']);
 		$this->assertSame(['comments' => ['disable']], $data['state']['locked']);
-		$this->assertArrayHasKey('recommended', $data);
 	}
 
 	public function test_inline_data_cannot_close_the_script_tag(): void {

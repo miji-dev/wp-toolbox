@@ -9,7 +9,6 @@ import {
 	RadioControl,
 	SelectControl,
 	TextControl,
-	TextareaControl,
 	ToggleControl,
 } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
@@ -21,7 +20,7 @@ import { normalizeHex } from './utils';
 const common = { __nextHasNoMarginBottom: true, __next40pxDefaultSize: true };
 
 /**
- * One setting: the control plus its three explanations (what, why, side effects).
+ * One setting: the control plus its explanations (what, why, side effects, and how it works on request).
  *
  * @param {Object}                        props
  * @param {string}                        props.moduleId
@@ -54,17 +53,19 @@ export default function Field( { moduleId, field, value, locked, onChange } ) {
 					) }
 				</p>
 			) }
-			{ field.why && (
-				<p className="wptb-field__why">
-					<strong>{ __( 'Why:', 'wptb' ) }</strong> { field.why }
-				</p>
-			) }
+			<p className="wptb-field__why">
+				<strong>{ __( 'Why:', 'wptb' ) }</strong> { field.why }
+			</p>
 			{ field.sideEffects && (
 				<p className="wptb-field__side-effects">
 					<strong>{ __( 'Keep in mind:', 'wptb' ) }</strong>{ ' ' }
 					{ field.sideEffects }
 				</p>
 			) }
+			<details className="wptb-field__how">
+				<summary>{ __( 'How it works', 'wptb' ) }</summary>
+				<p>{ field.how }</p>
+			</details>
 		</div>
 	);
 }
@@ -74,7 +75,7 @@ function BoolControl( { field, value, disabled, onChange } ) {
 		<ToggleControl
 			{ ...common }
 			label={ field.label }
-			help={ field.description }
+			help={ field.what }
 			checked={ value === true }
 			disabled={ disabled }
 			onChange={ onChange }
@@ -86,7 +87,7 @@ function ChoiceControl( { field, value, disabled, onChange } ) {
 	const props = {
 		...common,
 		label: field.label,
-		help: field.description,
+		help: field.what,
 		options: field.options,
 		disabled,
 		onChange,
@@ -131,32 +132,9 @@ function MultiControl( { id, field, value, disabled, onChange } ) {
 				) ) }
 			</div>
 			<p id={ `${ id }-help` } className="components-base-control__help">
-				{ field.description }
+				{ field.what }
 			</p>
 		</fieldset>
-	);
-}
-
-function IntControl( { field, value, disabled, onChange } ) {
-	return (
-		<TextControl
-			{ ...common }
-			type="number"
-			label={ field.label }
-			help={ field.description }
-			value={ value ?? '' }
-			min={ field.min ?? undefined }
-			max={ field.max ?? undefined }
-			disabled={ disabled }
-			className="wptb-int"
-			// anything that isn't a whole number is kept as typed: the server rejects it with a message
-			onChange={ ( raw ) => {
-				const number = Number( raw );
-				onChange(
-					raw !== '' && Number.isInteger( number ) ? number : raw
-				);
-			} }
-		/>
 	);
 }
 
@@ -165,52 +143,12 @@ function TextFieldControl( { field, value, disabled, onChange } ) {
 		<TextControl
 			{ ...common }
 			label={ field.label }
-			help={ field.description }
+			help={ field.what }
 			value={ value ?? '' }
 			maxLength={ field.maxLength }
 			disabled={ disabled }
 			onChange={ onChange }
 		/>
-	);
-}
-
-function TextareaFieldControl( { field, value, disabled, onChange } ) {
-	return (
-		<TextareaControl
-			{ ...common }
-			label={ field.label }
-			help={ field.description }
-			value={ value ?? '' }
-			maxLength={ field.maxLength }
-			rows={ 4 }
-			disabled={ disabled }
-			onChange={ onChange }
-		/>
-	);
-}
-
-function DateTimeControl( { field, value, disabled, onChange } ) {
-	return (
-		<div className="wptb-inline">
-			<TextControl
-				{ ...common }
-				type="datetime-local"
-				label={ field.label }
-				help={ field.description }
-				value={ value ?? '' }
-				disabled={ disabled }
-				onChange={ onChange }
-			/>
-			{ value && ! disabled && (
-				<Button
-					{ ...common }
-					variant="tertiary"
-					onClick={ () => onChange( '' ) }
-				>
-					{ __( 'Clear', 'wptb' ) }
-				</Button>
-			) }
-		</div>
 	);
 }
 
@@ -220,7 +158,7 @@ function ColorControl( { id, field, value, disabled, onChange } ) {
 			{ ...common }
 			id={ id }
 			label={ field.label }
-			help={ field.description }
+			help={ field.what }
 		>
 			<div className="wptb-inline">
 				<Dropdown
@@ -310,7 +248,7 @@ function AttachmentControl( { id, field, value, disabled, onChange } ) {
 			{ ...common }
 			id={ id }
 			label={ field.label }
-			help={ field.description }
+			help={ field.what }
 		>
 			<div className="wptb-attachment">
 				{ value > 0 && preview && <img src={ preview } alt="" /> }
@@ -351,10 +289,7 @@ const CONTROLS = {
 	bool: BoolControl,
 	choice: ChoiceControl,
 	multi: MultiControl,
-	int: IntControl,
 	text: TextFieldControl,
-	textarea: TextareaFieldControl,
-	datetime: DateTimeControl,
 	color: ColorControl,
 	attachment: AttachmentControl,
 };

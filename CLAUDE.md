@@ -9,7 +9,7 @@ WordPress plugin, PHP 8.3+, WordPress 7.1+ (latest only), single site only.
 - Every `Field` needs `description` (what it does). Add `why` and `sideEffects` whenever they aren't obvious. These texts are the documentation users see.
 - Updates: `src/Updater` (GitHub releases via the `Update URI` header).
 - Settings page: `src/Admin` (page, REST route `wptb/v1/settings`) plus a React app in `assets/src/settings` built with `@wordpress/scripts` into `assets/build` (not committed; built in CI and for the zip). It renders every module and field generically from `SettingsPage::data()`, so new fields need no JS changes. Keep logic that can be tested without a browser in `utils.js`.
-- Third-party runtime libraries are listed in `require-dev` and shipped only as a copy under our own namespace in `vendor-prefixed/` (Strauss, `bin/prefix-vendor.sh`, runs after composer install/update). Use them as `Miji\Toolbox\Vendor\...`, never by their original namespace.
+- No runtime dependencies: the plugin ships its own autoloader (`wp-toolbox.php`) and no `vendor/`. Composer is for development tools only.
 - Module IDs and field keys are stored in the database: never rename them once released. If you must, add a migration.
 
 ## Testing (TDD)

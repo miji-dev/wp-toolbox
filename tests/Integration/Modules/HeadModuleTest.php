@@ -6,6 +6,7 @@ namespace Miji\Toolbox\Tests\Integration\Modules;
 
 use Miji\Toolbox\Modules\Head\HeadModule;
 use Miji\Toolbox\Settings\Settings;
+use Miji\Toolbox\Tests\Support\DefaultsOff;
 use WP_REST_Request;
 use WP_UnitTestCase;
 
@@ -27,7 +28,7 @@ final class HeadModuleTest extends WP_UnitTestCase {
 	 * @param array<string, bool> $values
 	 */
 	private function enable(array $values): void {
-		$this->module->register(new Settings([$this->module], ['head' => $values]));
+		$this->module->register(new Settings([$this->module], ['head' => DefaultsOff::with('head', $values)]));
 	}
 
 	private function output(callable $fn): string {
@@ -70,13 +71,6 @@ final class HeadModuleTest extends WP_UnitTestCase {
 		$this->assertFalse(has_action('template_redirect', 'wp_shortlink_header'));
 	}
 
-	public function test_rest_links_are_removed_but_the_api_keeps_working(): void {
-		$this->enable(['remove_rest_links' => true]);
-
-		$this->assertFalse(has_action('wp_head', 'rest_output_link_wp_head'));
-		$this->assertFalse(has_action('template_redirect', 'rest_output_link_header'));
-		$this->assertSame(200, rest_do_request(new WP_REST_Request('GET', '/wp/v2/types'))->get_status());
-	}
 
 	public function test_emojis_are_removed_from_frontend_embeds_feeds_and_mail(): void {
 		$this->enable(['disable_emojis' => true]);
@@ -130,11 +124,6 @@ final class HeadModuleTest extends WP_UnitTestCase {
 		$this->assertNotFalse(has_action('wp_head', 'wp_oembed_add_discovery_links'));
 	}
 
-	public function test_speculative_loading_can_be_disabled(): void {
-		$this->enable(['disable_speculative_loading' => true]);
-
-		$this->assertNull(apply_filters('wp_speculation_rules_configuration', ['mode' => 'auto', 'eagerness' => 'auto']));
-	}
 
 	public function test_settings_are_independent(): void {
 		$this->enable(['remove_rsd' => true]);
@@ -142,13 +131,5 @@ final class HeadModuleTest extends WP_UnitTestCase {
 		$this->assertNotFalse(has_action('wp_head', 'wp_generator'));
 		$this->assertNotFalse(has_action('wp_head', 'print_emoji_detection_script'));
 		$this->assertFalse(has_action('wp_head', 'rsd_link'));
-	}
-
-	public function test_every_setting_is_explained(): void {
-		foreach ($this->module->fields() as $field) {
-			$this->assertFalse($field->default, $field->key);
-			$this->assertNotEmpty($field->description, $field->key);
-			$this->assertNotEmpty($field->why, $field->key);
-		}
 	}
 }

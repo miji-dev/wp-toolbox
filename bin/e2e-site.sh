@@ -37,6 +37,8 @@ define('WP_DEBUG', true);
 define('WP_DEBUG_DISPLAY', false);
 define('WP_DEBUG_LOG', __DIR__ . '/debug.log');
 define('AUTOMATIC_UPDATER_DISABLED', true);
+// no update checks or other calls to the internet: fast and independent of the network
+define('WP_HTTP_BLOCK_EXTERNAL', true);
 // one locked and one invalid entry, to test how the settings page shows them
 define('WPTB_SETTINGS', ['security' => ['disable_xmlrpc' => true], 'head' => ['nope' => true]]);
 \$table_prefix = 'wp_';

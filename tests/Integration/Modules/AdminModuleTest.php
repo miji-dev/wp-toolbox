@@ -6,6 +6,7 @@ namespace Miji\Toolbox\Tests\Integration\Modules;
 
 use Miji\Toolbox\Modules\Admin\AdminModule;
 use Miji\Toolbox\Settings\Settings;
+use Miji\Toolbox\Tests\Support\DefaultsOff;
 use WP_Admin_Bar;
 use WP_Error;
 use WP_UnitTestCase;
@@ -22,7 +23,7 @@ final class AdminModuleTest extends WP_UnitTestCase {
 	 * @param array<string, mixed> $values
 	 */
 	private function enable(array $values): void {
-		$this->module->register(new Settings([$this->module], ['admin' => $values]));
+		$this->module->register(new Settings([$this->module], ['admin' => DefaultsOff::with('admin', $values)]));
 	}
 
 	private function bar(): WP_Admin_Bar {
@@ -46,7 +47,6 @@ final class AdminModuleTest extends WP_UnitTestCase {
 		wp_set_current_user(self::factory()->user->create(['role' => 'editor']));
 		$this->enable([]);
 
-		$this->assertTrue(apply_filters('show_admin_bar', true));
 		$bar = $this->bar();
 		$this->module->removeAdminBarItems($bar);
 		$this->assertNotNull($bar->get_node('wp-logo'));
@@ -56,32 +56,8 @@ final class AdminModuleTest extends WP_UnitTestCase {
 
 	// --- admin bar ------------------------------------------------------------------------------------
 
-	public function test_admin_bar_is_hidden_on_the_website_for_selected_roles(): void {
-		$this->enable(['hide_admin_bar_for' => ['editor', 'author']]);
 
-		wp_set_current_user(self::factory()->user->create(['role' => 'editor']));
-		$this->assertFalse(apply_filters('show_admin_bar', true), 'editor');
 
-		wp_set_current_user(self::factory()->user->create(['role' => 'administrator']));
-		$this->assertTrue(apply_filters('show_admin_bar', true), 'administrator');
-	}
-
-	public function test_hiding_the_admin_bar_respects_a_user_who_turned_it_off_anyway(): void {
-		$this->enable(['hide_admin_bar_for' => ['editor']]);
-		wp_set_current_user(self::factory()->user->create(['role' => 'administrator']));
-
-		$this->assertFalse(apply_filters('show_admin_bar', false), 'the profile setting "Show Toolbar" = off stays off');
-	}
-
-	public function test_role_options_list_the_sites_roles(): void {
-		add_role('wptb_client', 'Client');
-		$options = $this->module->fields()[0]->options();
-		remove_role('wptb_client');
-
-		$this->assertArrayHasKey('administrator', $options);
-		$this->assertArrayHasKey('editor', $options);
-		$this->assertSame('Client', $options['wptb_client']);
-	}
 
 	public function test_selected_admin_bar_items_are_removed(): void {
 		$this->enable(['admin_bar_items' => ['wp-logo', 'new-content', 'customize', 'search']]);
@@ -97,14 +73,8 @@ final class AdminModuleTest extends WP_UnitTestCase {
 		$this->assertSame(PHP_INT_MAX, has_action('admin_bar_menu', [$this->module, 'removeAdminBarItems']));
 	}
 
-	// --- footer, notices ----------------------------------------------------------------------------------
+	// --- notices -----------------------------------------------------------------------------------------
 
-	public function test_footer_texts_are_removed(): void {
-		$this->enable(['hide_footer' => true]);
-
-		$this->assertSame('', apply_filters('admin_footer_text', 'Thank you for creating with WordPress.'));
-		$this->assertSame('', apply_filters('update_footer', 'Version 7.1.2'));
-	}
 
 	public function test_update_notices_are_hidden_from_non_admins_only(): void {
 		$this->enable(['hide_update_notices_for_non_admins' => true]);
@@ -155,12 +125,5 @@ final class AdminModuleTest extends WP_UnitTestCase {
 		$this->enable(['disable_update_emails' => ['plugins']]);
 
 		$this->assertFalse(apply_filters('auto_plugin_update_send_email', false, self::updateResults(['a' => false])));
-	}
-
-	public function test_every_setting_is_explained(): void {
-		foreach ($this->module->fields() as $field) {
-			$this->assertNotEmpty($field->description, $field->key);
-			$this->assertNotEmpty($field->why, $field->key);
-		}
 	}
 }

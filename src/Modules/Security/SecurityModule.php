@@ -4,22 +4,26 @@ declare(strict_types=1);
 
 namespace Miji\Toolbox\Modules\Security;
 
+use Closure;
 use Miji\Toolbox\Module;
 use Miji\Toolbox\Settings\Field;
 use Miji\Toolbox\Settings\Settings;
-use Miji\Toolbox\Support\NotFound;
-use WP;
-use WP_Error;
-use WP_REST_Request;
 
 /**
  * Closes attack surface that WordPress leaves open by default.
+ *
+ * Login protection (brute force, hidden usernames, generic login errors, application passwords) is left to
+ * Wordfence, which does all of that by default.
  */
 final class SecurityModule implements Module {
-	/** Error codes that tell whether the username/email exists. */
-	private const REVEALING_LOGIN_ERRORS = ['invalid_username', 'invalid_email', 'incorrect_password'];
-
 	private const FILE_EDIT_CAPS = ['edit_themes', 'edit_plugins', 'edit_files'];
+
+	/** @var Closure(): bool */
+	private Closure $headersEnabled;
+
+	public function __construct(private readonly ?HeadersFile $headersFile = null) {
+		$this->headersEnabled = static fn (): bool => false;
+	}
 
 	public function id(): string {
 		return 'security';
@@ -30,57 +34,37 @@ final class SecurityModule implements Module {
 	}
 
 	public function description(): string {
-		return __('Closes doors WordPress leaves open by default. None of these affect normal visitors.', 'wptb');
+		return __('Closes doors WordPress leaves open by default. Login protection (hiding usernames, login errors, brute force) is best left to Wordfence, which does it by default.', 'wptb');
 	}
 
 	public function fields(): array {
 		return [
 			Field::bool(
 				'disable_xmlrpc',
-				false,
+				true,
 				__('Disable XML-RPC', 'wptb'),
-				__('Switches off the old XML-RPC interface (xmlrpc.php) completely: every request is answered with "forbidden".', 'wptb'),
-				why: __('XML-RPC predates the REST API and is hardly used anymore, but it is a favourite target: attackers use it to try thousands of passwords in a single request and to misuse your site for attacks on others.', 'wptb'),
-				sideEffects: __('Tools that still use XML-RPC stop working with this site, e.g. the Jetpack plugin and some older mobile or desktop publishing apps.', 'wptb'),
-			),
-			Field::bool(
-				'block_user_enumeration',
-				false,
-				__('Hide the list of users', 'wptb'),
-				__('Visitors who aren\'t logged in can no longer list the site\'s users through the REST API (/wp-json/wp/v2/users) or find login names via example.com/?author=1. Logged-in users (e.g. in the block editor) are not affected.', 'wptb'),
-				why: __('Knowing the login names is half of a successful password attack. By default WordPress hands them out to anyone who asks.', 'wptb'),
-				sideEffects: __('Author archives themselves still show the author\'s URL name, which equals the login name unless it was changed. To hide it completely, also remove author archives under "Blog features".', 'wptb'),
-			),
-			Field::bool(
-				'generic_login_errors',
-				false,
-				__('Don\'t reveal which logins exist', 'wptb'),
-				__('A failed login shows the same message whether the username or the password was wrong. "Lost your password?" shows the same confirmation whether the account exists or not.', 'wptb'),
-				why: __('WordPress normally says "the username is not registered" or "the password for this user is incorrect", which confirms valid login names to attackers.', 'wptb'),
-				sideEffects: __('People who mistype their username no longer get a hint that the username was the problem. If your site cannot send emails, WordPress still shows an error for existing accounts when a password reset is requested, so make sure email sending works.', 'wptb'),
-			),
-			Field::bool(
-				'disable_application_passwords',
-				false,
-				__('Disable application passwords', 'wptb'),
-				__('Removes application passwords (Users → Profile), which let external apps and scripts log in to the REST API with their own password.', 'wptb'),
-				why: __('If nothing external connects to your site, every application password is just another way in that nobody watches.', 'wptb'),
-				sideEffects: __('Integrations that use application passwords (e.g. some apps, automation tools or deployment scripts) can no longer log in.', 'wptb'),
+				what: __('Switches off the old XML-RPC interface (xmlrpc.php) completely.', 'wptb'),
+				how: __('Answers every request to xmlrpc.php with 403 "forbidden" right after WordPress has loaded, disables all XML-RPC methods, and removes the X-Pingback header that advertises the interface.', 'wptb'),
+				why: __('XML-RPC predates the REST API and is hardly used anymore, but it is a favourite target: attackers use it to try hundreds of passwords in a single request and to misuse sites for attacks on others.', 'wptb'),
+				sideEffects: __('Tools that still use XML-RPC stop working with this site, e.g. Jetpack and some older publishing apps.', 'wptb'),
 			),
 			Field::bool(
 				'disable_file_editor',
-				false,
+				true,
 				__('Disable the theme and plugin file editor', 'wptb'),
-				__('Removes the code editors under Appearance → Theme File Editor and Tools → Plugin File Editor for everyone, including administrators. Installing and updating plugins and themes still works.', 'wptb'),
+				what: __('Removes the code editors under Appearance → Theme File Editor and Tools → Plugin File Editor for everyone, including administrators. Installing and updating plugins and themes keeps working.', 'wptb'),
+				how: __('Denies the edit_themes, edit_plugins and edit_files capabilities to all users, which is what WordPress\' DISALLOW_FILE_EDIT constant does, but switchable.', 'wptb'),
 				why: __('Anyone who gets into an admin account could use the editor to run their own code on the server. Editing live code is also an easy way to break a site.', 'wptb'),
+				sideEffects: __('Changes to a child theme (e.g. Hello Elementor\'s functions.php) have to be made via FTP or a deployment instead.', 'wptb'),
 			),
 			Field::bool(
 				'security_headers',
-				false,
+				true,
 				__('Send security headers', 'wptb'),
-				__('Adds HTTP headers that tell browsers to be stricter: don\'t guess file types (X-Content-Type-Options), send only the domain as referrer to other sites (Referrer-Policy), and don\'t allow other sites to show your pages in a frame (X-Frame-Options, frame-ancestors). Also removes the X-Powered-By header that reveals the PHP version. Headers already set by your server or another plugin are kept.', 'wptb'),
-				why: __('These headers protect visitors against clickjacking and some content sniffing attacks, and give other sites less information about your visitors.', 'wptb'),
-				sideEffects: __('Other websites can no longer show your pages in an iframe. Only applies to pages generated by WordPress, not to files like images.', 'wptb'),
+				what: __('Tells browsers to be stricter with your site: other sites may not show your pages in a frame, file types are not guessed, and only your domain (not the full address) is passed on when visitors follow a link to another site. The header that reveals the PHP version is removed.', 'wptb'),
+				how: __('Sends X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff and Referrer-Policy: strict-origin-when-cross-origin, and removes X-Powered-By. On Apache and LiteSpeed servers the same rules are also written to .htaccess (in a block marked "wp-toolbox", removed again when you switch this off or deactivate the plugin), so they also reach pages served from a page cache like WP-Optimize, and static files.', 'wptb'),
+				why: __('These headers protect visitors against clickjacking (your page invisibly framed by another site) and content sniffing attacks, and give other sites less information about your visitors.', 'wptb'),
+				sideEffects: __('Other websites can no longer show your pages in an iframe; the Elementor editor is not affected (it frames pages of the same site). These values replace values for the same headers set by the server or other plugins.', 'wptb'),
 			),
 		];
 	}
@@ -102,22 +86,6 @@ final class SecurityModule implements Module {
 			add_filter('wp_die_xmlrpc_handler', static fn (): string => '_default_wp_die_handler');
 		}
 
-		if ($on('block_user_enumeration')) {
-			add_filter('rest_pre_dispatch', [$this, 'blockRestUsers'], 10, 3);
-			// before redirect_canonical (10), which redirects ?author=1 to /author/<login>/
-			add_action('template_redirect', [$this, 'blockAuthorQuery'], 0);
-		}
-
-		if ($on('generic_login_errors')) {
-			add_filter('authenticate', [$this, 'genericLoginError'], PHP_INT_MAX);
-			add_filter('shake_error_codes', [$this, 'addShakeErrorCode']);
-			add_action('lostpassword_post', [$this, 'hideUnknownAccount'], 10, 2);
-		}
-
-		if ($on('disable_application_passwords')) {
-			add_filter('wp_is_application_passwords_available', '__return_false');
-		}
-
 		if ($on('disable_file_editor')) {
 			add_filter('map_meta_cap', [$this, 'denyFileEditing'], 10, 2);
 		}
@@ -126,6 +94,20 @@ final class SecurityModule implements Module {
 			add_filter('wp_headers', [$this, 'addSecurityHeaders']);
 			add_action('send_headers', [$this, 'removePoweredByHeader']);
 		}
+
+		// .htaccess is only written from the admin (where file access is expected): on every admin page, so it also
+		// happens after an update, and right after the settings were saved
+		$this->headersEnabled = static fn (): bool => $on('security_headers');
+		add_action('admin_init', [$this, 'syncHeadersFile']);
+		add_action('add_option_' . Settings::OPTION, [$this, 'syncHeadersFile']);
+		add_action('update_option_' . Settings::OPTION, [$this, 'syncHeadersFile']);
+	}
+
+	/**
+	 * Reads the setting when called: after saving, it already has the new value.
+	 */
+	public function syncHeadersFile(): void {
+		($this->headersFile ?? new HeadersFile())->sync(($this->headersEnabled)());
 	}
 
 	public function blockXmlrpcRequest(): void {
@@ -144,71 +126,6 @@ final class SecurityModule implements Module {
 	}
 
 	/**
-	 * @param mixed $result
-	 * @param mixed $server
-	 * @return mixed
-	 */
-	public function blockRestUsers(mixed $result, mixed $server, WP_REST_Request $request): mixed {
-		if ($result !== null || is_user_logged_in()) {
-			return $result;
-		}
-		$route = $request->get_route();
-		if ($route === '/wp/v2/users' || str_starts_with($route, '/wp/v2/users/')) {
-			return new WP_Error('rest_forbidden', __('Sorry, you are not allowed to list users.', 'wptb'), ['status' => 401]);
-		}
-		return $result;
-	}
-
-	/**
-	 * ?author=<id> exists only to be redirected to /author/<login>/. Archives by name keep working.
-	 */
-	public function blockAuthorQuery(): void {
-		global $wp;
-		if (!$wp instanceof WP || is_user_logged_in()) {
-			return;
-		}
-		if (isset($wp->query_vars['author']) && !isset($wp->query_vars['author_name'])) {
-			NotFound::send();
-		}
-	}
-
-	/**
-	 * @param mixed $user WP_User, WP_Error or null
-	 * @return mixed
-	 */
-	public function genericLoginError(mixed $user): mixed {
-		if ($user instanceof WP_Error && array_intersect($user->get_error_codes(), self::REVEALING_LOGIN_ERRORS)) {
-			return new WP_Error('wptb_login_failed', __('<strong>Error:</strong> The username, email address or password is incorrect.', 'wptb'));
-		}
-		return $user;
-	}
-
-	/**
-	 * @param list<string> $codes
-	 * @return list<string>
-	 */
-	public function addShakeErrorCode(array $codes): array {
-		$codes[] = 'wptb_login_failed';
-		return $codes;
-	}
-
-	/**
-	 * On wp-login.php, an unknown account gets the same "check your email" page as an existing one.
-	 */
-	public function hideUnknownAccount(WP_Error $errors, mixed $userData): void {
-		global $pagenow;
-		if ($pagenow !== 'wp-login.php' || $userData) {
-			return;
-		}
-		// other problems (empty field, captcha plugins, …) are still shown
-		if (array_diff($errors->get_error_codes(), ['invalid_email'])) {
-			return;
-		}
-		wp_safe_redirect(add_query_arg('checkemail', 'confirm', wp_login_url()));
-		exit;
-	}
-
-	/**
 	 * @param list<string> $caps
 	 * @return list<string>
 	 */
@@ -221,15 +138,7 @@ final class SecurityModule implements Module {
 	 * @return array<string, string>
 	 */
 	public function addSecurityHeaders(array $headers): array {
-		$headers += [
-			'X-Content-Type-Options' => 'nosniff',
-			'Referrer-Policy' => 'strict-origin-when-cross-origin',
-			'X-Frame-Options' => 'SAMEORIGIN',
-		];
-		if (!isset($headers['Content-Security-Policy'])) {
-			$headers['Content-Security-Policy'] = "frame-ancestors 'self'";
-		}
-		return $headers;
+		return array_merge($headers, HeadersFile::HEADERS);
 	}
 
 	public function removePoweredByHeader(): void {

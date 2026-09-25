@@ -5,7 +5,6 @@ import {
 	CardBody,
 	CardFooter,
 	CardHeader,
-	Modal,
 	Notice,
 	SearchControl,
 } from '@wordpress/components';
@@ -32,7 +31,7 @@ const common = { __next40pxDefaultSize: true };
  * @param {Object} props.data window.wptbSettings (SettingsPage::data())
  */
 export default function App( { data } ) {
-	const { modules, restPath, recommended, version } = data;
+	const { modules, restPath, version } = data;
 	const initial = useMemo(
 		() => withoutStaleOptions( data.state.values, modules ),
 		[ data, modules ]
@@ -51,7 +50,6 @@ export default function App( { data } ) {
 	const [ query, setQuery ] = useState( '' );
 	const [ notice, setNotice ] = useState( null );
 	const [ busy, setBusy ] = useState( false );
-	const [ confirmPreset, setConfirmPreset ] = useState( false );
 	const fileInput = useRef();
 
 	const changed = useMemo(
@@ -112,19 +110,18 @@ export default function App( { data } ) {
 		}
 	}
 
-	function fillIn( incoming, source ) {
+	function fillIn( incoming ) {
 		const result = mergeValues( draft, incoming, modules, locked );
 		setDraft( result.values );
 		let message = sprintf(
-			/* translators: 1: number of settings, 2: "the file" or "the recommended settings" */
+			/* translators: %d: number of settings */
 			_n(
-				'%1$d setting filled in from %2$s.',
-				'%1$d settings filled in from %2$s.',
+				'%d setting filled in from the file.',
+				'%d settings filled in from the file.',
 				result.applied,
 				'wptb'
 			),
-			result.applied,
-			source
+			result.applied
 		);
 		message += ' ' + __( 'Review the changes, then save.', 'wptb' );
 		if ( result.ignored.length ) {
@@ -170,10 +167,7 @@ export default function App( { data } ) {
 			return;
 		}
 		try {
-			fillIn(
-				parseImport( await file.text() ),
-				__( 'the file', 'wptb' )
-			);
+			fillIn( parseImport( await file.text() ) );
 		} catch {
 			setNotice( {
 				status: 'error',
@@ -221,14 +215,6 @@ export default function App( { data } ) {
 					<p className="wptb-module__description">
 						{ module.description }
 					</p>
-					{ ! module.available && (
-						<Notice status="info" isDismissible={ false }>
-							{ __(
-								'Not active on this site (e.g. the plugin it belongs to is deactivated). The settings are kept and apply as soon as it is active.',
-								'wptb'
-							) }
-						</Notice>
-					) }
 					{ renderFields( module, fields ) }
 				</CardBody>
 				{ withFooter && (
@@ -278,13 +264,6 @@ export default function App( { data } ) {
 					onChange={ setQuery }
 				/>
 				<div className="wptb-toolbar__actions">
-					<Button
-						{ ...common }
-						variant="secondary"
-						onClick={ () => setConfirmPreset( true ) }
-					>
-						{ __( 'Recommended settings…', 'wptb' ) }
-					</Button>
 					<Button
 						{ ...common }
 						variant="tertiary"
@@ -349,15 +328,7 @@ export default function App( { data } ) {
 								}
 								onClick={ () => setActive( module.id ) }
 							>
-								<span
-									className={
-										module.available
-											? ''
-											: 'wptb-nav__inactive'
-									}
-								>
-									{ module.title }
-								</span>
+								<span>{ module.title }</span>
 								{ changed.includes( module.id ) && (
 									<span
 										className="wptb-nav__changed"
@@ -421,49 +392,6 @@ export default function App( { data } ) {
 					</span>
 				) }
 			</div>
-
-			{ confirmPreset && (
-				<Modal
-					title={ __( 'Recommended settings', 'wptb' ) }
-					onRequestClose={ () => setConfirmPreset( false ) }
-					size="medium"
-				>
-					<p>
-						{ __(
-							'Fills in cleanups that suit almost every site: page header cleanup, security hardening, clean file names and a leaner editor. Comments, blog features, the login page, maintenance mode and anything else that depends on the site are left as they are.',
-							'wptb'
-						) }
-					</p>
-					<p>
-						{ __(
-							'Nothing is saved yet: you can review every change before saving.',
-							'wptb'
-						) }
-					</p>
-					<div className="wptb-inline">
-						<Button
-							{ ...common }
-							variant="primary"
-							onClick={ () => {
-								setConfirmPreset( false );
-								fillIn(
-									recommended,
-									__( 'the recommended settings', 'wptb' )
-								);
-							} }
-						>
-							{ __( 'Fill in', 'wptb' ) }
-						</Button>
-						<Button
-							{ ...common }
-							variant="tertiary"
-							onClick={ () => setConfirmPreset( false ) }
-						>
-							{ __( 'Cancel', 'wptb' ) }
-						</Button>
-					</div>
-				</Modal>
-			) }
 		</div>
 	);
 }

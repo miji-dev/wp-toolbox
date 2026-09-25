@@ -45,41 +45,50 @@ test( 'shows every section with explanations, locked and ignored wp-config entri
 	await expect( xmlrpc.getByRole( 'checkbox' ) ).toBeDisabled();
 	await expect( xmlrpc ).toContainText( 'Set in wp-config.php' );
 	await expect( xmlrpc ).toContainText( 'Why:' );
+	await expect( xmlrpc.getByText( 'Answers every request to xmlrpc.php' ) ).toBeHidden();
+	await xmlrpc.getByText( 'How it works' ).click();
+	await expect( xmlrpc.getByText( 'Answers every request to xmlrpc.php' ) ).toBeVisible();
 	await expect( app( page ).getByText( 'head.nope' ) ).toBeVisible();
-	await expect( page.getByRole( 'navigation', { name: 'Sections' } ).getByRole( 'button' ) ).toHaveCount( 12 );
+	await expect( page.getByRole( 'navigation', { name: 'Sections' } ).getByRole( 'button' ) ).toHaveCount( 10 ); // Elementor is not installed on the test site
 } );
 
 test( 'saves a setting, which then takes effect', async ( { page, playwright, baseURL } ) => {
-	await openSection( page, 'Security' );
-	await setting( page, 'security.block_user_enumeration' ).getByRole( 'checkbox' ).check();
-	await expect( app( page ).getByText( 'Unsaved changes: Security' ) ).toBeVisible();
+	const visitor = await playwright.request.newContext( { baseURL } );
+	expect( ( await visitor.get( '/?rest_route=/wp/v2/comments' ) ).status() ).toBe( 200 );
 
+	await openSection( page, 'Comments' );
+	await setting( page, 'comments.disable' ).getByRole( 'checkbox' ).check();
+	await expect( app( page ).getByText( 'Unsaved changes: Comments' ) ).toBeVisible();
 	await page.getByRole( 'button', { name: 'Save changes' } ).click();
 
 	await expect( app( page ).getByText( 'Settings saved.' ) ).toBeVisible();
 	await page.reload();
-	await expect( setting( page, 'security.block_user_enumeration' ).getByRole( 'checkbox' ) ).toBeChecked();
-
-	const visitor = await playwright.request.newContext( { baseURL } );
-	expect( ( await visitor.get( '/?rest_route=/wp/v2/users' ) ).status() ).toBe( 401 );
-	await visitor.dispose();
+	await expect( setting( page, 'comments.disable' ).getByRole( 'checkbox' ) ).toBeChecked();
+	expect( ( await visitor.get( '/?rest_route=/wp/v2/comments' ) ).status() ).toBe( 404 );
 
 	// back to the default for the other tests
-	await setting( page, 'security.block_user_enumeration' ).getByRole( 'checkbox' ).uncheck();
+	await setting( page, 'comments.disable' ).getByRole( 'checkbox' ).uncheck();
 	await page.getByRole( 'button', { name: 'Save changes' } ).click();
 	await expect( app( page ).getByText( 'Settings saved.' ) ).toBeVisible();
+	await visitor.dispose();
 } );
 
 test( 'invalid values are rejected with a message and not saved', async ( { page } ) => {
-	await openSection( page, 'Media' );
-	const quality = setting( page, 'media.image_quality' ).getByRole( 'spinbutton' );
-	await quality.fill( '500' );
+	await page.goto( PAGE );
+	// the controls can't produce invalid values, an imported file can
+	await page.locator( 'input[type=file]' ).setInputFiles( {
+		name: 'settings.json',
+		mimeType: 'application/json',
+		buffer: Buffer.from( JSON.stringify( { comments: { disable: 'yes' } } ) ),
+	} );
+	await expect( app( page ).getByText( /filled in from the file/ ) ).toBeVisible();
 
 	await page.getByRole( 'button', { name: 'Save changes' } ).click();
 
 	await expect( app( page ).getByText( 'The settings were not saved' ) ).toBeVisible();
 	await page.reload();
-	await expect( setting( page, 'media.image_quality' ).getByRole( 'spinbutton' ) ).toHaveValue( '82' );
+	await openSectionWithoutReload( page, 'Comments' );
+	await expect( setting( page, 'comments.disable' ).getByRole( 'checkbox' ) ).not.toBeChecked();
 	consoleErrors = consoleErrors.filter( ( e ) => ! e.includes( '400' ) ); // the rejected request itself
 } );
 
@@ -92,18 +101,6 @@ test( 'search finds settings across sections', async ( { page } ) => {
 	await expect( setting( page, 'editor.disable_openverse' ) ).toBeVisible();
 	await page.getByRole( 'searchbox', { name: 'Search settings' } ).fill( 'nothing matches this' );
 	await expect( app( page ).getByText( 'No settings match your search.' ) ).toBeVisible();
-} );
-
-test( 'recommended settings are only filled in, and can be discarded', async ( { page } ) => {
-	await page.goto( PAGE );
-
-	await page.getByRole( 'button', { name: 'Recommended settings…' } ).click();
-	await page.getByRole( 'dialog' ).getByRole( 'button', { name: 'Fill in' } ).click();
-
-	await expect( app( page ).getByText( 'Review the changes, then save.' ) ).toBeVisible();
-	await expect( app( page ).getByText( /Unsaved changes: .*Security/ ) ).toBeVisible();
-	await page.getByRole( 'button', { name: 'Discard changes' } ).click();
-	await expect( page.getByRole( 'button', { name: 'Save changes' } ) ).toBeDisabled();
 } );
 
 test( 'export and import', async ( { page } ) => {
