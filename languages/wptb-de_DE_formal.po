@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp toolbox 4.0.0-alpha.1\n"
 "Report-Msgid-Bugs-To: https://github.com/miji-dev/wp-toolbox/issues\n"
-"POT-Creation-Date: 2026-09-25T22:01:58+00:00\n"
+"POT-Creation-Date: 2026-09-25T22:04:39+00:00\n"
 "PO-Revision-Date: 2026-09-25 12:00+0200\n"
 "Last-Translator: Michael Stahl\n"
 "Language-Team: Michael Stahl\n"
@@ -1195,30 +1195,30 @@ msgstr "Gut zu wissen:"
 msgid "How it works"
 msgstr "So funktioniert es"
 
-#: assets/src/settings/Field.js:179
+#: assets/src/settings/Field.js:182
 msgid "Default"
 msgstr "Standard"
 
-#: assets/src/settings/Field.js:199
+#: assets/src/settings/Field.js:202
 msgid "Clear"
 msgstr "Leeren"
 
-#: assets/src/settings/Field.js:239
+#: assets/src/settings/Field.js:242
 msgid "Use this image"
 msgstr "Dieses Bild verwenden"
 
-#: assets/src/settings/Field.js:258
+#: assets/src/settings/Field.js:261
 msgid "The selected image no longer exists."
 msgstr "Das ausgewählte Bild existiert nicht mehr."
 
-#: assets/src/settings/Field.js:270
+#: assets/src/settings/Field.js:273
 msgid "Replace image"
 msgstr "Bild ersetzen"
 
-#: assets/src/settings/Field.js:271
+#: assets/src/settings/Field.js:274
 msgid "Choose image"
 msgstr "Bild auswählen"
 
-#: assets/src/settings/Field.js:280
+#: assets/src/settings/Field.js:283
 msgid "Remove"
 msgstr "Entfernen"

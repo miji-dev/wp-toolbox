@@ -3,7 +3,7 @@
  * Plugin Name:       wp toolbox
  * Plugin URI:        https://github.com/miji-dev/wp-toolbox
  * Description:       Removes WordPress bloat and adds small, sensible enhancements. Everything switchable and explained.
- * Version:           4.0.0-beta.1
+ * Version:           4.0.0-beta.2
  * Requires at least: 7.1
  * Requires PHP:      8.3
  * Author:            Michael Stahl
