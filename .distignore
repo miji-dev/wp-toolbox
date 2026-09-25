@@ -15,3 +15,9 @@
 /CLAUDE.md
 /README.md
 .DS_Store
+/assets/src
+/package.json
+/package-lock.json
+/playwright.config.js
+/test-results
+/playwright-report

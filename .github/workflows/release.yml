@@ -31,8 +31,19 @@ jobs:
             exit 1
           fi
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
       - run: composer install --no-interaction --no-progress
       - run: composer check
+      - run: npm ci
+      - run: npm run lint:js
+      - run: npm run test:js
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
       - run: bin/build-zip.sh
 
       - name: Publish

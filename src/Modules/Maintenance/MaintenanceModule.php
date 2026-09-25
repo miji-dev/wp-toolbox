@@ -136,7 +136,7 @@ final class MaintenanceModule implements Module {
 	public function addAdminBarNode(WP_Admin_Bar $bar): void {
 		$node = ['id' => 'wptb-maintenance', 'title' => esc_html__('Maintenance mode', 'wptb')];
 		if (current_user_can('manage_options')) {
-			$node['href'] = admin_url('options-general.php?page=wp-toolbox');
+			$node['href'] = admin_url('options-general.php?page=wp-toolbox#maintenance');
 		}
 		$bar->add_node($node);
 	}

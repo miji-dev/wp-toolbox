@@ -38,6 +38,14 @@ composer test      # PHPUnit: unit + integration tests against real WordPress on
 composer analyse   # PHPStan, level max
 composer lint      # PHPCS, WordPress security sniffs
 composer check     # all of the above
+
+npm ci
+npm run build      # settings page (assets/src → assets/build), needed before building the zip or browser tests
+npm run start      # the same, rebuilding on changes
+npm run lint:js
+npm run test:js    # unit tests of the settings page helpers (Vitest)
+npm run test:e2e   # browser tests (Playwright) against a throwaway WordPress on 127.0.0.1:8889, see bin/e2e-site.sh
+
 composer build     # build/wp-toolbox.zip
 ```
 

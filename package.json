@@ -1,0 +1,23 @@
+{
+	"name": "wp-toolbox",
+	"private": true,
+	"description": "Settings page of the wp-toolbox plugin",
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"build": "wp-scripts build settings=./assets/src/settings/index.js --output-path=assets/build",
+		"start": "wp-scripts start settings=./assets/src/settings/index.js --output-path=assets/build",
+		"lint:js": "wp-scripts lint-js assets/src",
+		"test:js": "wp-scripts test-unit-js assets/src",
+		"test:e2e": "playwright test"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.63.0",
+		"@wordpress/api-fetch": "^7.56.0",
+		"@wordpress/components": "^41.0.0",
+		"@wordpress/element": "^8.8.0",
+		"@wordpress/i18n": "^6.29.0",
+		"@wordpress/scripts": "^36.0.0",
+		"vite": "^8.3.1",
+		"vitest": "^5.0.2"
+	}
+}

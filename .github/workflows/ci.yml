@@ -29,9 +29,50 @@ jobs:
       - run: composer analyse
       - run: composer test
 
+  js:
+    name: JavaScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint:js
+      - run: npm run test:js
+      - run: npm run build
+
+  e2e:
+    name: Browser tests
+    needs: [checks, js]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_sqlite, sqlite3
+          coverage: none
+          tools: composer
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: composer install --no-interaction --no-progress
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: test-results/
+
   package:
     name: Package
-    needs: checks
+    needs: [checks, js]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,7 +81,13 @@ jobs:
           php-version: '8.3'
           coverage: none
           tools: composer
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
       - run: composer install --no-interaction --no-progress
+      - run: npm ci
+      - run: npm run build
       - run: bin/build-zip.sh
       - uses: actions/upload-artifact@v4
         with:

@@ -8,6 +8,7 @@ WordPress plugin, PHP 8.3+, WordPress 7.1+ (latest only), single site only.
 - All settings live in one option, `wptb_settings` (`src/Settings/Settings.php`). The JSON schema is generated from the fields and validates REST, CLI and direct writes. `WPTB_SETTINGS` in wp-config.php locks values.
 - Every `Field` needs `description` (what it does). Add `why` and `sideEffects` whenever they aren't obvious. These texts are the documentation users see.
 - Updates: `src/Updater` (GitHub releases via the `Update URI` header).
+- Settings page: `src/Admin` (page, REST route `wptb/v1/settings`) plus a React app in `assets/src/settings` built with `@wordpress/scripts` into `assets/build` (not committed; built in CI and for the zip). It renders every module and field generically from `SettingsPage::data()`, so new fields need no JS changes. Keep logic that can be tested without a browser in `utils.js`.
 - Third-party runtime libraries are listed in `require-dev` and shipped only as a copy under our own namespace in `vendor-prefixed/` (Strauss, `bin/prefix-vendor.sh`, runs after composer install/update). Use them as `Miji\Toolbox\Vendor\...`, never by their original namespace.
 - Module IDs and field keys are stored in the database: never rename them once released. If you must, add a migration.
 
@@ -18,6 +19,7 @@ WordPress plugin, PHP 8.3+, WordPress 7.1+ (latest only), single site only.
 - Tests that build their own `Settings`/`Plugin` use `IsolatesSettingsRegistration` (the real plugin is loaded by the bootstrap).
 - Tests run in random order. The WP test case restores hooks and the database, but not other globals (post types, taxonomies, widgets, settings registry, REST server): restore whatever you change in `tear_down()`.
 - PHPUnit is 9.6 because the WordPress test library doesn't support 10+ yet.
+- Settings page: Vitest for `assets/src/**/test`, Playwright in `tests/e2e` (real WordPress from `bin/e2e-site.sh`). E2E tests fail on any browser console error.
 
 ## Security
 - Escape all output late (`esc_html`, `esc_attr`, `esc_url`, `wp_json_encode` for JS). Sanitize and validate all input. Check capabilities and nonces.

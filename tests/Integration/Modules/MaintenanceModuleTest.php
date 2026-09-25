@@ -164,7 +164,7 @@ final class MaintenanceModuleTest extends WP_UnitTestCase {
 		$node = $bar->get_node('wptb-maintenance');
 		$this->assertNotNull($node);
 		$this->assertStringContainsString('Maintenance', (string) $node->title);
-		$this->assertStringContainsString('page=wp-toolbox', (string) $node->href);
+		$this->assertStringContainsString('page=wp-toolbox#maintenance', (string) $node->href);
 	}
 
 	public function test_the_admin_bar_node_links_nowhere_for_users_who_cant_change_it(): void {

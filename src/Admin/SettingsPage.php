@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Miji\Toolbox\Admin;
 
+use Miji\Toolbox\Plugin;
 use Miji\Toolbox\Settings\Field;
 use Miji\Toolbox\Settings\Presets;
 use Miji\Toolbox\Settings\Settings;
@@ -56,6 +57,7 @@ final class SettingsPage {
 		wp_enqueue_style('wp-components');
 		if (is_readable($dir . 'settings.css')) {
 			wp_enqueue_style(self::HANDLE, $url . 'settings.css', ['wp-components'], $version);
+			wp_style_add_data(self::HANDLE, 'rtl', 'replace');
 		}
 		wp_enqueue_media(); // media picker for image settings
 	}
@@ -91,6 +93,7 @@ final class SettingsPage {
 		}
 
 		return [
+			'version' => Plugin::VERSION,
 			'restPath' => SettingsController::NAMESPACE . SettingsController::ROUTE,
 			'modules' => $modules,
 			'state' => (new SettingsController($this->settings))->state(),

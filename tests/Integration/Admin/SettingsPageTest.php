@@ -86,6 +86,7 @@ final class SettingsPageTest extends WP_UnitTestCase {
 		$data = $this->page->data();
 
 		$this->assertSame('wptb/v1/settings', $data['restPath']);
+		$this->assertSame(\Miji\Toolbox\Plugin::VERSION, $data['version']);
 		$this->assertSame(['comments', 'elementor'], array_column($data['modules'], 'id'));
 		$this->assertTrue($data['modules'][0]['available']);
 		$this->assertFalse($data['modules'][1]['available']);
