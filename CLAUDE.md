@@ -8,6 +8,7 @@ WordPress plugin, PHP 8.3+, WordPress 7.1+ (latest only), single site only.
 - All settings live in one option, `wptb_settings` (`src/Settings/Settings.php`). The JSON schema is generated from the fields and validates REST, CLI and direct writes. `WPTB_SETTINGS` in wp-config.php locks values.
 - Every `Field` needs `description` (what it does). Add `why` and `sideEffects` whenever they aren't obvious. These texts are the documentation users see.
 - Updates: `src/Updater` (GitHub releases via the `Update URI` header).
+- Third-party runtime libraries are listed in `require-dev` and shipped only as a copy under our own namespace in `vendor-prefixed/` (Strauss, `bin/prefix-vendor.sh`, runs after composer install/update). Use them as `Miji\Toolbox\Vendor\...`, never by their original namespace.
 - Module IDs and field keys are stored in the database: never rename them once released. If you must, add a migration.
 
 ## Testing (TDD)

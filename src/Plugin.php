@@ -9,6 +9,7 @@ use Miji\Toolbox\Modules\Blog\BlogModule;
 use Miji\Toolbox\Modules\Comments\CommentsModule;
 use Miji\Toolbox\Modules\Dashboard\DashboardModule;
 use Miji\Toolbox\Modules\Head\HeadModule;
+use Miji\Toolbox\Modules\Media\MediaModule;
 use Miji\Toolbox\Modules\Security\SecurityModule;
 use Miji\Toolbox\Settings\Settings;
 use Miji\Toolbox\Updater\GitHubUpdater;
@@ -56,6 +57,7 @@ final class Plugin {
 			new SecurityModule(),
 			new AdminModule(),
 			new DashboardModule(),
+			new MediaModule(),
 		];
 	}
 

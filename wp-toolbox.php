@@ -34,6 +34,10 @@ if (!is_readable(__DIR__ . '/vendor/autoload.php')) {
 	return;
 }
 
+// runtime libraries under our own namespace (see bin/prefix-vendor.sh), then our classes
+if (is_readable(__DIR__ . '/vendor-prefixed/autoload.php')) {
+	require_once __DIR__ . '/vendor-prefixed/autoload.php';
+}
 require_once __DIR__ . '/vendor/autoload.php';
 
 add_action('init', function () {

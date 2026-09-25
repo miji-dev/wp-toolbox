@@ -13,6 +13,7 @@
         "php": ">=8.3"
     },
     "require-dev": {
+        "enshrined/svg-sanitize": "^1.0",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.2",
         "phpunit/phpunit": "^9.6",
@@ -59,17 +60,34 @@
             "vendor/wp-plugins/{$name}/": [
                 "type:wordpress-plugin"
             ]
+        },
+        "strauss": {
+            "target_directory": "vendor-prefixed",
+            "namespace_prefix": "Miji\\Toolbox\\Vendor\\",
+            "classmap_prefix": "Miji_Toolbox_Vendor_",
+            "constant_prefix": "MIJI_TOOLBOX_VENDOR_",
+            "packages": [
+                "enshrined/svg-sanitize"
+            ],
+            "delete_vendor_packages": false
         }
     },
     "scripts": {
         "test": "phpunit",
-        "analyse": "phpstan analyse --no-progress --memory-limit=1G",
+        "analyse": "phpstan analyse --no-progress --memory-limit=2G",
         "lint": "phpcs",
         "check": [
             "@lint",
             "@analyse",
             "@test"
         ],
-        "build": "bin/build-zip.sh"
+        "build": "bin/build-zip.sh",
+        "prefix-vendor": "bin/prefix-vendor.sh",
+        "post-install-cmd": [
+            "@prefix-vendor"
+        ],
+        "post-update-cmd": [
+            "@prefix-vendor"
+        ]
     }
 }

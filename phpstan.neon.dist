@@ -7,6 +7,9 @@ parameters:
     # versions, which PHPStan (analysing for PHP 8.3+) rightly reports as impossible. It only boots src/.
     bootstrapFiles:
         - tests/phpstan-bootstrap.php
+    # runtime libraries under our namespace (bin/prefix-vendor.sh)
+    scanDirectories:
+        - vendor-prefixed
     # optional constants from wp-config.php: may be anything, or not defined at all
     dynamicConstantNames:
         WPTB_SETTINGS: mixed
