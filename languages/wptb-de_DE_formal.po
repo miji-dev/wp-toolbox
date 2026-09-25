@@ -1,0 +1,1120 @@
+# German translation of wp toolbox (formal, "Sie").
+# Copyright (C) 2026 Michael Stahl
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: wp toolbox 4.0.0-alpha.1\n"
+"Report-Msgid-Bugs-To: https://github.com/miji-dev/wp-toolbox/issues\n"
+"POT-Creation-Date: 2026-09-25T14:00:59+00:00\n"
+"PO-Revision-Date: 2026-09-25 12:00+0200\n"
+"Last-Translator: Michael Stahl\n"
+"Language-Team: Michael Stahl\n"
+"Language: de_DE_formal\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: WP-CLI 3.0.0-alpha-30de3b3\n"
+"X-Domain: wptb\n"
+
+#. Plugin Name of the plugin
+#: wp-toolbox.php:3
+msgid "wp toolbox"
+msgstr "wp toolbox"
+
+#. Plugin URI of the plugin
+#: wp-toolbox.php:4
+msgid "https://github.com/miji-dev/wp-toolbox"
+msgstr "https://github.com/miji-dev/wp-toolbox"
+
+#. Description of the plugin
+#: wp-toolbox.php:5
+msgid "Removes WordPress bloat and adds small, sensible enhancements. Everything switchable and explained."
+msgstr "Entfernt Ballast aus WordPress und ergänzt kleine, sinnvolle Verbesserungen. Alles schaltbar und erklärt."
+
+#. Author of the plugin
+#: wp-toolbox.php:9
+msgid "Michael Stahl"
+msgstr "Michael Stahl"
+
+#. Author URI of the plugin
+#: wp-toolbox.php:10
+msgid "https://www.miji.dev"
+msgstr "https://www.miji.dev"
+
+#: src/Admin/SettingsPage.php:30 src/Admin/SettingsPage.php:37
+msgid "Toolbox"
+msgstr "Toolbox"
+
+#: src/Admin/SettingsPage.php:38
+msgid "Loading…"
+msgstr "Wird geladen …"
+
+#: src/Admin/SettingsPage.php:113
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: src/Migration/MigrationNotice.php:29
+msgid "Maintenance mode was on, but is no longer part of wp toolbox: the site is visible to visitors again. Elementor has its own maintenance mode (Elementor → Tools → Maintenance Mode)."
+msgstr "Der Wartungsmodus war aktiv, ist aber nicht mehr Teil von wp toolbox: Die Website ist wieder für Besucher sichtbar. Elementor hat einen eigenen Wartungsmodus (Elementor → Werkzeuge → Wartungsmodus)."
+
+#: src/Migration/MigrationNotice.php:32
+msgid "Google Analytics and the cookie banner are no longer part of wp toolbox: tracking has stopped and the banner is gone. Use a consent management tool (CMP) with Google Tag Manager or Consent Mode instead."
+msgstr "Google Analytics und der Cookie-Banner sind nicht mehr Teil von wp toolbox: Das Tracking ist beendet und der Banner verschwunden. Nutzen Sie stattdessen ein Consent-Management-Tool (CMP) mit Google Tag Manager oder Consent Mode."
+
+#: src/Migration/MigrationNotice.php:44
+msgid "These pages still use shortcodes or the map widget of wp toolbox 3 (YouTube, Google Maps, Analytics opt-out, cookie settings button), which now show nothing:"
+msgstr "Diese Seiten verwenden noch Shortcodes oder das Karten-Widget von wp toolbox 3 (YouTube, Google Maps, Analytics-Opt-out, Cookie-Einstellungen-Button), die jetzt nichts mehr anzeigen:"
+
+#. translators: %d: number of further pages
+#: src/Migration/MigrationNotice.php:47
+#, php-format
+msgid "and %d more."
+msgstr "und %d weitere."
+
+#: src/Migration/MigrationNotice.php:55
+msgid "wp toolbox 4 has replaced version 3. Please check:"
+msgstr "wp toolbox 4 hat Version 3 ersetzt. Bitte prüfen Sie:"
+
+#: src/Migration/MigrationNotice.php:58
+msgid "Done, hide this notice"
+msgstr "Erledigt, Hinweis ausblenden"
+
+#: src/Migration/MigrationNotice.php:65
+msgid "Sorry, you are not allowed to do that."
+msgstr "Sie dürfen das leider nicht."
+
+#: src/Modules/Admin/AdminModule.php:27
+msgid "Admin"
+msgstr "Adminbereich"
+
+#: src/Modules/Admin/AdminModule.php:31
+msgid "A calmer admin: fewer menus, notices and emails that nobody acts on."
+msgstr "Ein ruhigerer Adminbereich: weniger Menüs, Hinweise und E-Mails, mit denen niemand etwas anfängt."
+
+#: src/Modules/Admin/AdminModule.php:39
+msgid "WordPress logo menu (links to wordpress.org)"
+msgstr "WordPress-Logo-Menü (Links zu wordpress.org)"
+
+#: src/Modules/Admin/AdminModule.php:40
+msgid "\"+ New\" menu"
+msgstr "Menü „+ Neu“"
+
+#: src/Modules/Admin/AdminModule.php:41
+msgid "\"Customize\" link"
+msgstr "Link „Customizer“"
+
+#: src/Modules/Admin/AdminModule.php:42
+msgid "Updates counter"
+msgstr "Aktualisierungs-Zähler"
+
+#: src/Modules/Admin/AdminModule.php:43
+msgid "Search field (on the website)"
+msgstr "Suchfeld (auf der Website)"
+
+#: src/Modules/Admin/AdminModule.php:46
+msgid "Remove toolbar items"
+msgstr "Elemente der Werkzeugleiste entfernen"
+
+#: src/Modules/Admin/AdminModule.php:47
+msgid "Removes the selected items from the black toolbar at the top, for everyone, in the admin and on the website."
+msgstr "Entfernt die ausgewählten Elemente aus der schwarzen Werkzeugleiste oben, für alle, im Adminbereich und auf der Website."
+
+#: src/Modules/Admin/AdminModule.php:48
+msgid "Removes the items' nodes from the toolbar after WordPress and all plugins have added theirs."
+msgstr "Entfernt die Elemente aus der Werkzeugleiste, nachdem WordPress und alle Plugins ihre hinzugefügt haben."
+
+#: src/Modules/Admin/AdminModule.php:49
+msgid "Items nobody uses make the toolbar harder to read. The WordPress logo menu only links to wordpress.org."
+msgstr "Elemente, die niemand nutzt, machen die Werkzeugleiste unübersichtlich. Das WordPress-Logo-Menü verlinkt nur auf wordpress.org."
+
+#: src/Modules/Admin/AdminModule.php:54
+msgid "Hide update notices from non-administrators"
+msgstr "Aktualisierungshinweise vor Nicht-Administratoren verbergen"
+
+#: src/Modules/Admin/AdminModule.php:55
+msgid "Users who can't install updates (e.g. editors) no longer see \"WordPress X is available! Please notify the site administrator.\" Administrators still see all update notices."
+msgstr "Benutzer, die keine Aktualisierungen installieren können (z. B. Redakteure), sehen „WordPress X ist verfügbar! Bitte benachrichtigen Sie den Website-Administrator.“ nicht mehr. Administratoren sehen weiterhin alle Aktualisierungshinweise."
+
+#: src/Modules/Admin/AdminModule.php:56
+msgid "Removes WordPress' update and maintenance notices from the admin for users without the update_core capability."
+msgstr "Entfernt die Aktualisierungs- und Wartungshinweise von WordPress im Adminbereich für Benutzer ohne die Berechtigung update_core."
+
+#: src/Modules/Admin/AdminModule.php:57
+msgid "Editors can't act on these notices, and they worry clients who think something is broken."
+msgstr "Redakteure können mit diesen Hinweisen nichts anfangen, und sie verunsichern Kunden, die denken, etwas sei kaputt."
+
+#: src/Modules/Admin/AdminModule.php:62
+msgid "Don't ask to confirm the admin email address"
+msgstr "Nicht nach der Bestätigung der Administrator-E-Mail-Adresse fragen"
+
+#: src/Modules/Admin/AdminModule.php:63
+msgid "WordPress regularly interrupts the login of administrators with \"Is this still your email address?\". This turns that screen off."
+msgstr "WordPress unterbricht die Anmeldung von Administratoren regelmäßig mit „Ist das noch Ihre E-Mail-Adresse?“. Das schaltet diese Abfrage ab."
+
+#: src/Modules/Admin/AdminModule.php:64
+msgid "Sets WordPress' admin_email_check_interval to 0, which disables the check."
+msgstr "Setzt admin_email_check_interval von WordPress auf 0, was die Prüfung abschaltet."
+
+#: src/Modules/Admin/AdminModule.php:65
+msgid "When a site is looked after by an agency, the question interrupts the wrong people and the answer is always the same."
+msgstr "Wenn eine Agentur die Website betreut, stört die Frage die Falschen, und die Antwort ist immer dieselbe."
+
+#: src/Modules/Admin/AdminModule.php:66
+msgid "Keep the admin email address (Settings → General) correct yourself: WordPress sends security notices there."
+msgstr "Halten Sie die Administrator-E-Mail-Adresse (Einstellungen → Allgemein) selbst aktuell: WordPress schickt Sicherheitshinweise dorthin."
+
+#: src/Modules/Admin/AdminModule.php:71
+msgid "WordPress updates"
+msgstr "WordPress-Aktualisierungen"
+
+#: src/Modules/Admin/AdminModule.php:72
+msgid "Plugin updates"
+msgstr "Plugin-Aktualisierungen"
+
+#: src/Modules/Admin/AdminModule.php:73
+msgid "Theme updates"
+msgstr "Theme-Aktualisierungen"
+
+#: src/Modules/Admin/AdminModule.php:76
+msgid "No emails about successful automatic updates"
+msgstr "Keine E-Mails über erfolgreiche automatische Aktualisierungen"
+
+#: src/Modules/Admin/AdminModule.php:77
+msgid "For the selected types, WordPress no longer emails after every successful automatic update. Emails about failed updates are always sent."
+msgstr "Für die ausgewählten Arten schickt WordPress nicht mehr nach jeder erfolgreichen automatischen Aktualisierung eine E-Mail. E-Mails über fehlgeschlagene Aktualisierungen werden immer verschickt."
+
+#: src/Modules/Admin/AdminModule.php:78
+msgid "Answers WordPress' \"send update email?\" filters with no when every update in the batch succeeded."
+msgstr "Beantwortet die Filter „Aktualisierungs-E-Mail senden?“ von WordPress mit Nein, wenn alle Aktualisierungen des Durchlaufs erfolgreich waren."
+
+#: src/Modules/Admin/AdminModule.php:79
+msgid "With automatic updates on, success emails arrive all the time and teach people to ignore them, including the important ones about failures."
+msgstr "Mit automatischen Aktualisierungen kommen ständig Erfolgs-E-Mails, und man gewöhnt sich an, sie zu ignorieren, auch die wichtigen über Fehler."
+
+#: src/Modules/Blog/BlogModule.php:35
+msgid "Blog features"
+msgstr "Blog-Funktionen"
+
+#: src/Modules/Blog/BlogModule.php:39
+msgid "The classic blog machinery that most company and project sites never use."
+msgstr "Die klassische Blog-Maschinerie, die die meisten Firmen- und Projekt-Websites nie nutzen."
+
+#: src/Modules/Blog/BlogModule.php:47
+msgid "Disable posts"
+msgstr "Beiträge deaktivieren"
+
+#: src/Modules/Blog/BlogModule.php:48
+msgid "Hides the \"Posts\" content type: it disappears from the admin, the toolbar, menus, search, sitemaps and the REST API, and single posts and the posts page show \"not found\". Pages and other content types are not affected."
+msgstr "Blendet den Inhaltstyp „Beiträge“ aus: Er verschwindet aus dem Adminbereich, der Werkzeugleiste, Menüs, der Suche, Sitemaps und der REST-API, und einzelne Beiträge sowie die Beitragsseite zeigen „nicht gefunden“. Seiten und andere Inhaltstypen sind nicht betroffen."
+
+#: src/Modules/Blog/BlogModule.php:49
+msgid "Marks the \"post\" post type as not public and hidden in the admin and REST API (it stays registered), answers post URLs with 404, redirects the post list and \"Add new\" in the admin to the dashboard, removes the Latest Posts, Archives and Calendar blocks and widgets and the Quick Draft box, and excludes posts from Yoast SEO's sitemap."
+msgstr "Markiert den Post-Type „post“ als nicht öffentlich und im Adminbereich und in der REST-API ausgeblendet (er bleibt registriert), beantwortet Beitrags-URLs mit 404, leitet die Beitragsliste und „Neu hinzufügen“ im Adminbereich zum Dashboard um, entfernt die Blöcke und Widgets „Neueste Beiträge“, „Archive“ und „Kalender“ sowie den Kasten „Schneller Entwurf“ und nimmt Beiträge aus der Sitemap von Yoast SEO."
+
+#: src/Modules/Blog/BlogModule.php:50
+msgid "Sites built from pages only still show an empty \"Posts\" section everywhere, which confuses editors and exposes an unused part of the site."
+msgstr "Websites, die nur aus Seiten bestehen, zeigen trotzdem überall einen leeren Bereich „Beiträge“. Das verwirrt Redakteure und macht einen ungenutzten Teil der Website erreichbar."
+
+#: src/Modules/Blog/BlogModule.php:51
+msgid "Existing posts stay in the database and come back when you switch this off. If your homepage shows your latest posts (Settings → Reading), it still does."
+msgstr "Vorhandene Beiträge bleiben in der Datenbank und sind wieder da, wenn Sie das abschalten. Wenn Ihre Startseite die neuesten Beiträge zeigt (Einstellungen → Lesen), tut sie das weiterhin."
+
+#: src/Modules/Blog/BlogModule.php:55
+msgid "Categories"
+msgstr "Kategorien"
+
+#: src/Modules/Blog/BlogModule.php:55
+msgid "Tags"
+msgstr "Schlagwörter"
+
+#: src/Modules/Blog/BlogModule.php:57
+msgid "Remove categories and tags"
+msgstr "Kategorien und Schlagwörter entfernen"
+
+#: src/Modules/Blog/BlogModule.php:58
+msgid "Removes the selected taxonomies from posts, the editor, menus and the admin. Their archive pages are removed too (see below)."
+msgstr "Entfernt die ausgewählten Taxonomien von Beiträgen, aus dem Editor, aus Menüs und aus dem Adminbereich. Ihre Archivseiten werden ebenfalls entfernt (siehe unten)."
+
+#: src/Modules/Blog/BlogModule.php:59
+msgid "Detaches the taxonomies from posts and marks them as not public and hidden in the admin and REST API, and removes the Categories and Tag Cloud blocks and widgets."
+msgstr "Löst die Taxonomien von Beiträgen, markiert sie als nicht öffentlich und im Adminbereich und in der REST-API ausgeblendet und entfernt die Blöcke und Widgets „Kategorien“ und „Schlagwörter-Wolke“."
+
+#: src/Modules/Blog/BlogModule.php:60
+msgid "Categories and tags only make sense for a blog. Without one they are just clutter in the editor."
+msgstr "Kategorien und Schlagwörter ergeben nur für einen Blog Sinn. Ohne Blog stehen sie im Editor nur im Weg."
+
+#: src/Modules/Blog/BlogModule.php:61
+msgid "Existing terms and their assignments stay in the database."
+msgstr "Vorhandene Begriffe und ihre Zuordnungen bleiben in der Datenbank."
+
+#: src/Modules/Blog/BlogModule.php:66
+msgid "Author archives"
+msgstr "Autoren-Archive"
+
+#: src/Modules/Blog/BlogModule.php:67
+msgid "Date archives"
+msgstr "Datums-Archive"
+
+#: src/Modules/Blog/BlogModule.php:68
+msgid "Category archives"
+msgstr "Kategorie-Archive"
+
+#: src/Modules/Blog/BlogModule.php:69
+msgid "Tag archives"
+msgstr "Schlagwort-Archive"
+
+#: src/Modules/Blog/BlogModule.php:70
+msgid "Post format archives"
+msgstr "Beitragsformat-Archive"
+
+#: src/Modules/Blog/BlogModule.php:73
+msgid "Remove archive pages"
+msgstr "Archivseiten entfernen"
+
+#: src/Modules/Blog/BlogModule.php:74
+msgid "The selected automatic archive pages no longer exist, and they are removed from the sitemaps, so search engines are not sent to pages that are gone."
+msgstr "Die ausgewählten automatischen Archivseiten gibt es nicht mehr, und sie werden aus den Sitemaps entfernt, damit Suchmaschinen nicht zu Seiten geschickt werden, die es nicht mehr gibt."
+
+#: src/Modules/Blog/BlogModule.php:75
+msgid "Answers archive URLs with 404 or a redirect (see below) before WordPress' own redirects run, and removes them from WordPress' sitemap and from Yoast SEO's sitemap."
+msgstr "Beantwortet Archiv-URLs mit 404 oder einer Weiterleitung (siehe unten), bevor die eigenen Weiterleitungen von WordPress greifen, und entfernt sie aus der Sitemap von WordPress und der von Yoast SEO."
+
+#: src/Modules/Blog/BlogModule.php:76
+msgid "WordPress generates these pages automatically. On most sites they are thin duplicate content that search engines rate poorly. Author archives also reveal login names (example.com/?author=1 leads to /author/<login name>/)."
+msgstr "WordPress erzeugt diese Seiten automatisch. Auf den meisten Websites sind sie dünner, doppelter Inhalt, den Suchmaschinen schlecht bewerten. Autoren-Archive verraten außerdem Anmeldenamen (example.com/?author=1 führt zu /author/<Anmeldename>/)."
+
+#: src/Modules/Blog/BlogModule.php:77
+msgid "Links to these pages that the theme or an SEO plugin prints (e.g. an author name linking to the author archive) lead to the \"not found\" page or the homepage."
+msgstr "Links auf diese Seiten, die das Theme oder ein SEO-Plugin ausgibt (z. B. ein Autorenname, der auf das Autoren-Archiv verlinkt), führen auf die „Nicht gefunden“-Seite oder die Startseite."
+
+#: src/Modules/Blog/BlogModule.php:81
+msgid "Show \"not found\" (404)"
+msgstr "„Nicht gefunden“ anzeigen (404)"
+
+#: src/Modules/Blog/BlogModule.php:81
+msgid "Redirect to the homepage (301)"
+msgstr "Auf die Startseite weiterleiten (301)"
+
+#: src/Modules/Blog/BlogModule.php:83
+msgid "Removed archive pages"
+msgstr "Entfernte Archivseiten"
+
+#: src/Modules/Blog/BlogModule.php:84
+msgid "What visitors and search engines get when they open a removed archive page."
+msgstr "Was Besucher und Suchmaschinen bekommen, wenn sie eine entfernte Archivseite öffnen."
+
+#: src/Modules/Blog/BlogModule.php:85
+msgid "Sends status 404 with the theme's \"not found\" page, or a permanent redirect (301) to the homepage."
+msgstr "Sendet Status 404 mit der „Nicht gefunden“-Seite des Themes oder eine dauerhafte Weiterleitung (301) auf die Startseite."
+
+#: src/Modules/Blog/BlogModule.php:86
+msgid "\"Not found\" is the honest answer and makes search engines drop the pages. A redirect is friendlier if old archive links are still around."
+msgstr "„Nicht gefunden“ ist die ehrliche Antwort und lässt Suchmaschinen die Seiten entfernen. Eine Weiterleitung ist freundlicher, wenn noch alte Archiv-Links im Umlauf sind."
+
+#: src/Modules/Blog/BlogModule.php:91
+msgid "Disable attachment pages"
+msgstr "Anhang-Seiten deaktivieren"
+
+#: src/Modules/Blog/BlogModule.php:92
+msgid "Every uploaded file has its own page in WordPress. With this on, those addresses lead straight to the file itself."
+msgstr "Jede hochgeladene Datei hat in WordPress eine eigene Seite. Ist das aktiv, führen diese Adressen direkt zur Datei selbst."
+
+#: src/Modules/Blog/BlogModule.php:93
+msgid "Switches off WordPress' own \"attachment pages\" option (which has no switch in the admin), so WordPress redirects to the file. Attachments of content that isn't public get a 404 instead."
+msgstr "Schaltet die WordPress-eigene Option „Anhang-Seiten“ ab (für die es im Adminbereich keinen Schalter gibt), sodass WordPress auf die Datei weiterleitet. Anhänge von Inhalten, die nicht öffentlich sind, bekommen stattdessen eine 404."
+
+#: src/Modules/Blog/BlogModule.php:94
+msgid "Attachment pages are empty pages with just an image, which search engines index as low-quality content. Sites set up before WordPress 6.4 still have them."
+msgstr "Anhang-Seiten sind leere Seiten mit nur einem Bild, die Suchmaschinen als minderwertigen Inhalt indexieren. Websites, die vor WordPress 6.4 eingerichtet wurden, haben sie noch."
+
+#: src/Modules/Blog/BlogModule.php:95
+msgid "Yoast SEO does the same with its \"Media pages\" setting (on by default); both together are fine."
+msgstr "Yoast SEO macht mit seiner Einstellung „Medienseiten“ (standardmäßig aktiv) dasselbe; beides zusammen ist kein Problem."
+
+#: src/Modules/Blog/BlogModule.php:100
+msgid "Disable RSS feeds"
+msgstr "RSS-Feeds deaktivieren"
+
+#: src/Modules/Blog/BlogModule.php:101
+msgid "All RSS and Atom feeds (posts, comments, categories, …) show \"not found\", and the feed links are removed from the page header."
+msgstr "Alle RSS- und Atom-Feeds (Beiträge, Kommentare, Kategorien, …) zeigen „nicht gefunden“, und die Feed-Links werden aus dem Seitenkopf entfernt."
+
+#: src/Modules/Blog/BlogModule.php:102
+msgid "Answers every feed request with 404 and removes the feed link tags that WordPress prints in the page header."
+msgstr "Beantwortet jede Feed-Anfrage mit 404 und entfernt die Feed-Link-Tags, die WordPress im Seitenkopf ausgibt."
+
+#: src/Modules/Blog/BlogModule.php:103
+msgid "Feeds are only useful if people subscribe to a blog. Otherwise they are another copy of your content for scrapers."
+msgstr "Feeds sind nur nützlich, wenn jemand einen Blog abonniert. Sonst sind sie nur eine weitere Kopie Ihrer Inhalte für Scraper."
+
+#: src/Modules/Comments/CommentsModule.php:39
+msgid "Comments"
+msgstr "Kommentare"
+
+#: src/Modules/Comments/CommentsModule.php:43
+msgid "Comments, pingbacks and trackbacks."
+msgstr "Kommentare, Pingbacks und Trackbacks."
+
+#: src/Modules/Comments/CommentsModule.php:51
+msgid "Disable comments and pingbacks completely"
+msgstr "Kommentare und Pingbacks vollständig deaktivieren"
+
+#: src/Modules/Comments/CommentsModule.php:52
+msgid "Turns off comments, pingbacks and trackbacks everywhere: on all content types, in the admin, in the block editor, in feeds and in all interfaces. Existing comments are hidden but stay in the database."
+msgstr "Schaltet Kommentare, Pingbacks und Trackbacks überall ab: bei allen Inhaltstypen, im Adminbereich, im Block-Editor, in Feeds und in allen Schnittstellen. Vorhandene Kommentare werden ausgeblendet, bleiben aber in der Datenbank."
+
+#: src/Modules/Comments/CommentsModule.php:53
+msgid "Closes comments and pings for every post type and removes comment support from them, answers \"closed\" for the discussion defaults, hides existing comments, removes the comment routes from the REST API and the pingback methods from XML-RPC, stops outgoing pings, answers comment feeds with 404, and removes the Comments menu, the Discussion settings page, the toolbar item, the comment columns, the Recent Comments widget and the comment blocks."
+msgstr "Schließt Kommentare und Pings für jeden Post-Type und entfernt dort die Kommentar-Unterstützung, antwortet mit „geschlossen“ auf die Diskussions-Voreinstellungen, blendet vorhandene Kommentare aus, entfernt die Kommentar-Routen aus der REST-API und die Pingback-Methoden aus XML-RPC, stoppt ausgehende Pings, beantwortet Kommentar-Feeds mit 404 und entfernt das Menü „Kommentare“, die Einstellungsseite „Diskussion“, den Eintrag in der Werkzeugleiste, die Kommentar-Spalten, das Widget „Neueste Kommentare“ und die Kommentar-Blöcke."
+
+#: src/Modules/Comments/CommentsModule.php:54
+msgid "Most business sites never use comments, but WordPress keeps the whole machinery running: open comment forms attract spam, pingbacks can be abused to attack other sites, and the admin shows menus nobody needs."
+msgstr "Die meisten Firmen-Websites nutzen nie Kommentare, aber WordPress hält die ganze Maschinerie am Laufen: Offene Kommentarformulare ziehen Spam an, Pingbacks lassen sich für Angriffe auf andere Websites missbrauchen, und der Adminbereich zeigt Menüs, die niemand braucht."
+
+#: src/Modules/Comments/CommentsModule.php:55
+msgid "Comment blocks and widgets (including Elementor's \"Post Comments\") show nothing. Posts created while this is on are saved with comments closed and stay closed if you switch it off again; everything else comes back, including existing comments."
+msgstr "Kommentar-Blöcke und -Widgets (auch „Beitragskommentare“ von Elementor) zeigen nichts an. Beiträge, die erstellt werden, während das aktiv ist, werden mit geschlossenen Kommentaren gespeichert und bleiben geschlossen, wenn Sie es wieder abschalten; alles andere kommt zurück, auch vorhandene Kommentare."
+
+#: src/Modules/Dashboard/DashboardModule.php:23
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: src/Modules/Dashboard/DashboardModule.php:27
+msgid "The start page of the admin area."
+msgstr "Die Startseite des Adminbereichs."
+
+#: src/Modules/Dashboard/DashboardModule.php:36
+msgid "Hide dashboard boxes"
+msgstr "Dashboard-Kästen ausblenden"
+
+#: src/Modules/Dashboard/DashboardModule.php:37
+msgid "The selected boxes are removed from the dashboard for everyone. Boxes of Yoast SEO, Wordfence, Elementor and WP-Optimize are listed while those plugins are active."
+msgstr "Die ausgewählten Kästen werden für alle vom Dashboard entfernt. Kästen von Yoast SEO, Wordfence, Elementor und WP-Optimize stehen zur Auswahl, solange diese Plugins aktiv sind."
+
+#: src/Modules/Dashboard/DashboardModule.php:38
+msgid "Removes the boxes after WordPress and all plugins have registered theirs (and the welcome panel from its hook), in every dashboard column."
+msgstr "Entfernt die Kästen, nachdem WordPress und alle Plugins ihre registriert haben (und den Willkommens-Bereich von seinem Hook), in jeder Dashboard-Spalte."
+
+#: src/Modules/Dashboard/DashboardModule.php:39
+msgid "Most boxes are meant for bloggers, advertise something or duplicate information available elsewhere. A clean start page helps editors find what matters."
+msgstr "Die meisten Kästen sind für Blogger gedacht, machen Werbung oder wiederholen Informationen, die es anderswo gibt. Eine aufgeräumte Startseite hilft Redakteuren, das Wichtige zu finden."
+
+#: src/Modules/Dashboard/DashboardModule.php:40
+msgid "The information itself stays available: Site Health under Tools, Wordfence and WP-Optimize in their own menus."
+msgstr "Die Informationen selbst bleiben erreichbar: der Website-Zustand unter Werkzeuge, Wordfence und WP-Optimize in ihren eigenen Menüs."
+
+#: src/Modules/Dashboard/DashboardModule.php:50
+msgid "Welcome panel (\"Welcome to WordPress!\")"
+msgstr "Willkommens-Bereich („Willkommen bei WordPress!“)"
+
+#: src/Modules/Dashboard/DashboardModule.php:51
+msgid "WordPress Events and News"
+msgstr "WordPress-Veranstaltungen und Neuigkeiten"
+
+#: src/Modules/Dashboard/DashboardModule.php:52
+msgid "Quick Draft"
+msgstr "Schneller Entwurf"
+
+#: src/Modules/Dashboard/DashboardModule.php:53
+msgid "Activity (recent posts and comments)"
+msgstr "Aktivität (neueste Beiträge und Kommentare)"
+
+#: src/Modules/Dashboard/DashboardModule.php:54
+msgid "At a Glance"
+msgstr "Auf einen Blick"
+
+#: src/Modules/Dashboard/DashboardModule.php:55
+msgid "Site Health Status"
+msgstr "Status des Website-Zustands"
+
+#: src/Modules/Dashboard/DashboardModule.php:58
+msgid "Yoast SEO: Posts Overview"
+msgstr "Yoast SEO: Beitragsübersicht"
+
+#: src/Modules/Dashboard/DashboardModule.php:59
+msgid "Yoast SEO / Wincher: Top Keyphrases"
+msgstr "Yoast SEO / Wincher: Top-Keyphrases"
+
+#: src/Modules/Dashboard/DashboardModule.php:62
+msgid "Wordfence: activity report"
+msgstr "Wordfence: Aktivitätsbericht"
+
+#: src/Modules/Dashboard/DashboardModule.php:65
+msgid "Elementor Overview"
+msgstr "Elementor-Übersicht"
+
+#: src/Modules/Dashboard/DashboardModule.php:68
+msgid "WP-Optimize: Performance"
+msgstr "WP-Optimize: Performance"
+
+#: src/Modules/Editor/EditorModule.php:23
+msgid "Editor"
+msgstr "Editor"
+
+#: src/Modules/Editor/EditorModule.php:27
+msgid "Trim the block editor down to what the site uses."
+msgstr "Den Block-Editor auf das reduzieren, was die Website nutzt."
+
+#: src/Modules/Editor/EditorModule.php:35
+msgid "Don't load patterns from wordpress.org"
+msgstr "Keine Vorlagen von wordpress.org laden"
+
+#: src/Modules/Editor/EditorModule.php:36
+msgid "The block editor no longer offers block patterns (ready-made layouts) from the WordPress pattern directory. Patterns from the theme, plugins and your own saved patterns stay available."
+msgstr "Der Block-Editor bietet keine Block-Vorlagen (fertige Layouts) aus dem WordPress-Vorlagenverzeichnis mehr an. Vorlagen des Themes, von Plugins und Ihre eigenen gespeicherten Vorlagen bleiben verfügbar."
+
+#: src/Modules/Editor/EditorModule.php:37
+msgid "Answers WordPress' should_load_remote_block_patterns filter with no, so the pattern directory is never queried."
+msgstr "Beantwortet den Filter should_load_remote_block_patterns von WordPress mit Nein, sodass das Vorlagenverzeichnis nie abgefragt wird."
+
+#: src/Modules/Editor/EditorModule.php:38
+msgid "The directory patterns rarely fit the site's design and clutter the inserter. Not loading them also saves requests to wordpress.org."
+msgstr "Die Verzeichnis-Vorlagen passen selten zum Design der Website und machen den Inserter unübersichtlich. Sie nicht zu laden spart außerdem Anfragen an wordpress.org."
+
+#: src/Modules/Editor/EditorModule.php:39
+msgid "Themes that list directory patterns in their theme.json lose those patterns too."
+msgstr "Themes, die Verzeichnis-Vorlagen in ihrer theme.json aufführen, verlieren diese Vorlagen ebenfalls."
+
+#: src/Modules/Editor/EditorModule.php:44
+msgid "Turn off block suggestions from wordpress.org"
+msgstr "Block-Vorschläge von wordpress.org abschalten"
+
+#: src/Modules/Editor/EditorModule.php:45
+msgid "When a search in the block inserter finds nothing, the editor no longer offers to install block plugins from the WordPress plugin directory."
+msgstr "Wenn eine Suche im Block-Inserter nichts findet, bietet der Editor nicht mehr an, Block-Plugins aus dem WordPress-Plugin-Verzeichnis zu installieren."
+
+#: src/Modules/Editor/EditorModule.php:46
+msgid "Removes the block directory script from the block editor."
+msgstr "Entfernt das Skript des Block-Verzeichnisses aus dem Block-Editor."
+
+#: src/Modules/Editor/EditorModule.php:47
+msgid "Editors shouldn't install plugins while writing; every installed block is another plugin that has to be maintained and can break."
+msgstr "Redakteure sollten beim Schreiben keine Plugins installieren; jeder installierte Block ist ein weiteres Plugin, das gepflegt werden muss und kaputtgehen kann."
+
+#: src/Modules/Editor/EditorModule.php:52
+msgid "Turn off Openverse images"
+msgstr "Openverse-Bilder abschalten"
+
+#: src/Modules/Editor/EditorModule.php:53
+msgid "Removes the \"Openverse\" tab from the media section of the block inserter, which searches free images on openverse.org."
+msgstr "Entfernt den Reiter „Openverse“ aus dem Medien-Bereich des Block-Inserters, der freie Bilder auf openverse.org sucht."
+
+#: src/Modules/Editor/EditorModule.php:54
+msgid "Sets the block editor setting enableOpenverseMediaCategory to false."
+msgstr "Setzt die Block-Editor-Einstellung enableOpenverseMediaCategory auf false."
+
+#: src/Modules/Editor/EditorModule.php:55
+msgid "Openverse images come with licence conditions (often attribution) that editors easily overlook, and the search sends requests to openverse.org."
+msgstr "Openverse-Bilder haben Lizenzbedingungen (oft Namensnennung), die Redakteure leicht übersehen, und die Suche schickt Anfragen an openverse.org."
+
+#: src/Modules/Editor/EditorModule.php:70
+msgid "Use the classic editor for"
+msgstr "Den klassischen Editor verwenden für"
+
+#: src/Modules/Editor/EditorModule.php:71
+msgid "Content of the selected types opens in the classic editor instead of the block editor. Pages built with Elementor are not affected: they open in Elementor either way."
+msgstr "Inhalte der ausgewählten Typen öffnen sich im klassischen Editor statt im Block-Editor. Mit Elementor gebaute Seiten sind nicht betroffen: Sie öffnen sich ohnehin in Elementor."
+
+#: src/Modules/Editor/EditorModule.php:72
+msgid "Answers WordPress' use_block_editor_for_post_type filter with no for the selected types. If another plugin already turned the block editor off for a type, it stays off."
+msgstr "Beantwortet den Filter use_block_editor_for_post_type von WordPress für die ausgewählten Typen mit Nein. Hat ein anderes Plugin den Block-Editor für einen Typ schon abgeschaltet, bleibt er aus."
+
+#: src/Modules/Editor/EditorModule.php:73
+msgid "Some content (e.g. simple entries of a custom post type) is easier to edit in the classic editor, and some plugins expect it."
+msgstr "Manche Inhalte (z. B. einfache Einträge eines eigenen Post-Types) lassen sich im klassischen Editor leichter bearbeiten, und manche Plugins erwarten ihn."
+
+#: src/Modules/Editor/EditorModule.php:74
+msgid "Content already made with blocks is shown as HTML in the classic editor; editing it there can break the blocks."
+msgstr "Inhalte, die schon mit Blöcken erstellt wurden, erscheinen im klassischen Editor als HTML; sie dort zu bearbeiten kann die Blöcke beschädigen."
+
+#: src/Modules/Elementor/ElementorModule.php:25
+msgid "Elementor"
+msgstr "Elementor"
+
+#: src/Modules/Elementor/ElementorModule.php:29
+msgid "Settings for sites built with Elementor. Only shown while Elementor is active."
+msgstr "Einstellungen für Websites, die mit Elementor gebaut sind. Nur sichtbar, solange Elementor aktiv ist."
+
+#: src/Modules/Elementor/ElementorModule.php:37
+msgid "Open Elementor pages in Elementor"
+msgstr "Elementor-Seiten in Elementor öffnen"
+
+#: src/Modules/Elementor/ElementorModule.php:38
+msgid "For content built with Elementor, the title in the page and post lists and \"Edit\" in the toolbar open Elementor directly. In the lists, the duplicate \"Edit with Elementor\" link is replaced by a \"WordPress editor\" link. Content not built with Elementor keeps opening in the WordPress editor."
+msgstr "Bei Inhalten, die mit Elementor gebaut sind, öffnen der Titel in den Seiten- und Beitragslisten und „Bearbeiten“ in der Werkzeugleiste direkt Elementor. In den Listen wird der doppelte Link „Mit Elementor bearbeiten“ durch einen Link „WordPress-Editor“ ersetzt. Inhalte, die nicht mit Elementor gebaut sind, öffnen sich weiter im WordPress-Editor."
+
+#: src/Modules/Elementor/ElementorModule.php:39
+msgid "Checks Elementor's own marker that a post was built with it and, only on the post list screens and for the toolbar's \"Edit\" link, points the edit link to Elementor's editor. Other edit links (e.g. redirects after saving) are not changed."
+msgstr "Prüft die Markierung, mit der Elementor selbst kennzeichnet, dass ein Beitrag mit ihm gebaut wurde, und lässt nur in den Beitragslisten und beim Link „Bearbeiten“ der Werkzeugleiste den Bearbeiten-Link auf den Elementor-Editor zeigen. Andere Bearbeiten-Links (z. B. Weiterleitungen nach dem Speichern) bleiben unverändert."
+
+#: src/Modules/Elementor/ElementorModule.php:40
+msgid "Editors of Elementor sites almost always want Elementor. Opening the WordPress editor first is an extra click and confusing, because the page content isn't editable there."
+msgstr "Redakteure von Elementor-Websites wollen fast immer Elementor. Erst den WordPress-Editor zu öffnen ist ein zusätzlicher Klick und verwirrend, weil der Seiteninhalt dort nicht bearbeitbar ist."
+
+#: src/Modules/Elementor/ElementorModule.php:83
+msgid "WordPress editor"
+msgstr "WordPress-Editor"
+
+#: src/Modules/Environment/EnvironmentModule.php:38
+msgid "Environment"
+msgstr "Umgebung"
+
+#: src/Modules/Environment/EnvironmentModule.php:42
+msgid "Tell live, staging and development copies of the site apart. WordPress knows which one it is from the WP_ENVIRONMENT_TYPE setting in wp-config.php (many hosts set it for staging sites automatically); without it, every site counts as live."
+msgstr "Live-, Staging- und Entwicklungs-Kopien der Website auseinanderhalten. WordPress erkennt, welche es ist, an der Einstellung WP_ENVIRONMENT_TYPE in der wp-config.php (viele Hoster setzen sie bei Staging-Websites automatisch); ohne sie gilt jede Website als live."
+
+#: src/Modules/Environment/EnvironmentModule.php:50
+msgid "Off"
+msgstr "Aus"
+
+#: src/Modules/Environment/EnvironmentModule.php:51
+msgid "Only on staging, development and local sites"
+msgstr "Nur auf Staging-, Entwicklungs- und lokalen Websites"
+
+#: src/Modules/Environment/EnvironmentModule.php:52
+msgid "On every site, including the live one"
+msgstr "Auf jeder Website, auch der Live-Website"
+
+#: src/Modules/Environment/EnvironmentModule.php:55
+msgid "Environment badge in the toolbar"
+msgstr "Umgebungs-Kennzeichnung in der Werkzeugleiste"
+
+#: src/Modules/Environment/EnvironmentModule.php:56
+msgid "Shows a coloured label in the toolbar: \"Live\" (red), \"Staging\" (yellow), \"Development\" (blue) or \"Local\" (green)."
+msgstr "Zeigt eine farbige Kennzeichnung in der Werkzeugleiste: „Live“ (rot), „Staging“ (gelb), „Entwicklung“ (blau) oder „Lokal“ (grün)."
+
+#: src/Modules/Environment/EnvironmentModule.php:57
+msgid "Adds a toolbar item with the environment WordPress reports (from WP_ENVIRONMENT_TYPE) and colours it with a small inline style, in the admin and on the website."
+msgstr "Fügt der Werkzeugleiste ein Element mit der Umgebung hinzu, die WordPress meldet (aus WP_ENVIRONMENT_TYPE), und färbt es mit einem kleinen Inline-Stil ein, im Adminbereich und auf der Website."
+
+#: src/Modules/Environment/EnvironmentModule.php:58
+msgid "With the live site and a staging copy open side by side, it's easy to change the wrong one. The badge makes it obvious at a glance."
+msgstr "Wenn die Live-Website und eine Staging-Kopie nebeneinander offen sind, ändert man leicht die falsche. Die Kennzeichnung macht es auf einen Blick klar."
+
+#: src/Modules/Environment/EnvironmentModule.php:63
+msgid "Keep non-live sites out of search engines"
+msgstr "Nicht-Live-Websites aus Suchmaschinen heraushalten"
+
+#: src/Modules/Environment/EnvironmentModule.php:64
+msgid "On staging, development and local sites, every page tells search engines not to index it or follow its links, regardless of the \"Search engine visibility\" setting. The live site is never affected."
+msgstr "Auf Staging-, Entwicklungs- und lokalen Websites sagt jede Seite Suchmaschinen, dass sie sie nicht indexieren und ihren Links nicht folgen sollen, unabhängig von der Einstellung „Sichtbarkeit für Suchmaschinen“. Die Live-Website ist nie betroffen."
+
+#: src/Modules/Environment/EnvironmentModule.php:65
+msgid "Sets the robots meta tag to \"noindex, nofollow\" (also the one Yoast SEO prints) and sends the same as an X-Robots-Tag HTTP header, only when WordPress' environment type is not \"production\"."
+msgstr "Setzt das Robots-Meta-Tag auf „noindex, nofollow“ (auch das von Yoast SEO) und sendet dasselbe als X-Robots-Tag-HTTP-Header, nur wenn der Umgebungstyp von WordPress nicht „production“ ist."
+
+#: src/Modules/Environment/EnvironmentModule.php:66
+msgid "Staging copies that end up in Google compete with the real site (duplicate content) and show unfinished pages to customers. The WordPress setting is easily forgotten when copying a site back and forth."
+msgstr "Staging-Kopien, die bei Google landen, konkurrieren mit der echten Website (doppelter Inhalt) und zeigen Kunden unfertige Seiten. Die WordPress-Einstellung wird beim Hin- und Herkopieren einer Website leicht vergessen."
+
+#: src/Modules/Environment/EnvironmentModule.php:71
+msgid "Send as usual"
+msgstr "Normal senden"
+
+#: src/Modules/Environment/EnvironmentModule.php:72
+msgid "Don't send any emails"
+msgstr "Keine E-Mails senden"
+
+#: src/Modules/Environment/EnvironmentModule.php:73
+msgid "Send all emails to the address below instead"
+msgstr "Alle E-Mails stattdessen an die Adresse unten senden"
+
+#: src/Modules/Environment/EnvironmentModule.php:76
+msgid "Emails on non-live sites"
+msgstr "E-Mails auf Nicht-Live-Websites"
+
+#: src/Modules/Environment/EnvironmentModule.php:77
+msgid "What happens to emails sent by staging, development and local sites: form notifications, orders, password resets, Wordfence alerts and so on. The live site is never affected."
+msgstr "Was mit E-Mails passiert, die Staging-, Entwicklungs- und lokale Websites verschicken: Formular-Benachrichtigungen, Bestellungen, Passwort-Zurücksetzungen, Wordfence-Warnungen und so weiter. Die Live-Website ist nie betroffen."
+
+#: src/Modules/Environment/EnvironmentModule.php:78
+msgid "\"Don't send\" stops every email before it is sent and reports it as sent. \"Send to\" replaces all recipients with the address below, removes CC and BCC, and adds the original recipients to the subject, e.g. \"[Staging] New order (to: customer@example.com)\". Both apply only when WordPress' environment type is not \"production\"."
+msgstr "„Keine senden“ hält jede E-Mail vor dem Versand an und meldet sie als verschickt. „Senden an“ ersetzt alle Empfänger durch die Adresse unten, entfernt CC und BCC und schreibt die ursprünglichen Empfänger in den Betreff, z. B. „[Staging] Neue Bestellung (an: kunde@example.com)“. Beides gilt nur, wenn der Umgebungstyp von WordPress nicht „production“ ist."
+
+#: src/Modules/Environment/EnvironmentModule.php:79
+msgid "A staging copy contains real customers and form recipients. Without this, testing a form on staging sends real emails to real people."
+msgstr "Eine Staging-Kopie enthält echte Kunden und Formular-Empfänger. Ohne das schickt ein Test des Formulars auf Staging echte E-Mails an echte Menschen."
+
+#: src/Modules/Environment/EnvironmentModule.php:80
+msgid "Blocked emails are reported as sent, so forms don't show errors. Mail plugins that replace WordPress' mail function entirely are not affected."
+msgstr "Blockierte E-Mails werden als verschickt gemeldet, damit Formulare keine Fehler zeigen. Mail-Plugins, die die Mail-Funktion von WordPress komplett ersetzen, sind nicht betroffen."
+
+#: src/Modules/Environment/EnvironmentModule.php:85
+msgid "Redirect emails to"
+msgstr "E-Mails umleiten an"
+
+#: src/Modules/Environment/EnvironmentModule.php:86
+msgid "The address that receives all emails when \"Send all emails to the address below\" is chosen."
+msgstr "Die Adresse, die alle E-Mails bekommt, wenn „Alle E-Mails stattdessen an die Adresse unten senden“ gewählt ist."
+
+#: src/Modules/Environment/EnvironmentModule.php:87
+msgid "Used as the only recipient. If it isn't a valid email address, no emails are sent at all, never to the original recipients."
+msgstr "Wird als einziger Empfänger verwendet. Ist es keine gültige E-Mail-Adresse, werden gar keine E-Mails verschickt, niemals an die ursprünglichen Empfänger."
+
+#: src/Modules/Environment/EnvironmentModule.php:88
+msgid "See what the site sends (and check it looks right) without anyone else receiving it."
+msgstr "Sehen, was die Website verschickt (und prüfen, ob es richtig aussieht), ohne dass es sonst jemand bekommt."
+
+#. translators: 1: environment, e.g. "Staging", 2: email subject, 3: original recipients
+#: src/Modules/Environment/EnvironmentModule.php:159
+#, php-format
+msgid "[%1$s] %2$s (to: %3$s)"
+msgstr "[%1$s] %2$s (an: %3$s)"
+
+#: src/Modules/Environment/EnvironmentModule.php:174
+msgid "Staging"
+msgstr "Staging"
+
+#: src/Modules/Environment/EnvironmentModule.php:175
+msgid "Development"
+msgstr "Entwicklung"
+
+#: src/Modules/Environment/EnvironmentModule.php:176
+msgid "Local"
+msgstr "Lokal"
+
+#: src/Modules/Environment/EnvironmentModule.php:177
+msgid "Live"
+msgstr "Live"
+
+#: src/Modules/Head/HeadModule.php:21
+msgid "Page header cleanup"
+msgstr "Seitenkopf aufräumen"
+
+#: src/Modules/Head/HeadModule.php:25
+msgid "Tags, links and scripts WordPress adds to every page for features most sites don't use. Yoast SEO has similar optional switches under \"Crawl optimization\"; using both is fine."
+msgstr "Tags, Links und Skripte, die WordPress jeder Seite für Funktionen hinzufügt, die die meisten Websites nicht nutzen. Yoast SEO hat ähnliche optionale Schalter unter „Crawl-Optimierung“; beides zu nutzen ist kein Problem."
+
+#: src/Modules/Head/HeadModule.php:33
+msgid "Hide WordPress and plugin versions"
+msgstr "WordPress- und Plugin-Versionen verbergen"
+
+#: src/Modules/Head/HeadModule.php:34
+msgid "Removes the tags and comments that tell every visitor which versions of WordPress, Elementor and Yoast SEO the site runs."
+msgstr "Entfernt die Tags und Kommentare, die jedem Besucher verraten, welche Versionen von WordPress, Elementor und Yoast SEO die Website verwendet."
+
+#: src/Modules/Head/HeadModule.php:35
+msgid "Removes WordPress' \"generator\" meta tag from the page header and feeds, switches on Elementor's own \"hide generator tag\" option and turns off Yoast SEO's \"optimized with Yoast SEO vX\" HTML comment."
+msgstr "Entfernt das „generator“-Meta-Tag von WordPress aus Seitenkopf und Feeds, schaltet die Elementor-eigene Option „Generator-Tag ausblenden“ ein und schaltet den HTML-Kommentar „optimized with Yoast SEO vX“ von Yoast SEO ab."
+
+#: src/Modules/Head/HeadModule.php:36
+msgid "Version numbers help attackers pick known vulnerabilities (plugins like Elementor are a frequent target); nobody else needs them."
+msgstr "Versionsnummern helfen Angreifern, bekannte Sicherheitslücken auszuwählen (Plugins wie Elementor sind ein häufiges Ziel); sonst braucht sie niemand."
+
+#: src/Modules/Head/HeadModule.php:41
+msgid "Remove the RSD link"
+msgstr "RSD-Link entfernen"
+
+#: src/Modules/Head/HeadModule.php:42
+msgid "Removes the \"Really Simple Discovery\" link from the page header."
+msgstr "Entfernt den „Really Simple Discovery“-Link aus dem Seitenkopf."
+
+#: src/Modules/Head/HeadModule.php:43
+msgid "Removes the rsd_link output from the page header."
+msgstr "Entfernt die Ausgabe von rsd_link aus dem Seitenkopf."
+
+#: src/Modules/Head/HeadModule.php:44
+msgid "It only helps old desktop blogging apps find the XML-RPC interface, which hardly anybody uses anymore."
+msgstr "Er hilft nur alten Desktop-Blogging-Programmen, die XML-RPC-Schnittstelle zu finden, die kaum noch jemand nutzt."
+
+#: src/Modules/Head/HeadModule.php:49
+msgid "Remove the shortlink"
+msgstr "Kurzlink entfernen"
+
+#: src/Modules/Head/HeadModule.php:50
+msgid "Removes the ?p=123 short address WordPress announces for every page."
+msgstr "Entfernt die kurze Adresse ?p=123, die WordPress für jede Seite angibt."
+
+#: src/Modules/Head/HeadModule.php:51
+msgid "Removes the shortlink tag from the page header and the \"Link: rel=shortlink\" HTTP header."
+msgstr "Entfernt das Kurzlink-Tag aus dem Seitenkopf und den HTTP-Header „Link: rel=shortlink“."
+
+#: src/Modules/Head/HeadModule.php:52
+msgid "Nothing uses these addresses, and they show internal post IDs."
+msgstr "Nichts nutzt diese Adressen, und sie zeigen interne Beitrags-IDs."
+
+#: src/Modules/Head/HeadModule.php:57
+msgid "Disable the emoji script"
+msgstr "Emoji-Skript deaktivieren"
+
+#: src/Modules/Head/HeadModule.php:58
+msgid "Stops loading WordPress' emoji script and styles on the website and in the admin. Emojis still show up, drawn by the visitor's own device."
+msgstr "Lädt das Emoji-Skript und die Emoji-Stile von WordPress nicht mehr, auf der Website und im Adminbereich. Emojis werden weiterhin angezeigt, vom Gerät des Besuchers selbst dargestellt."
+
+#: src/Modules/Head/HeadModule.php:59
+msgid "Removes the emoji detection script, the emoji styles and the emoji conversion in feeds, emails and the classic editor."
+msgstr "Entfernt das Emoji-Erkennungs-Skript, die Emoji-Stile und die Emoji-Umwandlung in Feeds, E-Mails und im klassischen Editor."
+
+#: src/Modules/Head/HeadModule.php:60
+msgid "Every current browser and operating system displays emojis natively. The script is an extra request and inline code on every page for nothing."
+msgstr "Jeder aktuelle Browser und jedes Betriebssystem stellt Emojis selbst dar. Das Skript ist eine zusätzliche Anfrage und Inline-Code auf jeder Seite, für nichts."
+
+#: src/Modules/Head/HeadModule.php:65
+msgid "Don't let other sites embed your pages"
+msgstr "Anderen Websites nicht erlauben, Ihre Seiten einzubetten"
+
+#: src/Modules/Head/HeadModule.php:66
+msgid "Other WordPress sites can no longer show your pages as embedded preview cards. Embedding YouTube, Vimeo etc. in your own content keeps working."
+msgstr "Andere WordPress-Websites können Ihre Seiten nicht mehr als eingebettete Vorschaukarten anzeigen. YouTube, Vimeo usw. in Ihren eigenen Inhalten einzubetten funktioniert weiterhin."
+
+#: src/Modules/Head/HeadModule.php:67
+msgid "Removes the oEmbed discovery links and the host script from the page header, removes the /oembed/1.0/embed REST route and answers the /embed/ versions of your pages with 404."
+msgstr "Entfernt die oEmbed-Discovery-Links und das Host-Skript aus dem Seitenkopf, entfernt die REST-Route /oembed/1.0/embed und beantwortet die /embed/-Versionen Ihrer Seiten mit 404."
+
+#: src/Modules/Head/HeadModule.php:68
+msgid "Few business sites want to be embedded elsewhere. Without it there are fewer tags on every page and fewer ways to scrape your content."
+msgstr "Wenige Firmen-Websites wollen anderswo eingebettet werden. Ohne das stehen weniger Tags auf jeder Seite, und es gibt weniger Wege, Ihre Inhalte abzugreifen."
+
+#: src/Modules/Head/HeadModule.php:69
+msgid "Links to your site pasted into another WordPress site show as plain links instead of preview cards. Social media previews are not affected (they use Open Graph tags, e.g. from Yoast SEO)."
+msgstr "Links auf Ihre Website, die in eine andere WordPress-Website eingefügt werden, erscheinen als einfache Links statt als Vorschaukarten. Vorschauen in sozialen Medien sind nicht betroffen (sie nutzen Open-Graph-Tags, z. B. von Yoast SEO)."
+
+#: src/Modules/Login/LoginModule.php:27
+msgid "Login page"
+msgstr "Anmeldeseite"
+
+#: src/Modules/Login/LoginModule.php:31
+msgid "Show your site's branding on the login page instead of WordPress'."
+msgstr "Das Erscheinungsbild der eigenen Website auf der Anmeldeseite zeigen statt das von WordPress."
+
+#: src/Modules/Login/LoginModule.php:39
+msgid "WordPress logo"
+msgstr "WordPress-Logo"
+
+#: src/Modules/Login/LoginModule.php:40
+msgid "The site's logo (or the site icon if there is none)"
+msgstr "Das Logo der Website (oder das Website-Icon, wenn es keins gibt)"
+
+#: src/Modules/Login/LoginModule.php:41
+msgid "The image chosen below"
+msgstr "Das unten gewählte Bild"
+
+#: src/Modules/Login/LoginModule.php:44
+msgid "Logo"
+msgstr "Logo"
+
+#: src/Modules/Login/LoginModule.php:45
+msgid "The logo above the login form. \"The site's logo\" is the logo set in the theme (Site Editor, Customizer or Elementor's Site Settings), otherwise the site icon (Settings → General). If neither exists, the WordPress logo stays."
+msgstr "Das Logo über dem Anmeldeformular. „Das Logo der Website“ ist das im Theme festgelegte Logo (Website-Editor, Customizer oder Website-Einstellungen von Elementor), sonst das Website-Icon (Einstellungen → Allgemein). Gibt es keins von beiden, bleibt das WordPress-Logo."
+
+#: src/Modules/Login/LoginModule.php:46
+msgid "Replaces the WordPress logo on wp-login.php with the image via a small inline style, sized to fit 320 × 120 pixels without distortion."
+msgstr "Ersetzt das WordPress-Logo auf wp-login.php per kleinem Inline-Stil durch das Bild, verzerrungsfrei eingepasst in 320 × 120 Pixel."
+
+#: src/Modules/Login/LoginModule.php:47
+msgid "Clients and editors log in to their site, not to WordPress. Their own logo makes the page look familiar and trustworthy."
+msgstr "Kunden und Redakteure melden sich bei ihrer Website an, nicht bei WordPress. Ihr eigenes Logo macht die Seite vertraut und vertrauenswürdig."
+
+#: src/Modules/Login/LoginModule.php:51
+msgid "Logo image"
+msgstr "Logo-Bild"
+
+#: src/Modules/Login/LoginModule.php:52
+msgid "The image used when \"Logo\" is set to \"The image chosen below\"."
+msgstr "Das Bild, das verwendet wird, wenn „Logo“ auf „Das unten gewählte Bild“ steht."
+
+#: src/Modules/Login/LoginModule.php:53
+msgid "Uses a medium-sized version of the image from the media library, shown at most 320 pixels wide and 120 pixels high."
+msgstr "Verwendet eine mittelgroße Version des Bildes aus der Mediathek, angezeigt mit höchstens 320 Pixel Breite und 120 Pixel Höhe."
+
+#: src/Modules/Login/LoginModule.php:54
+msgid "For when the login page should show a different logo than the website, e.g. a version that works on the login background."
+msgstr "Für den Fall, dass die Anmeldeseite ein anderes Logo als die Website zeigen soll, z. B. eine Version, die auf dem Hintergrund der Anmeldeseite funktioniert."
+
+#: src/Modules/Login/LoginModule.php:59
+msgid "Logo links to the website"
+msgstr "Logo verlinkt auf die Website"
+
+#: src/Modules/Login/LoginModule.php:60
+msgid "Clicking the logo on the login page opens the website instead of wordpress.org. Screen readers announce the site title instead of \"Powered by WordPress\"."
+msgstr "Ein Klick auf das Logo der Anmeldeseite öffnet die Website statt wordpress.org. Screenreader lesen den Titel der Website vor statt „Powered by WordPress“."
+
+#: src/Modules/Login/LoginModule.php:61
+msgid "Changes the link address and the link text of the login logo."
+msgstr "Ändert Link-Adresse und Link-Text des Logos auf der Anmeldeseite."
+
+#: src/Modules/Login/LoginModule.php:62
+msgid "A link to wordpress.org confuses users who clicked the logo to get back to the website."
+msgstr "Ein Link auf wordpress.org verwirrt Benutzer, die auf das Logo geklickt haben, um zur Website zurückzukommen."
+
+#: src/Modules/Login/LoginModule.php:67
+msgid "Background colour"
+msgstr "Hintergrundfarbe"
+
+#: src/Modules/Login/LoginModule.php:68
+msgid "Background colour of the login page. Leave empty for WordPress' light grey."
+msgstr "Hintergrundfarbe der Anmeldeseite. Leer lassen für das Hellgrau von WordPress."
+
+#: src/Modules/Login/LoginModule.php:69
+msgid "Adds the colour to the login page as a small inline style."
+msgstr "Fügt die Farbe per kleinem Inline-Stil der Anmeldeseite hinzu."
+
+#: src/Modules/Login/LoginModule.php:70
+msgid "Matches the login page to the site's colours."
+msgstr "Passt die Anmeldeseite an die Farben der Website an."
+
+#: src/Modules/Login/LoginModule.php:71
+msgid "Choose a colour the links below the form (\"Lost your password?\") stay readable on; their colour doesn't change."
+msgstr "Wählen Sie eine Farbe, auf der die Links unter dem Formular („Passwort vergessen?“) lesbar bleiben; ihre Farbe ändert sich nicht."
+
+#: src/Modules/Login/LoginModule.php:76
+msgid "Hide the language switcher"
+msgstr "Sprachumschalter ausblenden"
+
+#: src/Modules/Login/LoginModule.php:77
+msgid "Removes the language selection at the bottom of the login page. It appears as soon as a second language (e.g. German) is installed. Users still see the login page in the site's language."
+msgstr "Entfernt die Sprachauswahl unten auf der Anmeldeseite. Sie erscheint, sobald eine zweite Sprache (z. B. Deutsch) installiert ist. Benutzer sehen die Anmeldeseite weiterhin in der Sprache der Website."
+
+#: src/Modules/Login/LoginModule.php:78
+msgid "Answers WordPress' \"show the language dropdown on the login screen?\" filter with no."
+msgstr "Beantwortet den Filter „Sprachauswahl auf der Anmeldeseite anzeigen?“ von WordPress mit Nein."
+
+#: src/Modules/Login/LoginModule.php:79
+msgid "On single-language sites the switcher is clutter that invites users to switch to a language nobody maintains."
+msgstr "Auf einsprachigen Websites ist der Umschalter unnötig und lädt dazu ein, auf eine Sprache umzuschalten, die niemand pflegt."
+
+#: src/Modules/Media/MediaModule.php:24
+msgid "Media"
+msgstr "Medien"
+
+#: src/Modules/Media/MediaModule.php:28
+msgid "Uploads and images."
+msgstr "Uploads und Bilder."
+
+#: src/Modules/Media/MediaModule.php:36
+msgid "Clean up file names on upload"
+msgstr "Dateinamen beim Hochladen bereinigen"
+
+#: src/Modules/Media/MediaModule.php:37
+msgid "Uploaded files get simple, web-safe names: lowercase, umlauts and accents written out, spaces and special characters replaced by dashes. \"Größe Übersicht (1).JPG\" becomes \"groesse-uebersicht-1.jpg\". Files already in the media library are not renamed."
+msgstr "Hochgeladene Dateien bekommen einfache, websichere Namen: Kleinbuchstaben, Umlaute und Akzente ausgeschrieben, Leerzeichen und Sonderzeichen durch Bindestriche ersetzt. Aus „Größe Übersicht (1).JPG“ wird „groesse-uebersicht-1.jpg“. Dateien, die schon in der Mediathek sind, werden nicht umbenannt."
+
+#: src/Modules/Media/MediaModule.php:38
+msgid "Writes out umlauts and accents (ä → ae, ß → ss, é → e) in the original file name, runs WordPress' own file name cleanup on the result (which keeps its safety measures, e.g. for \"file.php.jpg\"), then lowercases it and replaces everything except letters, digits, dots and dashes."
+msgstr "Schreibt Umlaute und Akzente im ursprünglichen Dateinamen aus (ä → ae, ß → ss, é → e), lässt die eigene Dateinamen-Bereinigung von WordPress über das Ergebnis laufen (die ihre Schutzmaßnahmen behält, z. B. für „datei.php.jpg“), setzt ihn dann in Kleinbuchstaben und ersetzt alles außer Buchstaben, Ziffern, Punkten und Bindestrichen."
+
+#: src/Modules/Media/MediaModule.php:39
+msgid "Names with umlauts, spaces or special characters break links, cause encoding problems when a site moves, and look bad in URLs. WordPress on its own turns \"Größe\" into \"Grose\"."
+msgstr "Namen mit Umlauten, Leerzeichen oder Sonderzeichen machen Links kaputt, verursachen Kodierungsprobleme beim Umzug einer Website und sehen in URLs schlecht aus. WordPress allein macht aus „Größe“ ein „Grose“."
+
+#: src/Modules/Media/MediaModule.php:51
+msgid "Don't create these image sizes"
+msgstr "Diese Bildgrößen nicht erzeugen"
+
+#: src/Modules/Media/MediaModule.php:52
+msgid "WordPress creates several resized copies of every uploaded image. The selected sizes are no longer created for new uploads."
+msgstr "WordPress erzeugt von jedem hochgeladenen Bild mehrere verkleinerte Kopien. Die ausgewählten Größen werden für neue Uploads nicht mehr erzeugt."
+
+#: src/Modules/Media/MediaModule.php:53
+msgid "Removes the selected sizes from the list WordPress generates after an upload. The list shows all sizes registered by WordPress, the theme and plugins. Existing files are not deleted."
+msgstr "Entfernt die ausgewählten Größen aus der Liste, die WordPress nach einem Upload erzeugt. Die Liste zeigt alle Größen, die WordPress, das Theme und Plugins registriert haben. Vorhandene Dateien werden nicht gelöscht."
+
+#: src/Modules/Media/MediaModule.php:54
+msgid "Sizes nothing uses only fill up the server and backups. 1536×1536 and 2048×2048 in particular are rarely needed; Elementor sites mostly use \"full\", \"large\" and \"medium\"."
+msgstr "Größen, die nichts nutzt, füllen nur den Server und die Backups. Besonders 1536×1536 und 2048×2048 werden selten gebraucht; Elementor-Websites nutzen meist „full“, „large“ und „medium“."
+
+#: src/Modules/Media/MediaModule.php:55
+msgid "If the theme or a plugin asks for a size that doesn't exist, WordPress uses the next larger one. Only disable sizes you know are unused."
+msgstr "Fragt das Theme oder ein Plugin nach einer Größe, die es nicht gibt, nimmt WordPress die nächstgrößere. Deaktivieren Sie nur Größen, von denen Sie wissen, dass sie ungenutzt sind."
+
+#: src/Modules/Security/SecurityModule.php:33
+msgid "Security"
+msgstr "Sicherheit"
+
+#: src/Modules/Security/SecurityModule.php:37
+msgid "Closes doors WordPress leaves open by default. Login protection (hiding usernames, login errors, brute force) is best left to Wordfence, which does it by default."
+msgstr "Schließt Türen, die WordPress standardmäßig offen lässt. Anmeldeschutz (Benutzernamen verbergen, Anmeldefehler, Brute Force) überlässt man am besten Wordfence, das das standardmäßig tut."
+
+#: src/Modules/Security/SecurityModule.php:45
+msgid "Disable XML-RPC"
+msgstr "XML-RPC deaktivieren"
+
+#: src/Modules/Security/SecurityModule.php:46
+msgid "Switches off the old XML-RPC interface (xmlrpc.php) completely."
+msgstr "Schaltet die alte XML-RPC-Schnittstelle (xmlrpc.php) vollständig ab."
+
+#: src/Modules/Security/SecurityModule.php:47
+msgid "Answers every request to xmlrpc.php with 403 \"forbidden\" right after WordPress has loaded, disables all XML-RPC methods, and removes the X-Pingback header that advertises the interface."
+msgstr "Beantwortet jede Anfrage an xmlrpc.php direkt nach dem Laden von WordPress mit 403 „verboten“, deaktiviert alle XML-RPC-Methoden und entfernt den X-Pingback-Header, der die Schnittstelle bewirbt."
+
+#: src/Modules/Security/SecurityModule.php:48
+msgid "XML-RPC predates the REST API and is hardly used anymore, but it is a favourite target: attackers use it to try hundreds of passwords in a single request and to misuse sites for attacks on others."
+msgstr "XML-RPC ist älter als die REST-API und wird kaum noch genutzt, ist aber ein beliebtes Angriffsziel: Angreifer probieren darüber Hunderte Passwörter in einer einzigen Anfrage aus und missbrauchen Websites für Angriffe auf andere."
+
+#: src/Modules/Security/SecurityModule.php:49
+msgid "Tools that still use XML-RPC stop working with this site, e.g. Jetpack and some older publishing apps."
+msgstr "Werkzeuge, die noch XML-RPC nutzen, funktionieren mit dieser Website nicht mehr, z. B. Jetpack und manche ältere Publishing-Apps."
+
+#: src/Modules/Security/SecurityModule.php:54
+msgid "Disable the theme and plugin file editor"
+msgstr "Theme- und Plugin-Datei-Editor deaktivieren"
+
+#: src/Modules/Security/SecurityModule.php:55
+msgid "Removes the code editors under Appearance → Theme File Editor and Tools → Plugin File Editor for everyone, including administrators. Installing and updating plugins and themes keeps working."
+msgstr "Entfernt die Code-Editoren unter Design → Theme-Datei-Editor und Werkzeuge → Plugin-Datei-Editor für alle, auch für Administratoren. Plugins und Themes installieren und aktualisieren funktioniert weiterhin."
+
+#: src/Modules/Security/SecurityModule.php:56
+msgid "Denies the edit_themes, edit_plugins and edit_files capabilities to all users, which is what WordPress' DISALLOW_FILE_EDIT constant does, but switchable."
+msgstr "Verweigert allen Benutzern die Berechtigungen edit_themes, edit_plugins und edit_files. Das entspricht der WordPress-Konstante DISALLOW_FILE_EDIT, ist aber schaltbar."
+
+#: src/Modules/Security/SecurityModule.php:57
+msgid "Anyone who gets into an admin account could use the editor to run their own code on the server. Editing live code is also an easy way to break a site."
+msgstr "Wer in ein Admin-Konto kommt, könnte über den Editor eigenen Code auf dem Server ausführen. Live-Code zu bearbeiten ist außerdem ein einfacher Weg, eine Website kaputtzumachen."
+
+#: src/Modules/Security/SecurityModule.php:58
+msgid "Changes to a child theme (e.g. Hello Elementor's functions.php) have to be made via FTP or a deployment instead."
+msgstr "Änderungen an einem Child-Theme (z. B. der functions.php von Hello Elementor) müssen stattdessen per FTP oder Deployment erfolgen."
+
+#: src/Modules/Security/SecurityModule.php:63
+msgid "Send security headers"
+msgstr "Sicherheits-Header senden"
+
+#: src/Modules/Security/SecurityModule.php:64
+msgid "Tells browsers to be stricter with your site: other sites may not show your pages in a frame, file types are not guessed, and only your domain (not the full address) is passed on when visitors follow a link to another site. The header that reveals the PHP version is removed."
+msgstr "Weist Browser an, mit Ihrer Website strenger zu sein: Andere Websites dürfen Ihre Seiten nicht in einem Frame anzeigen, Dateitypen werden nicht erraten, und wenn Besucher einem Link auf eine andere Website folgen, wird nur Ihre Domain weitergegeben (nicht die vollständige Adresse). Der Header, der die PHP-Version verrät, wird entfernt."
+
+#: src/Modules/Security/SecurityModule.php:65
+msgid "Sends X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff and Referrer-Policy: strict-origin-when-cross-origin, and removes X-Powered-By. On Apache and LiteSpeed servers the same rules are also written to .htaccess (in a block marked \"wp-toolbox\", removed again when you switch this off or deactivate the plugin), so they also reach pages served from a page cache like WP-Optimize, and static files."
+msgstr "Sendet X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff und Referrer-Policy: strict-origin-when-cross-origin und entfernt X-Powered-By. Auf Apache- und LiteSpeed-Servern werden dieselben Regeln zusätzlich in die .htaccess geschrieben (in einem mit „wp-toolbox“ markierten Block, der wieder entfernt wird, wenn Sie das abschalten oder das Plugin deaktivieren), damit sie auch Seiten aus einem Seiten-Cache wie WP-Optimize und statische Dateien erreichen."
+
+#: src/Modules/Security/SecurityModule.php:66
+msgid "These headers protect visitors against clickjacking (your page invisibly framed by another site) and content sniffing attacks, and give other sites less information about your visitors."
+msgstr "Diese Header schützen Besucher vor Clickjacking (Ihre Seite unsichtbar in eine fremde Website eingebettet) und Content-Sniffing-Angriffen und geben anderen Websites weniger Informationen über Ihre Besucher."
+
+#: src/Modules/Security/SecurityModule.php:67
+msgid "Other websites can no longer show your pages in an iframe; the Elementor editor is not affected (it frames pages of the same site). These values replace values for the same headers set by the server or other plugins."
+msgstr "Andere Websites können Ihre Seiten nicht mehr in einem iframe anzeigen; der Elementor-Editor ist nicht betroffen (er bettet Seiten derselben Website ein). Diese Werte ersetzen Werte für dieselben Header, die der Server oder andere Plugins setzen."
+
+#: src/Modules/Security/SecurityModule.php:115
+msgid "XML-RPC services are disabled on this site."
+msgstr "XML-RPC-Dienste sind auf dieser Website deaktiviert."
+
+#. translators: %s: setting name, e.g. "login.background_color"
+#: src/Settings/Settings.php:196
+#, php-format
+msgid "%s has an invalid format."
+msgstr "%s hat ein ungültiges Format."
+
+#: assets/src/settings/App.js:97
+msgid "Settings saved."
+msgstr "Einstellungen gespeichert."
+
+#. translators: %s: error message
+#: assets/src/settings/App.js:104
+msgid "The settings were not saved: %s"
+msgstr "Die Einstellungen wurden nicht gespeichert: %s"
+
+#: assets/src/settings/App.js:105
+msgid "unknown error"
+msgstr "unbekannter Fehler"
+
+#. translators: %d: number of settings
+#: assets/src/settings/App.js:118
+msgid "%d setting filled in from the file."
+msgid_plural "%d settings filled in from the file."
+msgstr[0] "%d Einstellung aus der Datei übernommen."
+msgstr[1] "%d Einstellungen aus der Datei übernommen."
+
+#: assets/src/settings/App.js:126
+msgid "Review the changes, then save."
+msgstr "Prüfen Sie die Änderungen und speichern Sie dann."
+
+#. translators: %s: list of setting names
+#: assets/src/settings/App.js:132
+msgid "Skipped (unknown or set in wp-config.php): %s"
+msgstr "Übersprungen (unbekannt oder in der wp-config.php festgelegt): %s"
+
+#: assets/src/settings/App.js:174
+msgid "This file is not a wp-toolbox settings file."
+msgstr "Diese Datei ist keine wp-toolbox-Einstellungsdatei."
+
+#: assets/src/settings/App.js:233
+msgid "Reset this section to the defaults"
+msgstr "Diesen Abschnitt auf die Standardwerte zurücksetzen"
+
+#: assets/src/settings/App.js:261 assets/src/settings/App.js:262
+msgid "Search settings"
+msgstr "Einstellungen durchsuchen"
+
+#: assets/src/settings/App.js:272
+msgid "Export"
+msgstr "Exportieren"
+
+#: assets/src/settings/App.js:279
+msgid "Import…"
+msgstr "Importieren …"
+
+#. translators: %s: list of setting names
+#: assets/src/settings/App.js:295
+msgid "These entries in WPTB_SETTINGS (wp-config.php) are ignored because the setting doesn't exist or the value is invalid: %s"
+msgstr "Diese Einträge in WPTB_SETTINGS (wp-config.php) werden ignoriert, weil es die Einstellung nicht gibt oder der Wert ungültig ist: %s"
+
+#: assets/src/settings/App.js:319
+msgid "Sections"
+msgstr "Abschnitte"
+
+#: assets/src/settings/App.js:335 assets/src/settings/App.js:341
+msgid "Unsaved changes"
+msgstr "Ungespeicherte Änderungen"
+
+#: assets/src/settings/App.js:352
+msgid "No settings match your search."
+msgstr "Keine Einstellung passt zu Ihrer Suche."
+
+#: assets/src/settings/App.js:372
+msgid "Save changes"
+msgstr "Änderungen speichern"
+
+#: assets/src/settings/App.js:380
+msgid "Discard changes"
+msgstr "Änderungen verwerfen"
+
+#. translators: %s: list of section names
+#: assets/src/settings/App.js:386
+msgid "Unsaved changes: %s"
+msgstr "Ungespeicherte Änderungen: %s"
+
+#: assets/src/settings/Field.js:50
+msgid "Set in wp-config.php (WPTB_SETTINGS), so it can't be changed here."
+msgstr "In der wp-config.php (WPTB_SETTINGS) festgelegt, daher hier nicht änderbar."
+
+#: assets/src/settings/Field.js:57
+msgid "Why:"
+msgstr "Warum:"
+
+#: assets/src/settings/Field.js:61
+msgid "Keep in mind:"
+msgstr "Gut zu wissen:"
+
+#: assets/src/settings/Field.js:66
+msgid "How it works"
+msgstr "So funktioniert es"
+
+#: assets/src/settings/Field.js:178
+msgid "Default"
+msgstr "Standard"
+
+#: assets/src/settings/Field.js:198
+msgid "Clear"
+msgstr "Leeren"
+
+#: assets/src/settings/Field.js:238
+msgid "Use this image"
+msgstr "Dieses Bild verwenden"
+
+#: assets/src/settings/Field.js:257
+msgid "The selected image no longer exists."
+msgstr "Das ausgewählte Bild existiert nicht mehr."
+
+#: assets/src/settings/Field.js:269
+msgid "Replace image"
+msgstr "Bild ersetzen"
+
+#: assets/src/settings/Field.js:270
+msgid "Choose image"
+msgstr "Bild auswählen"
+
+#: assets/src/settings/Field.js:279
+msgid "Remove"
+msgstr "Entfernen"

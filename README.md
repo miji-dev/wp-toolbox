@@ -76,8 +76,13 @@ npm run lint:js
 npm run test:js    # unit tests of the settings page helpers (Vitest)
 npm run test:e2e   # browser tests (Playwright) against a throwaway WordPress on 127.0.0.1:8889, see bin/e2e-site.sh
 
-composer build     # build/wp-toolbox.zip
+composer build     # build/wp-toolbox.zip (needs WP-CLI for the translations: `wp`, or WP_CLI=/path/to/wp-cli.phar)
 ```
+
+Translations (German, informal and formal) are in `languages/*.po`. After changing texts in the code, run
+`bin/i18n.sh`: it updates the template and the PO files (with gettext's `msgmerge` if installed, which keeps changed
+texts as "fuzzy" instead of dropping their translation) and lists what needs translating. CI fails while any string
+is untranslated. The files WordPress loads are generated when building the zip.
 
 Releasing: `bin/set-version.sh 4.1.0`, commit, then `git tag v4.1.0 && git push && git push origin v4.1.0`
 (a version with a suffix like `4.1.0-beta.1` becomes a prerelease).

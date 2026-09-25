@@ -44,7 +44,9 @@ jobs:
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
-      - run: bin/build-zip.sh
+      - run: curl -sSLo /tmp/wp-cli.phar https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+      - run: WP_CLI=/tmp/wp-cli.phar bin/i18n.sh --check
+      - run: WP_CLI=/tmp/wp-cli.phar bin/build-zip.sh
 
       - name: Publish
         env:

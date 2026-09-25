@@ -23,6 +23,10 @@ WordPress plugin, PHP 8.3+, WordPress 7.1+ (latest only), single site only.
 - PHPUnit is 9.6 because the WordPress test library doesn't support 10+ yet.
 - Settings page: Vitest for `assets/src/**/test`, Playwright in `tests/e2e` (real WordPress from `bin/e2e-site.sh`). E2E tests fail on any browser console error.
 
+## Translations
+- Text domain `wptb`. Every user-facing string goes through `__()` & co (PHP) or `@wordpress/i18n` (JS).
+- `languages/*.po` are the sources (de_DE "du", de_DE_formal "Sie"); run `bin/i18n.sh` after changing texts and translate what it lists. Use WordPress' German terms (Werkzeugleiste, Beiträge, Mediathek, …).
+
 ## Security
 - Escape all output late (`esc_html`, `esc_attr`, `esc_url`, `wp_json_encode` for JS). Sanitize and validate all input. Check capabilities and nonces.
 - PHPStan level max and the WordPress security sniffs must stay clean. Don't suppress findings; fix the cause.

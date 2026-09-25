@@ -6,3 +6,6 @@
 /assets/build/
 /test-results/
 /playwright-report/
+/languages/*.l10n.php
+/languages/*.json
+/languages/*.mo
