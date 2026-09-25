@@ -30,10 +30,10 @@ final class HeadModule implements Module {
 			Field::bool(
 				'remove_generator',
 				true,
-				__('Hide the WordPress version', 'wptb'),
-				what: __('Removes the tag that tells every visitor which WordPress version the site runs.', 'wptb'),
-				how: __('Removes the "generator" meta tag from the page header and the generator line from feeds.', 'wptb'),
-				why: __('The version number helps attackers pick known vulnerabilities; nobody else needs it.', 'wptb'),
+				__('Hide WordPress and plugin versions', 'wptb'),
+				what: __('Removes the tags and comments that tell every visitor which versions of WordPress, Elementor and Yoast SEO the site runs.', 'wptb'),
+				how: __('Removes WordPress\' "generator" meta tag from the page header and feeds, switches on Elementor\'s own "hide generator tag" option and turns off Yoast SEO\'s "optimized with Yoast SEO vX" HTML comment.', 'wptb'),
+				why: __('Version numbers help attackers pick known vulnerabilities (plugins like Elementor are a frequent target); nobody else needs them.', 'wptb'),
 			),
 			Field::bool(
 				'remove_rsd',
@@ -82,6 +82,8 @@ final class HeadModule implements Module {
 			remove_action('wp_head', 'wp_generator');
 			// the generator also appears in feeds
 			add_filter('the_generator', '__return_empty_string');
+			add_filter('pre_option_elementor_meta_generator_tag', static fn (): string => '1');
+			add_filter('wpseo_debug_markers', '__return_false');
 		}
 
 		if ($on('remove_rsd')) {

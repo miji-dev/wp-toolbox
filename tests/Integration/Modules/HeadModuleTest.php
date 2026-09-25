@@ -58,6 +58,18 @@ final class HeadModuleTest extends WP_UnitTestCase {
 		$this->assertSame('', trim($this->output(static fn () => the_generator('atom'))));
 	}
 
+	public function test_elementor_and_yoast_versions_are_hidden_too(): void {
+		$this->enable([]);
+		$this->assertFalse(get_option('elementor_meta_generator_tag'), 'off: untouched');
+		$this->assertTrue(apply_filters('wpseo_debug_markers', true));
+
+		$this->enable(['remove_generator' => true]);
+
+		// Elementor's own "hide generator tag" option, and Yoast's HTML comment with its version
+		$this->assertSame('1', get_option('elementor_meta_generator_tag'));
+		$this->assertFalse(apply_filters('wpseo_debug_markers', true));
+	}
+
 	public function test_rsd_link_is_removed(): void {
 		$this->enable(['remove_rsd' => true]);
 
