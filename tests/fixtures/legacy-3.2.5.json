@@ -1,0 +1,124 @@
+{
+    "_comment": "Options and cron events of a real wp-toolbox 3.2.5 install with every setting saved through its settings page (captured 2026-09-25). Logo_media/Favicon_media point to attachment 4 of that install.",
+    "options": {
+        "adminbar_position": {
+            "value": "3",
+            "autoload": "auto"
+        },
+        "Background_Color_color": {
+            "value": "#123abc",
+            "autoload": "auto"
+        },
+        "disable_comments": {
+            "value": "1",
+            "autoload": "auto"
+        },
+        "disable_gutenberg": {
+            "value": "1",
+            "autoload": "auto"
+        },
+        "disable_posts": {
+            "value": "1",
+            "autoload": "auto"
+        },
+        "enable_maintenance": {
+            "value": "1",
+            "autoload": "auto"
+        },
+        "external_updates-wptb": {
+            "value": "O:8:\"stdClass\":5:{s:9:\"lastCheck\";i:1790343508;s:14:\"checkedVersion\";s:5:\"3.2.5\";s:6:\"update\";O:8:\"stdClass\":11:{s:4:\"slug\";s:4:\"wptb\";s:7:\"version\";s:5:\"3.2.5\";s:12:\"download_url\";s:79:\"https://updates.miji.dev/updates/?action=download&slug=wp-toolbox&version=3.2.5\";s:12:\"translations\";a:0:{}s:2:\"id\";i:0;s:8:\"homepage\";s:38:\"https://github.com/miji-dev/wp-toolbox\";s:6:\"tested\";s:5:\"7.1.2\";s:12:\"requires_php\";s:3:\"7.4\";s:14:\"upgrade_notice\";N;s:5:\"icons\";a:0:{}s:8:\"filename\";s:25:\"wp-toolbox/wp-toolbox.php\";}s:11:\"updateClass\";s:23:\"Puc_v4p11_Plugin_Update\";s:15:\"updateBaseClass\";s:13:\"Plugin_Update\";}",
+            "autoload": "off"
+        },
+        "Favicon_media": {
+            "value": "4",
+            "autoload": "auto"
+        },
+        "Logo_media": {
+            "value": "4",
+            "autoload": "auto"
+        },
+        "only_elementor": {
+            "value": "1",
+            "autoload": "auto"
+        },
+        "wptb_button_accept_text": {
+            "value": "Akzeptieren",
+            "autoload": "auto"
+        },
+        "wptb_button_reject_text": {
+            "value": "Ablehnen",
+            "autoload": "auto"
+        },
+        "wptb_button_save_text": {
+            "value": "Speichern",
+            "autoload": "auto"
+        },
+        "wptb_button_settings_text": {
+            "value": "Einstellungen",
+            "autoload": "auto"
+        },
+        "wptb_category_analytics": {
+            "value": "Statistik",
+            "autoload": "auto"
+        },
+        "wptb_category_analytics_text": {
+            "value": "Analyse",
+            "autoload": "auto"
+        },
+        "wptb_category_necessary": {
+            "value": "Notwendig",
+            "autoload": "auto"
+        },
+        "wptb_category_necessary_text": {
+            "value": "Nötig",
+            "autoload": "auto"
+        },
+        "wptb_cookie_banner_text": {
+            "value": "Wir nutzen Cookies fett",
+            "autoload": "auto"
+        },
+        "wptb_crawling": {
+            "value": "",
+            "autoload": "auto"
+        },
+        "wptb_ga_activated": {
+            "value": "1",
+            "autoload": "auto"
+        },
+        "wptb_ga_api_key": {
+            "value": "G-TEST123",
+            "autoload": "auto"
+        },
+        "wptb_imprint_text": {
+            "value": "Impressum",
+            "autoload": "auto"
+        },
+        "wptb_imprint_url": {
+            "value": "/impressum",
+            "autoload": "auto"
+        },
+        "wptb_privacy_text": {
+            "value": "Datenschutz",
+            "autoload": "auto"
+        },
+        "wptb_privacy_url": {
+            "value": "/datenschutz",
+            "autoload": "auto"
+        },
+        "wptb_show_banner_again_button": {
+            "value": "1",
+            "autoload": "auto"
+        },
+        "wptb_show_banner_again_text": {
+            "value": "Cookie-Einstellungen",
+            "autoload": "auto"
+        },
+        "wptb_styles_everywhere": {
+            "value": "1",
+            "autoload": "auto"
+        }
+    },
+    "cron": [
+        "puc_cron_check_updates-wptb"
+    ]
+}

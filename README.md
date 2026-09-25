@@ -32,6 +32,18 @@ define('WPTB_SETTINGS', [
 define('WPTB_UPDATE_CHANNEL', 'beta');
 ```
 
+## Updating from 3.x (and sw-toolbox)
+
+Version 4 is a rewrite. Sites on wp-toolbox 3.x update to it like to any other version (same plugin folder).
+On the first request afterwards, the plugin, once:
+
+- carries over the settings that were switched on (disable comments/posts/Gutenberg, "only Elementor", login logo
+  and background colour); everything else gets the new defaults,
+- deletes every option 3.x (and its predecessor sw-toolbox) stored, the old update checker's data and cron job, and
+  the cookie banner texts registered in WPML,
+- shows administrators a notice if maintenance mode or Google Analytics/the cookie banner were in use (both are gone
+  in v4), with links to pages that still contain the old shortcodes or map widget (which now render nothing).
+
 ## Settings
 
 In wp-admin under *Settings → Toolbox*, or with WP-CLI:

@@ -12,6 +12,7 @@ WordPress plugin, PHP 8.3+, WordPress 7.1+ (latest only), single site only.
 - Settings page: `src/Admin` (page, REST route `wptb/v1/settings`) plus a React app in `assets/src/settings` built with `@wordpress/scripts` into `assets/build` (not committed; built in CI and for the zip). It renders every module and field generically from `SettingsPage::data()`, so new fields need no JS changes. Keep logic that can be tested without a browser in `utils.js`.
 - No runtime dependencies: the plugin ships its own autoloader (`wp-toolbox.php`) and no `vendor/`. Composer is for development tools only.
 - Module IDs and field keys are stored in the database: never rename them once released. If you must, add a migration.
+- `src/Migration`: the one-time update from 3.x, tested against `tests/fixtures/legacy-3.2.5.json` (the options of a real 3.2.5 install). Later schema changes bump `Migration::VERSION` and add a step.
 
 ## Testing (TDD)
 - Write the failing test first. `composer check` must pass before every commit.

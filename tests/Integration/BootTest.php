@@ -39,6 +39,12 @@ final class BootTest extends WP_UnitTestCase {
 		$this->assertNotFalse(has_filter('plugin_action_links_wp-toolbox/wp-toolbox.php'));
 	}
 
+	public function test_migration_from_3x_is_wired_up(): void {
+		$this->assertNotFalse(has_action('wp_loaded'));
+		$this->assertNotFalse(has_action('admin_post_wptb_dismiss_migration_notice'));
+		$this->assertTrue(shortcode_exists('wptb-yt'));
+	}
+
 	public function test_boots_early_on_init(): void {
 		// after plugins_loaded/after_setup_theme (translations, other plugins), before post types register on init 10
 		$this->assertNotFalse(has_action('init'));

@@ -6,6 +6,8 @@
 defined('WP_UNINSTALL_PLUGIN') || exit;
 
 delete_option('wptb_settings');
+delete_option('wptb_db_version');
+delete_option('wptb_migration_notice');
 delete_site_transient('wptb_update_stable');
 delete_site_transient('wptb_update_beta');
 
