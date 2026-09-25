@@ -9,6 +9,7 @@ use Miji\Toolbox\Modules\Blog\BlogModule;
 use Miji\Toolbox\Modules\Comments\CommentsModule;
 use Miji\Toolbox\Modules\Dashboard\DashboardModule;
 use Miji\Toolbox\Modules\Editor\EditorModule;
+use Miji\Toolbox\Modules\Elementor\ElementorModule;
 use Miji\Toolbox\Modules\Environment\EnvironmentModule;
 use Miji\Toolbox\Modules\Head\HeadModule;
 use Miji\Toolbox\Modules\Login\LoginModule;
@@ -66,6 +67,7 @@ final class Plugin {
 			new MaintenanceModule(),
 			new EnvironmentModule(),
 			new EditorModule(),
+			new ElementorModule(),
 		];
 	}
 
