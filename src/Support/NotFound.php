@@ -7,8 +7,8 @@ namespace Miji\Toolbox\Support;
 use WP_Query;
 
 /**
- * Turns the current frontend request into a regular 404 (theme's 404 template, 404 status, not cached).
- * Call it on template_redirect.
+ * Turns the current frontend request into a regular 404 (theme's 404 template, 404 status, not cached,
+ * no canonical redirect). Call it on template_redirect before priority 10.
  */
 final class NotFound {
 	public static function send(): void {
@@ -23,5 +23,10 @@ final class NotFound {
 		$wp_query->is_comment_feed = false;
 		status_header(404);
 		nocache_headers();
+
+		// redirect_canonical (template_redirect 10) would otherwise treat this as a broken URL, "guess" the
+		// intended one and 301 there, e.g. /some-page/embed/ -> /some-page/
+		add_filter('redirect_canonical', '__return_false', PHP_INT_MAX);
+		add_filter('do_redirect_guess_404_permalink', '__return_false', PHP_INT_MAX);
 	}
 }

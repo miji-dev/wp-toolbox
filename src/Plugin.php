@@ -6,6 +6,7 @@ namespace Miji\Toolbox;
 
 use Miji\Toolbox\Modules\Blog\BlogModule;
 use Miji\Toolbox\Modules\Comments\CommentsModule;
+use Miji\Toolbox\Modules\Head\HeadModule;
 use Miji\Toolbox\Settings\Settings;
 use Miji\Toolbox\Updater\GitHubUpdater;
 
@@ -48,6 +49,7 @@ final class Plugin {
 		return [
 			new CommentsModule(),
 			new BlogModule(),
+			new HeadModule(),
 		];
 	}
 
