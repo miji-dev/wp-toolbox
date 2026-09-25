@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Miji\Toolbox;
 
+use Miji\Toolbox\Modules\Admin\AdminModule;
 use Miji\Toolbox\Modules\Blog\BlogModule;
 use Miji\Toolbox\Modules\Comments\CommentsModule;
+use Miji\Toolbox\Modules\Dashboard\DashboardModule;
 use Miji\Toolbox\Modules\Head\HeadModule;
 use Miji\Toolbox\Modules\Security\SecurityModule;
 use Miji\Toolbox\Settings\Settings;
@@ -52,6 +54,8 @@ final class Plugin {
 			new BlogModule(),
 			new HeadModule(),
 			new SecurityModule(),
+			new AdminModule(),
+			new DashboardModule(),
 		];
 	}
 
