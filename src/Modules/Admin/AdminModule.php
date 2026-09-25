@@ -36,11 +36,12 @@ final class AdminModule implements Module {
 			Field::multi(
 				'admin_bar_items',
 				[
-					'wp-logo' => __('WordPress logo menu (links to wordpress.org)', 'wptb'),
-					'new-content' => __('"+ New" menu', 'wptb'),
-					'customize' => __('"Customize" link', 'wptb'),
-					'updates' => __('Updates counter', 'wptb'),
-					'search' => __('Search field (on the website)', 'wptb'),
+					'wp-logo' => Field::option(__('WordPress logo menu (links to wordpress.org)', 'wptb'), __('The WordPress logo on the far left, with links to wordpress.org, the documentation and the support forums.', 'wptb')),
+					'new-content' => Field::option(__('"+ New" menu', 'wptb'), __('Shortcut to create a new post, page, media file or user.', 'wptb')),
+					'customize' => Field::option(__('"Customize" link', 'wptb'), __('Shown on the website with classic themes; opens the Customizer, WordPress\' live editor for theme options. Elementor sites and block themes don\'t need it.', 'wptb')),
+					'updates' => Field::option(__('Updates counter', 'wptb'), __('The circular arrow with the number of available updates. The updates themselves stay under Dashboard → Updates.', 'wptb')),
+					'search' => Field::option(__('Search field (on the website)', 'wptb'), __('The magnifier on the right of the toolbar while viewing the website; it searches the website.', 'wptb')),
+					'command-palette' => Field::option(__('Command palette (in the admin)', 'wptb'), __('The search field with ⌘K / Ctrl+K in the admin toolbar, which jumps to admin pages and actions. The keyboard shortcut keeps working.', 'wptb')),
 				],
 				[],
 				__('Remove toolbar items', 'wptb'),

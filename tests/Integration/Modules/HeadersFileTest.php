@@ -48,7 +48,7 @@ final class HeadersFileTest extends WP_UnitTestCase {
 		$this->assertStringStartsWith(self::EXISTING, $this->content());
 		$this->assertStringContainsString("# BEGIN wp-toolbox\n", $this->content());
 		$this->assertStringContainsString("Header always set X-Frame-Options \"SAMEORIGIN\"\n", $this->content());
-		$this->assertStringEndsWith("# END wp-toolbox", $this->content());
+		$this->assertStringEndsWith("# END wp-toolbox\n", $this->content());
 	}
 
 	public function test_syncing_again_changes_nothing(): void {
@@ -111,5 +111,41 @@ final class HeadersFileTest extends WP_UnitTestCase {
 		} finally {
 			chmod($this->file, 0644);
 		}
+	}
+
+	public function test_windows_line_endings_are_no_reason_to_rewrite(): void {
+		$file = new HeadersFile($this->file, apache: true);
+		$file->sync(true);
+		file_put_contents($this->file, str_replace("\n", "\r\n", $this->content()));
+		$before = $this->content();
+
+		$file->sync(true);
+
+		$this->assertSame($before, $this->content());
+	}
+
+	public function test_the_site_language_does_not_matter(): void {
+		// WordPress' own marker comments are translated; a language switch would rewrite the file
+		$file = new HeadersFile($this->file, apache: true);
+		$file->sync(true);
+		$before = $this->content();
+		switch_to_locale('de_DE');
+
+		$file->sync(true);
+
+		restore_previous_locale();
+		$this->assertSame($before, $this->content());
+		$this->assertStringContainsString('# Added by the wp toolbox plugin', $before);
+	}
+
+	public function test_the_file_is_replaced_in_one_step_with_its_permissions(): void {
+		// written next to it and renamed: Apache never reads a half-written .htaccess
+		chmod($this->file, 0604);
+
+		(new HeadersFile($this->file, apache: true))->sync(true);
+
+		clearstatcache();
+		$this->assertSame('0604', substr(sprintf('%o', fileperms($this->file)), -4));
+		$this->assertSame([basename($this->file)], array_values(array_filter(scandir(dirname($this->file)) ?: [], fn (string $f): bool => str_starts_with($f, basename($this->file)))), 'no temporary file left behind');
 	}
 }

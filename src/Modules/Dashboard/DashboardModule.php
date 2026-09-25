@@ -43,29 +43,29 @@ final class DashboardModule implements Module {
 	}
 
 	/**
-	 * @return array<string, string> widget id => label
+	 * @return array<string, string|array{label: string, description: string}> widget id => label
 	 */
 	private static function widgets(): array {
 		$widgets = [
-			'welcome_panel' => __('Welcome panel ("Welcome to WordPress!")', 'wptb'),
-			'dashboard_primary' => __('WordPress Events and News', 'wptb'),
-			'dashboard_quick_press' => __('Quick Draft', 'wptb'),
-			'dashboard_activity' => __('Activity (recent posts and comments)', 'wptb'),
-			'dashboard_right_now' => __('At a Glance', 'wptb'),
-			'dashboard_site_health' => __('Site Health Status', 'wptb'),
+			'welcome_panel' => Field::option(__('Welcome panel ("Welcome to WordPress!")', 'wptb'), __('Large box with links for getting started with WordPress.', 'wptb')),
+			'dashboard_primary' => Field::option(__('WordPress Events and News', 'wptb'), __('News from wordpress.org and WordPress meetups near the site\'s location.', 'wptb')),
+			'dashboard_quick_press' => Field::option(__('Quick Draft', 'wptb'), __('Form for writing a draft post directly on the dashboard.', 'wptb')),
+			'dashboard_activity' => Field::option(__('Activity (recent posts and comments)', 'wptb'), __('Recently published and scheduled posts and the latest comments.', 'wptb')),
+			'dashboard_right_now' => Field::option(__('At a Glance', 'wptb'), __('Number of posts, pages and comments, plus the WordPress version and theme.', 'wptb')),
+			'dashboard_site_health' => Field::option(__('Site Health Status', 'wptb'), __('Summary of WordPress\' technical self-check (details under Tools → Site Health).', 'wptb')),
 		];
 		if (defined('WPSEO_VERSION')) {
-			$widgets['wpseo-dashboard-overview'] = __('Yoast SEO: Posts Overview', 'wptb');
-			$widgets['wpseo-wincher-dashboard-overview'] = __('Yoast SEO / Wincher: Top Keyphrases', 'wptb');
+			$widgets['wpseo-dashboard-overview'] = Field::option(__('Yoast SEO: Posts Overview', 'wptb'), __('SEO and readability scores of the posts and pages.', 'wptb'));
+			$widgets['wpseo-wincher-dashboard-overview'] = Field::option(__('Yoast SEO / Wincher: Top Keyphrases', 'wptb'), __('Search rankings from the Wincher service; only useful with a Wincher account.', 'wptb'));
 		}
 		if (defined('WORDFENCE_VERSION')) {
-			$widgets['wordfence_activity_report_widget'] = __('Wordfence: activity report', 'wptb');
+			$widgets['wordfence_activity_report_widget'] = Field::option(__('Wordfence: activity report', 'wptb'), __('Blocked attacks, failed logins and updates of the last days. Wordfence can also email this report.', 'wptb'));
 		}
 		if (defined('ELEMENTOR_VERSION')) {
-			$widgets['e-dashboard-overview'] = __('Elementor Overview', 'wptb');
+			$widgets['e-dashboard-overview'] = Field::option(__('Elementor Overview', 'wptb'), __('Recently edited Elementor pages, plus news and offers from Elementor.', 'wptb'));
 		}
 		if (defined('WPO_VERSION')) {
-			$widgets['wp_optimize_performance'] = __('WP-Optimize: Performance', 'wptb');
+			$widgets['wp_optimize_performance'] = Field::option(__('WP-Optimize: Performance', 'wptb'), __('Performance tips and offers from WP-Optimize.', 'wptb'));
 		}
 		return $widgets;
 	}

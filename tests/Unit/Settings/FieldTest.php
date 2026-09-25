@@ -92,6 +92,20 @@ final class FieldTest extends TestCase {
 		$this->assertNull(Field::bool('b', false, 'B', 'What.', 'How.', 'Why.')->toArray()['sideEffects']);
 	}
 
+	public function test_options_can_be_explained(): void {
+		$field = Field::multi('items', [
+			'wp-logo' => Field::option('WordPress logo', 'Links to wordpress.org.'),
+			'search' => 'Search',
+		], [], 'Items', 'What.', 'How.', 'Why.');
+
+		$this->assertSame(['wp-logo' => 'WordPress logo', 'search' => 'Search'], $field->options(), 'labels, e.g. for messages and the schema');
+		$this->assertSame(['type' => 'array', 'items' => ['type' => 'string', 'enum' => ['wp-logo', 'search']], 'uniqueItems' => true, 'default' => []], $field->schema());
+		$this->assertSame([
+			['value' => 'wp-logo', 'label' => 'WordPress logo', 'description' => 'Links to wordpress.org.'],
+			['value' => 'search', 'label' => 'Search'],
+		], $field->toArray()['options']);
+	}
+
 	public function test_keys_are_restricted_to_snake_case(): void {
 		$this->expectException(InvalidArgumentException::class);
 		Field::bool('Bad-Key', false, 'L', 'What.', 'How.', 'Why.');

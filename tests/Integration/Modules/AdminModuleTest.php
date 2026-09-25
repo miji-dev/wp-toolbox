@@ -29,7 +29,7 @@ final class AdminModuleTest extends WP_UnitTestCase {
 	private function bar(): WP_Admin_Bar {
 		require_once ABSPATH . WPINC . '/class-wp-admin-bar.php';
 		$bar = new WP_Admin_Bar();
-		foreach (['wp-logo', 'about', 'site-name', 'new-content', 'new-page', 'customize', 'updates', 'search', 'my-account'] as $id) {
+		foreach (['wp-logo', 'about', 'site-name', 'new-content', 'new-page', 'customize', 'updates', 'search', 'command-palette', 'my-account'] as $id) {
 			$bar->add_node(['id' => $id, 'title' => $id, 'parent' => in_array($id, ['about'], true) ? 'wp-logo' : (in_array($id, ['new-page'], true) ? 'new-content' : false)]);
 		}
 		return $bar;
@@ -60,12 +60,13 @@ final class AdminModuleTest extends WP_UnitTestCase {
 
 
 	public function test_selected_admin_bar_items_are_removed(): void {
-		$this->enable(['admin_bar_items' => ['wp-logo', 'new-content', 'customize', 'search']]);
+		$this->enable(['admin_bar_items' => ['wp-logo', 'new-content', 'customize', 'search', 'command-palette']]);
 		$bar = $this->bar();
 
 		$this->module->removeAdminBarItems($bar);
 
-		foreach (['wp-logo', 'new-content', 'customize', 'search'] as $id) {
+		// command-palette: WordPress 7's "⌘K" search in the admin (not the website's "search")
+		foreach (['wp-logo', 'new-content', 'customize', 'search', 'command-palette'] as $id) {
 			$this->assertNull($bar->get_node($id), $id);
 		}
 		$this->assertNotNull($bar->get_node('site-name'));

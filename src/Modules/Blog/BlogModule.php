@@ -64,11 +64,11 @@ final class BlogModule implements Module {
 			Field::multi(
 				'remove_archives',
 				[
-					'author' => __('Author archives', 'wptb'),
-					'date' => __('Date archives', 'wptb'),
-					'category' => __('Category archives', 'wptb'),
-					'post_tag' => __('Tag archives', 'wptb'),
-					'post_format' => __('Post format archives', 'wptb'),
+					'author' => Field::option(__('Author archives', 'wptb'), __('All posts by one author, e.g. example.com/author/name/.', 'wptb')),
+					'date' => Field::option(__('Date archives', 'wptb'), __('Posts per year, month or day, e.g. example.com/2026/09/.', 'wptb')),
+					'category' => Field::option(__('Category archives', 'wptb'), __('Posts of one category, e.g. example.com/category/news/.', 'wptb')),
+					'post_tag' => Field::option(__('Tag archives', 'wptb'), __('Posts with one tag, e.g. example.com/tag/summer/.', 'wptb')),
+					'post_format' => Field::option(__('Post format archives', 'wptb'), __('Posts of one format (gallery, video, …), e.g. example.com/type/gallery/. Only a few themes use post formats.', 'wptb')),
 				],
 				[],
 				__('Remove archive pages', 'wptb'),

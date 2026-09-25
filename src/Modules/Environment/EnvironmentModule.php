@@ -69,8 +69,8 @@ final class EnvironmentModule implements Module {
 				'mail',
 				[
 					'send' => __('Send as usual', 'wptb'),
-					'block' => __('Don\'t send any emails', 'wptb'),
-					'redirect' => __('Send all emails to the address below instead', 'wptb'),
+					'block' => Field::option(__('Don\'t send any emails', 'wptb'), __('Every email is stopped; forms and shops still report success.', 'wptb')),
+					'redirect' => Field::option(__('Send all emails to the address below instead', 'wptb'), __('Every email goes only to that address, with the original recipients in the subject.', 'wptb')),
 				],
 				'send',
 				__('Emails on non-live sites', 'wptb'),

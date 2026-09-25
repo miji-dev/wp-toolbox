@@ -111,6 +111,12 @@ function MultiControl( { id, field, value, disabled, onChange } ) {
 	return (
 		<fieldset className="wptb-multi" aria-describedby={ `${ id }-help` }>
 			<legend className="wptb-multi__legend">{ field.label }</legend>
+			<p
+				id={ `${ id }-help` }
+				className="components-base-control__help wptb-multi__help"
+			>
+				{ field.what }
+			</p>
 			<div
 				className={
 					field.options.length > 6
@@ -123,6 +129,7 @@ function MultiControl( { id, field, value, disabled, onChange } ) {
 						{ ...common }
 						key={ option.value }
 						label={ option.label }
+						help={ option.description }
 						checked={ selected.includes( option.value ) }
 						disabled={ disabled }
 						onChange={ ( checked ) =>
@@ -131,9 +138,6 @@ function MultiControl( { id, field, value, disabled, onChange } ) {
 					/>
 				) ) }
 			</div>
-			<p id={ `${ id }-help` } className="components-base-control__help">
-				{ field.what }
-			</p>
 		</fieldset>
 	);
 }

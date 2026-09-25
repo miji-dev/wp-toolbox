@@ -13,6 +13,7 @@ namespace Miji\Toolbox\Modules\Security;
  */
 final class HeadersFile {
 	public const MARKER = 'wp-toolbox';
+	private const COMMENT = '# Added by the wp toolbox plugin (Settings → Toolbox → Security). Changes here are overwritten.';
 
 	public const HEADERS = [
 		'X-Frame-Options' => 'SAMEORIGIN',
@@ -55,16 +56,21 @@ final class HeadersFile {
 		if (!$this->serverReadsHtaccess()) {
 			return;
 		}
-		$file = $this->file();
 		if (!$enabled) {
 			$this->remove();
 			return;
 		}
-		require_once ABSPATH . 'wp-admin/includes/misc.php';
-		$current = array_values(array_filter(extract_from_markers($file, self::MARKER), static fn (string $line): bool => !str_starts_with($line, '#')));
-		if ($current !== self::rules()) {
-			insert_with_markers($file, self::MARKER, self::rules());
+
+		$file = $this->file();
+		$content = is_file($file) ? (string) file_get_contents($file) : ''; // phpcs:ignore WordPress.WP.AlternativeFunctions -- local file next to WordPress
+		$current = preg_match(self::pattern(), $content, $m) ? $m[0] : null;
+		if ($current !== null && self::normalize($current) === self::block()) {
+			return;
 		}
+		$updated = $current !== null
+			? str_replace($current, (preg_match('/^\r?\n/', $current) ? "\n" : '') . self::block() . "\n", $content)
+			: ($content === '' ? '' : rtrim($content, "\r\n") . "\n\n") . self::block() . "\n";
+		$this->replace($file, $updated);
 	}
 
 	/**
@@ -72,18 +78,61 @@ final class HeadersFile {
 	 */
 	public function remove(): void {
 		$file = $this->file();
-		if (!is_file($file) || !wp_is_writable($file)) {
+		if (!is_file($file)) {
 			return;
 		}
-		// phpcs:ignore WordPress.WP.AlternativeFunctions -- local file next to WordPress, same as insert_with_markers()
-		$content = (string) file_get_contents($file);
-		$marker = preg_quote(self::MARKER, '/');
-		// the block with its line break, and the blank line insert_with_markers() puts in front of it
-		$cleaned = preg_replace("/(?:^|(?<=\\n))\\n?# BEGIN $marker\\n.*?# END $marker(?:\\n|$)/s", '', $content, -1, $count);
+		$content = (string) file_get_contents($file); // phpcs:ignore WordPress.WP.AlternativeFunctions -- local file next to WordPress
+		$cleaned = preg_replace(self::pattern(), '', $content, -1, $count);
 		if ($count > 0 && is_string($cleaned)) {
-			// phpcs:ignore WordPress.WP.AlternativeFunctions -- see above
-			file_put_contents($file, $cleaned, LOCK_EX);
+			$this->replace($file, $cleaned);
 		}
+	}
+
+	/**
+	 * The block as written: markers, a fixed comment (not translated, so a language switch changes nothing), rules.
+	 */
+	private static function block(): string {
+		return implode("\n", ['# BEGIN ' . self::MARKER, self::COMMENT, ...self::rules(), '# END ' . self::MARKER]);
+	}
+
+	/**
+	 * The block with its trailing line break and the blank line before it (also as written by earlier versions with
+	 * insert_with_markers(), whose comment is translated).
+	 */
+	private static function pattern(): string {
+		$marker = preg_quote(self::MARKER, '/');
+		return "/(?:^|(?<=\\n))(?:\\r?\\n)?# BEGIN $marker\\r?\\n.*?# END $marker(?:\\r?\\n|$)/s";
+	}
+
+	private static function normalize(string $text): string {
+		return trim(str_replace("\r\n", "\n", $text), "\n");
+	}
+
+	/**
+	 * Writes the whole file next to it and renames it into place: Apache reads either the old or the new file,
+	 * never a half-written one (which would answer requests with a server error while it lasts).
+	 */
+	private function replace(string $file, string $content): void {
+		$dir = dirname($file);
+		if (is_file($file) ? !wp_is_writable($file) : !wp_is_writable($dir)) {
+			return;
+		}
+		// phpcs:disable WordPress.WP.AlternativeFunctions -- local file next to WordPress, like insert_with_markers()
+		if (is_link($file)) {
+			file_put_contents($file, $content, LOCK_EX);
+			return;
+		}
+		// ".ht…" files are never served by Apache
+		$temp = $dir . '/.htaccess.wptb-' . wp_generate_password(8, false);
+		if (file_put_contents($temp, $content) === false) {
+			return;
+		}
+		$perms = is_file($file) ? fileperms($file) : false;
+		chmod($temp, $perms !== false ? $perms & 0777 : 0644);
+		if (!rename($temp, $file)) {
+			wp_delete_file($temp);
+		}
+		// phpcs:enable
 	}
 
 	private function file(): string {

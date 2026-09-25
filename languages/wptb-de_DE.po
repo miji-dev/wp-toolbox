@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp toolbox 4.0.0-alpha.1\n"
 "Report-Msgid-Bugs-To: https://github.com/miji-dev/wp-toolbox/issues\n"
-"POT-Creation-Date: 2026-09-25T19:16:11+00:00\n"
+"POT-Creation-Date: 2026-09-25T22:01:58+00:00\n"
 "PO-Revision-Date: 2026-09-25 12:00+0200\n"
 "Last-Translator: Michael Stahl\n"
 "Language-Team: Michael Stahl\n"
@@ -96,99 +96,127 @@ msgstr "Ein ruhigerer Adminbereich: weniger Menüs, Hinweise und E-Mails, mit de
 msgid "WordPress logo menu (links to wordpress.org)"
 msgstr "WordPress-Logo-Menü (Links zu wordpress.org)"
 
+#: src/Modules/Admin/AdminModule.php:39
+msgid "The WordPress logo on the far left, with links to wordpress.org, the documentation and the support forums."
+msgstr "Das WordPress-Logo ganz links, mit Links zu wordpress.org, zur Dokumentation und zu den Support-Foren."
+
 #: src/Modules/Admin/AdminModule.php:40
 msgid "\"+ New\" menu"
 msgstr "Menü „+ Neu“"
+
+#: src/Modules/Admin/AdminModule.php:40
+msgid "Shortcut to create a new post, page, media file or user."
+msgstr "Abkürzung, um einen neuen Beitrag, eine Seite, eine Mediendatei oder einen Benutzer anzulegen."
 
 #: src/Modules/Admin/AdminModule.php:41
 msgid "\"Customize\" link"
 msgstr "Link „Customizer“"
 
+#: src/Modules/Admin/AdminModule.php:41
+msgid "Shown on the website with classic themes; opens the Customizer, WordPress' live editor for theme options. Elementor sites and block themes don't need it."
+msgstr "Erscheint auf der Website bei klassischen Themes und öffnet den Customizer, den Live-Editor von WordPress für Theme-Optionen. Elementor-Websites und Block-Themes brauchen ihn nicht."
+
 #: src/Modules/Admin/AdminModule.php:42
 msgid "Updates counter"
 msgstr "Aktualisierungs-Zähler"
+
+#: src/Modules/Admin/AdminModule.php:42
+msgid "The circular arrow with the number of available updates. The updates themselves stay under Dashboard → Updates."
+msgstr "Der kreisförmige Pfeil mit der Anzahl verfügbarer Aktualisierungen. Die Aktualisierungen selbst bleiben unter Dashboard → Aktualisierungen."
 
 #: src/Modules/Admin/AdminModule.php:43
 msgid "Search field (on the website)"
 msgstr "Suchfeld (auf der Website)"
 
-#: src/Modules/Admin/AdminModule.php:46
+#: src/Modules/Admin/AdminModule.php:43
+msgid "The magnifier on the right of the toolbar while viewing the website; it searches the website."
+msgstr "Die Lupe rechts in der Werkzeugleiste, während man die Website ansieht; sie durchsucht die Website."
+
+#: src/Modules/Admin/AdminModule.php:44
+msgid "Command palette (in the admin)"
+msgstr "Befehlspalette (im Adminbereich)"
+
+#: src/Modules/Admin/AdminModule.php:44
+msgid "The search field with ⌘K / Ctrl+K in the admin toolbar, which jumps to admin pages and actions. The keyboard shortcut keeps working."
+msgstr "Das Suchfeld mit ⌘K / Strg+K in der Werkzeugleiste des Adminbereichs, das zu Admin-Seiten und Aktionen springt. Das Tastenkürzel funktioniert weiterhin."
+
+#: src/Modules/Admin/AdminModule.php:47
 msgid "Remove toolbar items"
 msgstr "Elemente der Werkzeugleiste entfernen"
 
-#: src/Modules/Admin/AdminModule.php:47
+#: src/Modules/Admin/AdminModule.php:48
 msgid "Removes the selected items from the black toolbar at the top, for everyone, in the admin and on the website."
 msgstr "Entfernt die ausgewählten Elemente aus der schwarzen Werkzeugleiste oben, für alle, im Adminbereich und auf der Website."
 
-#: src/Modules/Admin/AdminModule.php:48
+#: src/Modules/Admin/AdminModule.php:49
 msgid "Removes the items' nodes from the toolbar after WordPress and all plugins have added theirs."
 msgstr "Entfernt die Elemente aus der Werkzeugleiste, nachdem WordPress und alle Plugins ihre hinzugefügt haben."
 
-#: src/Modules/Admin/AdminModule.php:49
+#: src/Modules/Admin/AdminModule.php:50
 msgid "Items nobody uses make the toolbar harder to read. The WordPress logo menu only links to wordpress.org."
 msgstr "Elemente, die niemand nutzt, machen die Werkzeugleiste unübersichtlich. Das WordPress-Logo-Menü verlinkt nur auf wordpress.org."
 
-#: src/Modules/Admin/AdminModule.php:54
+#: src/Modules/Admin/AdminModule.php:55
 msgid "Hide update notices from non-administrators"
 msgstr "Aktualisierungshinweise vor Nicht-Administratoren verbergen"
 
-#: src/Modules/Admin/AdminModule.php:55
+#: src/Modules/Admin/AdminModule.php:56
 msgid "Users who can't install updates (e.g. editors) no longer see \"WordPress X is available! Please notify the site administrator.\" Administrators still see all update notices."
 msgstr "Benutzer, die keine Aktualisierungen installieren können (z. B. Redakteure), sehen „WordPress X ist verfügbar! Bitte benachrichtige den Website-Administrator.“ nicht mehr. Administratoren sehen weiterhin alle Aktualisierungshinweise."
 
-#: src/Modules/Admin/AdminModule.php:56
+#: src/Modules/Admin/AdminModule.php:57
 msgid "Removes WordPress' update and maintenance notices from the admin for users without the update_core capability."
 msgstr "Entfernt die Aktualisierungs- und Wartungshinweise von WordPress im Adminbereich für Benutzer ohne die Berechtigung update_core."
 
-#: src/Modules/Admin/AdminModule.php:57
+#: src/Modules/Admin/AdminModule.php:58
 msgid "Editors can't act on these notices, and they worry clients who think something is broken."
 msgstr "Redakteure können mit diesen Hinweisen nichts anfangen, und sie verunsichern Kunden, die denken, etwas sei kaputt."
 
-#: src/Modules/Admin/AdminModule.php:62
+#: src/Modules/Admin/AdminModule.php:63
 msgid "Don't ask to confirm the admin email address"
 msgstr "Nicht nach der Bestätigung der Administrator-E-Mail-Adresse fragen"
 
-#: src/Modules/Admin/AdminModule.php:63
+#: src/Modules/Admin/AdminModule.php:64
 msgid "WordPress regularly interrupts the login of administrators with \"Is this still your email address?\". This turns that screen off."
 msgstr "WordPress unterbricht die Anmeldung von Administratoren regelmäßig mit „Ist das noch deine E-Mail-Adresse?“. Das schaltet diese Abfrage ab."
 
-#: src/Modules/Admin/AdminModule.php:64
+#: src/Modules/Admin/AdminModule.php:65
 msgid "Sets WordPress' admin_email_check_interval to 0, which disables the check."
 msgstr "Setzt admin_email_check_interval von WordPress auf 0, was die Prüfung abschaltet."
 
-#: src/Modules/Admin/AdminModule.php:65
+#: src/Modules/Admin/AdminModule.php:66
 msgid "When a site is looked after by an agency, the question interrupts the wrong people and the answer is always the same."
 msgstr "Wenn eine Agentur die Website betreut, stört die Frage die Falschen, und die Antwort ist immer dieselbe."
 
-#: src/Modules/Admin/AdminModule.php:66
+#: src/Modules/Admin/AdminModule.php:67
 msgid "Keep the admin email address (Settings → General) correct yourself: WordPress sends security notices there."
 msgstr "Halte die Administrator-E-Mail-Adresse (Einstellungen → Allgemein) selbst aktuell: WordPress schickt Sicherheitshinweise dorthin."
 
-#: src/Modules/Admin/AdminModule.php:71
+#: src/Modules/Admin/AdminModule.php:72
 msgid "WordPress updates"
 msgstr "WordPress-Aktualisierungen"
 
-#: src/Modules/Admin/AdminModule.php:72
+#: src/Modules/Admin/AdminModule.php:73
 msgid "Plugin updates"
 msgstr "Plugin-Aktualisierungen"
 
-#: src/Modules/Admin/AdminModule.php:73
+#: src/Modules/Admin/AdminModule.php:74
 msgid "Theme updates"
 msgstr "Theme-Aktualisierungen"
 
-#: src/Modules/Admin/AdminModule.php:76
+#: src/Modules/Admin/AdminModule.php:77
 msgid "No emails about successful automatic updates"
 msgstr "Keine E-Mails über erfolgreiche automatische Aktualisierungen"
 
-#: src/Modules/Admin/AdminModule.php:77
+#: src/Modules/Admin/AdminModule.php:78
 msgid "For the selected types, WordPress no longer emails after every successful automatic update. Emails about failed updates are always sent."
 msgstr "Für die ausgewählten Arten schickt WordPress nicht mehr nach jeder erfolgreichen automatischen Aktualisierung eine E-Mail. E-Mails über fehlgeschlagene Aktualisierungen werden immer verschickt."
 
-#: src/Modules/Admin/AdminModule.php:78
+#: src/Modules/Admin/AdminModule.php:79
 msgid "Answers WordPress' \"send update email?\" filters with no when every update in the batch succeeded."
 msgstr "Beantwortet die Filter „Aktualisierungs-E-Mail senden?“ von WordPress mit Nein, wenn alle Aktualisierungen des Durchlaufs erfolgreich waren."
 
-#: src/Modules/Admin/AdminModule.php:79
+#: src/Modules/Admin/AdminModule.php:80
 msgid "With automatic updates on, success emails arrive all the time and teach people to ignore them, including the important ones about failures."
 msgstr "Mit automatischen Aktualisierungen kommen ständig Erfolgs-E-Mails, und man gewöhnt sich an, sie zu ignorieren, auch die wichtigen über Fehler."
 
@@ -252,21 +280,41 @@ msgstr "Vorhandene Begriffe und ihre Zuordnungen bleiben in der Datenbank."
 msgid "Author archives"
 msgstr "Autoren-Archive"
 
+#: src/Modules/Blog/BlogModule.php:67
+msgid "All posts by one author, e.g. example.com/author/name/."
+msgstr "Alle Beiträge eines Autors, z. B. example.com/author/name/."
+
 #: src/Modules/Blog/BlogModule.php:68
 msgid "Date archives"
 msgstr "Datums-Archive"
+
+#: src/Modules/Blog/BlogModule.php:68
+msgid "Posts per year, month or day, e.g. example.com/2026/09/."
+msgstr "Beiträge pro Jahr, Monat oder Tag, z. B. example.com/2026/09/."
 
 #: src/Modules/Blog/BlogModule.php:69
 msgid "Category archives"
 msgstr "Kategorie-Archive"
 
+#: src/Modules/Blog/BlogModule.php:69
+msgid "Posts of one category, e.g. example.com/category/news/."
+msgstr "Beiträge einer Kategorie, z. B. example.com/category/news/."
+
 #: src/Modules/Blog/BlogModule.php:70
 msgid "Tag archives"
 msgstr "Schlagwort-Archive"
 
+#: src/Modules/Blog/BlogModule.php:70
+msgid "Posts with one tag, e.g. example.com/tag/summer/."
+msgstr "Beiträge mit einem Schlagwort, z. B. example.com/tag/sommer/."
+
 #: src/Modules/Blog/BlogModule.php:71
 msgid "Post format archives"
 msgstr "Beitragsformat-Archive"
+
+#: src/Modules/Blog/BlogModule.php:71
+msgid "Posts of one format (gallery, video, …), e.g. example.com/type/gallery/. Only a few themes use post formats."
+msgstr "Beiträge eines Formats (Galerie, Video, …), z. B. example.com/type/gallery/. Nur wenige Themes nutzen Beitragsformate."
 
 #: src/Modules/Blog/BlogModule.php:74
 msgid "Remove archive pages"
@@ -408,45 +456,89 @@ msgstr "Die Informationen selbst bleiben erreichbar: der Website-Zustand unter W
 msgid "Welcome panel (\"Welcome to WordPress!\")"
 msgstr "Willkommens-Bereich („Willkommen bei WordPress!“)"
 
+#: src/Modules/Dashboard/DashboardModule.php:50
+msgid "Large box with links for getting started with WordPress."
+msgstr "Großer Kasten mit Links für den Einstieg in WordPress."
+
 #: src/Modules/Dashboard/DashboardModule.php:51
 msgid "WordPress Events and News"
 msgstr "WordPress-Veranstaltungen und Neuigkeiten"
+
+#: src/Modules/Dashboard/DashboardModule.php:51
+msgid "News from wordpress.org and WordPress meetups near the site's location."
+msgstr "Neuigkeiten von wordpress.org und WordPress-Treffen in der Nähe des Website-Standorts."
 
 #: src/Modules/Dashboard/DashboardModule.php:52
 msgid "Quick Draft"
 msgstr "Schneller Entwurf"
 
+#: src/Modules/Dashboard/DashboardModule.php:52
+msgid "Form for writing a draft post directly on the dashboard."
+msgstr "Formular, um direkt im Dashboard einen Beitragsentwurf zu schreiben."
+
 #: src/Modules/Dashboard/DashboardModule.php:53
 msgid "Activity (recent posts and comments)"
 msgstr "Aktivität (neueste Beiträge und Kommentare)"
+
+#: src/Modules/Dashboard/DashboardModule.php:53
+msgid "Recently published and scheduled posts and the latest comments."
+msgstr "Kürzlich veröffentlichte und geplante Beiträge sowie die neuesten Kommentare."
 
 #: src/Modules/Dashboard/DashboardModule.php:54
 msgid "At a Glance"
 msgstr "Auf einen Blick"
 
+#: src/Modules/Dashboard/DashboardModule.php:54
+msgid "Number of posts, pages and comments, plus the WordPress version and theme."
+msgstr "Anzahl der Beiträge, Seiten und Kommentare sowie WordPress-Version und Theme."
+
 #: src/Modules/Dashboard/DashboardModule.php:55
 msgid "Site Health Status"
 msgstr "Status des Website-Zustands"
+
+#: src/Modules/Dashboard/DashboardModule.php:55
+msgid "Summary of WordPress' technical self-check (details under Tools → Site Health)."
+msgstr "Zusammenfassung der technischen Selbstprüfung von WordPress (Details unter Werkzeuge → Website-Zustand)."
 
 #: src/Modules/Dashboard/DashboardModule.php:58
 msgid "Yoast SEO: Posts Overview"
 msgstr "Yoast SEO: Beitragsübersicht"
 
+#: src/Modules/Dashboard/DashboardModule.php:58
+msgid "SEO and readability scores of the posts and pages."
+msgstr "SEO- und Lesbarkeitswerte der Beiträge und Seiten."
+
 #: src/Modules/Dashboard/DashboardModule.php:59
 msgid "Yoast SEO / Wincher: Top Keyphrases"
 msgstr "Yoast SEO / Wincher: Top-Keyphrases"
+
+#: src/Modules/Dashboard/DashboardModule.php:59
+msgid "Search rankings from the Wincher service; only useful with a Wincher account."
+msgstr "Suchmaschinen-Rankings vom Dienst Wincher; nur mit einem Wincher-Konto nützlich."
 
 #: src/Modules/Dashboard/DashboardModule.php:62
 msgid "Wordfence: activity report"
 msgstr "Wordfence: Aktivitätsbericht"
 
+#: src/Modules/Dashboard/DashboardModule.php:62
+msgid "Blocked attacks, failed logins and updates of the last days. Wordfence can also email this report."
+msgstr "Blockierte Angriffe, fehlgeschlagene Anmeldungen und Aktualisierungen der letzten Tage. Wordfence kann diesen Bericht auch per E-Mail schicken."
+
 #: src/Modules/Dashboard/DashboardModule.php:65
 msgid "Elementor Overview"
 msgstr "Elementor-Übersicht"
 
+#: src/Modules/Dashboard/DashboardModule.php:65
+msgid "Recently edited Elementor pages, plus news and offers from Elementor."
+msgstr "Zuletzt bearbeitete Elementor-Seiten sowie Neuigkeiten und Angebote von Elementor."
+
 #: src/Modules/Dashboard/DashboardModule.php:68
 msgid "WP-Optimize: Performance"
 msgstr "WP-Optimize: Performance"
+
+#: src/Modules/Dashboard/DashboardModule.php:68
+msgid "Performance tips and offers from WP-Optimize."
+msgstr "Performance-Tipps und Angebote von WP-Optimize."
 
 #: src/Modules/Editor/EditorModule.php:23
 msgid "Editor"
@@ -616,9 +708,17 @@ msgstr "Normal senden"
 msgid "Don't send any emails"
 msgstr "Keine E-Mails senden"
 
+#: src/Modules/Environment/EnvironmentModule.php:72
+msgid "Every email is stopped; forms and shops still report success."
+msgstr "Jede E-Mail wird angehalten; Formulare und Shops melden trotzdem Erfolg."
+
 #: src/Modules/Environment/EnvironmentModule.php:73
 msgid "Send all emails to the address below instead"
 msgstr "Alle E-Mails stattdessen an die Adresse unten senden"
+
+#: src/Modules/Environment/EnvironmentModule.php:73
+msgid "Every email goes only to that address, with the original recipients in the subject."
+msgstr "Jede E-Mail geht nur an diese Adresse, mit den ursprünglichen Empfängern im Betreff."
 
 #: src/Modules/Environment/EnvironmentModule.php:76
 msgid "Emails on non-live sites"
@@ -1095,30 +1195,30 @@ msgstr "Gut zu wissen:"
 msgid "How it works"
 msgstr "So funktioniert es"
 
-#: assets/src/settings/Field.js:178
+#: assets/src/settings/Field.js:179
 msgid "Default"
 msgstr "Standard"
 
-#: assets/src/settings/Field.js:198
+#: assets/src/settings/Field.js:199
 msgid "Clear"
 msgstr "Leeren"
 
-#: assets/src/settings/Field.js:238
+#: assets/src/settings/Field.js:239
 msgid "Use this image"
 msgstr "Dieses Bild verwenden"
 
-#: assets/src/settings/Field.js:257
+#: assets/src/settings/Field.js:258
 msgid "The selected image no longer exists."
 msgstr "Das ausgewählte Bild existiert nicht mehr."
 
-#: assets/src/settings/Field.js:269
+#: assets/src/settings/Field.js:270
 msgid "Replace image"
 msgstr "Bild ersetzen"
 
-#: assets/src/settings/Field.js:270
+#: assets/src/settings/Field.js:271
 msgid "Choose image"
 msgstr "Bild auswählen"
 
-#: assets/src/settings/Field.js:279
+#: assets/src/settings/Field.js:280
 msgid "Remove"
 msgstr "Entfernen"

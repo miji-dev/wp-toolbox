@@ -14,11 +14,11 @@ use InvalidArgumentException;
  * (what exactly changes technically), `why` you'd want it; `sideEffects` whenever something else changes too.
  */
 final class Field {
-	/** @var array<string|int, string>|null */
+	/** @var array<string|int, string|array{label: string, description: string}>|null */
 	private ?array $resolvedOptions = null;
 
 	/**
-	 * @param array<string|int, string>|Closure(): array<string|int, string>|null $options value => label
+	 * @param array<string|int, string|array{label: string, description: string}>|Closure(): array<string|int, string|array{label: string, description: string}>|null $options value => label, or Field::option()
 	 */
 	private function __construct(
 		public readonly string $key,
@@ -47,7 +47,7 @@ final class Field {
 	}
 
 	/**
-	 * @param array<string|int, string> $options value => label
+	 * @param array<string|int, string|array{label: string, description: string}> $options value => label, or Field::option()
 	 */
 	public static function choice(string $key, array $options, string $default, string $label, string $what, string $how, string $why, ?string $sideEffects = null): self {
 		if (!in_array($default, self::stringKeys($options), true)) {
@@ -57,7 +57,7 @@ final class Field {
 	}
 
 	/**
-	 * @param array<string|int, string>|Closure(): array<string|int, string> $options value => label; a closure is resolved on first use
+	 * @param array<string|int, string|array{label: string, description: string}>|Closure(): array<string|int, string|array{label: string, description: string}> $options value => label or Field::option(); a closure is resolved on first use
 	 * @param list<string> $default
 	 */
 	public static function multi(string $key, array|Closure $options, array $default, string $label, string $what, string $how, string $why, ?string $sideEffects = null): self {
@@ -83,12 +83,27 @@ final class Field {
 	}
 
 	/**
+	 * An option with an explanation of what it is, for lists where the label alone isn't clear.
+	 *
+	 * @return array{label: string, description: string}
+	 */
+	public static function option(string $label, string $description): array {
+		return ['label' => $label, 'description' => $description];
+	}
+
+	/**
 	 * @return array<string|int, string> value => label ([] for types without options)
 	 */
 	public function options(): array {
+		return array_map(static fn (string|array $option): string => is_array($option) ? $option['label'] : $option, $this->resolvedOptions());
+	}
+
+	/**
+	 * @return array<string|int, string|array{label: string, description: string}>
+	 */
+	private function resolvedOptions(): array {
 		if ($this->resolvedOptions === null) {
-			$options = $this->options instanceof Closure ? ($this->options)() : ($this->options ?? []);
-			$this->resolvedOptions = $options;
+			$this->resolvedOptions = $this->options instanceof Closure ? ($this->options)() : ($this->options ?? []);
 		}
 		return $this->resolvedOptions;
 	}
@@ -133,8 +148,10 @@ final class Field {
 		if ($this->type === FieldType::Choice || $this->type === FieldType::Multi) {
 			// a list, so the order survives JSON (numeric keys would be reordered by browsers)
 			$data['options'] = [];
-			foreach ($this->options() as $value => $label) {
-				$data['options'][] = ['value' => (string) $value, 'label' => $label];
+			foreach ($this->resolvedOptions() as $value => $option) {
+				$data['options'][] = is_array($option)
+					? ['value' => (string) $value, 'label' => $option['label'], 'description' => $option['description']]
+					: ['value' => (string) $value, 'label' => $option];
 			}
 		}
 		if ($this->type === FieldType::Text) {
@@ -158,7 +175,7 @@ final class Field {
 	}
 
 	/**
-	 * @param array<string|int, string> $options
+	 * @param array<string|int, mixed> $options
 	 * @return list<string>
 	 */
 	private static function stringKeys(array $options): array {
