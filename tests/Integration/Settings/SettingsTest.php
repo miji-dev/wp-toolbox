@@ -178,6 +178,23 @@ final class SettingsTest extends WP_UnitTestCase {
 		$this->assertArrayNotHasKey('disable', get_option(Settings::OPTION)['comments'], 'locked values are not written to the database');
 	}
 
+	public function test_all_returns_every_effective_value(): void {
+		update_option(Settings::OPTION, ['media' => ['quality' => 70]]);
+		$s = $this->settings(['comments' => ['disable' => true]]);
+
+		$all = $s->all();
+
+		$this->assertSame(['disable' => true, 'mode' => '404'], $all['comments']);
+		$this->assertSame(70, $all['media']['quality']);
+		$this->assertSame('', $all['media']['until']);
+	}
+
+	public function test_locked_lists_the_overridden_keys_per_module(): void {
+		$s = $this->settings(['comments' => ['disable' => true], 'media' => ['bg' => '#000000', 'quality' => 500]]);
+
+		$this->assertSame(['comments' => ['disable'], 'media' => ['bg']], $s->locked(), 'invalid overrides are not locked');
+	}
+
 	public function test_schema_describes_every_module_and_field(): void {
 		$schema = $this->settings()->schema();
 

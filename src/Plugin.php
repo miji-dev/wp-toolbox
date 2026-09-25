@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Miji\Toolbox;
 
+use Miji\Toolbox\Admin\SettingsController;
+use Miji\Toolbox\Admin\SettingsPage;
 use Miji\Toolbox\Modules\Admin\AdminModule;
 use Miji\Toolbox\Modules\Blog\BlogModule;
 use Miji\Toolbox\Modules\Comments\CommentsModule;
@@ -42,7 +44,10 @@ final class Plugin {
 
 		$overrides = defined('WPTB_SETTINGS') && is_array(WPTB_SETTINGS) ? WPTB_SETTINGS : [];
 
-		(new self(self::modules(), $overrides))->register();
+		$plugin = new self(self::modules(), $overrides);
+		$plugin->register();
+		(new SettingsController($plugin->settings))->register();
+		(new SettingsPage($plugin->settings, $file))->register();
 
 		(new GitHubUpdater(
 			plugin_basename($file),

@@ -131,6 +131,38 @@ final class Field {
 	}
 
 	/**
+	 * Everything the settings page needs to render the field.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function toArray(): array {
+		$data = [
+			'key' => $this->key,
+			'type' => $this->type->value,
+			'label' => $this->label,
+			'description' => $this->description,
+			'why' => $this->why,
+			'sideEffects' => $this->sideEffects,
+			'default' => $this->default,
+		];
+		if ($this->type === FieldType::Choice || $this->type === FieldType::Multi) {
+			// a list, so the order survives JSON (numeric keys would be reordered by browsers)
+			$data['options'] = [];
+			foreach ($this->options() as $value => $label) {
+				$data['options'][] = ['value' => (string) $value, 'label' => $label];
+			}
+		}
+		if ($this->type === FieldType::Int) {
+			$data['min'] = $this->min;
+			$data['max'] = $this->max;
+		}
+		if ($this->type === FieldType::Text || $this->type === FieldType::Textarea) {
+			$data['maxLength'] = $this->max;
+		}
+		return $data;
+	}
+
+	/**
 	 * Schema for checking values that are already stored. Same as schema(), except that runtime-resolved
 	 * option lists are not enforced: they may not be complete yet this early (post types register on init),
 	 * and a stale entry (e.g. a removed post type) must not throw away the rest of the list.

@@ -78,6 +78,30 @@ final class FieldTest extends TestCase {
 		);
 	}
 
+	public function test_to_array_describes_the_field_for_the_settings_page(): void {
+		$field = Field::choice('mode', ['404' => 'Not found', 'home' => 'Home'], '404', 'Mode', 'What.', why: 'Why.', sideEffects: 'Else.');
+
+		$this->assertSame([
+			'key' => 'mode',
+			'type' => 'choice',
+			'label' => 'Mode',
+			'description' => 'What.',
+			'why' => 'Why.',
+			'sideEffects' => 'Else.',
+			'default' => '404',
+			// a list, so the order survives JSON (numeric keys would be reordered by browsers)
+			'options' => [['value' => '404', 'label' => 'Not found'], ['value' => 'home', 'label' => 'Home']],
+		], $field->toArray());
+	}
+
+	public function test_to_array_includes_limits(): void {
+		$this->assertSame(['min' => 1, 'max' => 100], array_intersect_key(Field::int('q', 82, 'Q', 'D.', min: 1, max: 100)->toArray(), ['min' => 0, 'max' => 0]));
+		$this->assertSame(500, Field::text('t', '', 'T', 'D.')->toArray()['maxLength']);
+		$this->assertSame(2000, Field::textarea('t', '', 'T', 'D.')->toArray()['maxLength']);
+		$this->assertArrayNotHasKey('options', Field::bool('b', false, 'B', 'D.')->toArray());
+		$this->assertNull(Field::bool('b', false, 'B', 'D.')->toArray()['why']);
+	}
+
 	public function test_keys_are_restricted_to_snake_case(): void {
 		$this->expectException(InvalidArgumentException::class);
 		Field::bool('Bad-Key', false, 'L', 'D');

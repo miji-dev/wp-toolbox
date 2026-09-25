@@ -86,6 +86,30 @@ final class Settings {
 		return array_key_exists($key, $stored[$module] ?? []) ? $stored[$module][$key] : $field->default;
 	}
 
+	/**
+	 * Effective value of every setting.
+	 *
+	 * @return array<string, array<string, mixed>>
+	 */
+	public function all(): array {
+		$all = [];
+		foreach ($this->fields as $module => $fields) {
+			foreach (array_keys($fields) as $key) {
+				$all[$module][$key] = $this->get($module, $key);
+			}
+		}
+		return $all;
+	}
+
+	/**
+	 * Keys set in wp-config.php (and therefore not changeable), per module.
+	 *
+	 * @return array<string, list<string>>
+	 */
+	public function locked(): array {
+		return array_map(static fn (array $values): array => array_map('strval', array_keys($values)), $this->overrides);
+	}
+
 	public function isLocked(string $module, string $key): bool {
 		$this->field($module, $key);
 		return array_key_exists($key, $this->overrides[$module] ?? []);

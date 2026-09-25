@@ -31,6 +31,14 @@ final class BootTest extends WP_UnitTestCase {
 		$this->assertArrayHasKey(Settings::OPTION, get_registered_settings());
 	}
 
+	public function test_settings_page_and_its_rest_route_are_wired_up(): void {
+		$GLOBALS['wp_rest_server'] = null;
+		$this->assertArrayHasKey('/wptb/v1/settings', rest_get_server()->get_routes());
+		$GLOBALS['wp_rest_server'] = null;
+		$this->assertNotFalse(has_action('admin_menu'));
+		$this->assertNotFalse(has_filter('plugin_action_links_wp-toolbox/wp-toolbox.php'));
+	}
+
 	public function test_boots_early_on_init(): void {
 		// after plugins_loaded/after_setup_theme (translations, other plugins), before post types register on init 10
 		$this->assertNotFalse(has_action('init'));
