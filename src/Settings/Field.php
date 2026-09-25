@@ -73,6 +73,10 @@ final class Field {
 		return new self($key, FieldType::Text, $default, $label, $description, $why, $sideEffects, null, null, $maxLength);
 	}
 
+	public static function textarea(string $key, string $default, string $label, string $description, ?string $why = null, ?string $sideEffects = null, int $maxLength = 2000): self {
+		return new self($key, FieldType::Textarea, $default, $label, $description, $why, $sideEffects, null, null, $maxLength);
+	}
+
 	public static function color(string $key, string $default, string $label, string $description, ?string $why = null, ?string $sideEffects = null): self {
 		if (!preg_match('/^(#[0-9a-fA-F]{6})?$/', $default)) {
 			throw new InvalidArgumentException("Default of \"$key\" is not a hex colour.");
@@ -82,6 +86,10 @@ final class Field {
 
 	public static function attachment(string $key, string $label, string $description, ?string $why = null, ?string $sideEffects = null): self {
 		return new self($key, FieldType::Attachment, 0, $label, $description, $why, $sideEffects, null, 0);
+	}
+
+	public static function datetime(string $key, string $label, string $description, ?string $why = null, ?string $sideEffects = null): self {
+		return new self($key, FieldType::DateTime, '', $label, $description, $why, $sideEffects);
 	}
 
 	/**
@@ -114,9 +122,11 @@ final class Field {
 				['type' => 'integer', 'minimum' => $this->min, 'maximum' => $this->max, 'default' => $this->default],
 				static fn ($v): bool => $v !== null,
 			),
-			FieldType::Text => ['type' => 'string', 'maxLength' => $this->max, 'default' => $this->default],
+			FieldType::Text, FieldType::Textarea => ['type' => 'string', 'maxLength' => $this->max, 'default' => $this->default],
 			FieldType::Color => ['type' => 'string', 'pattern' => '^(#[0-9a-fA-F]{6})?$', 'default' => $this->default],
 			FieldType::Attachment => ['type' => 'integer', 'minimum' => 0, 'default' => $this->default],
+			// day 31 in a 30-day month still passes; users of the value parse it strictly
+			FieldType::DateTime => ['type' => 'string', 'pattern' => '^(\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T([01]\\d|2[0-3]):[0-5]\\d)?$', 'default' => $this->default],
 		};
 	}
 

@@ -35,6 +35,8 @@ final class SettingsTest extends WP_UnitTestCase {
 				Field::color('bg', '', 'Background', 'Desc.'),
 				Field::multi('roles', ['editor' => 'Editor', 'author' => 'Author'], [], 'Roles', 'Desc.'),
 				Field::text('message', 'Hello', 'Message', 'Desc.'),
+				Field::textarea('notice', '', 'Notice', 'Desc.'),
+				Field::datetime('until', 'Until', 'Desc.'),
 			]),
 		], $overrides);
 	}
@@ -88,6 +90,13 @@ final class SettingsTest extends WP_UnitTestCase {
 		$this->assertSame(['comments.mode', 'comments.unknown', 'nope'], $s->invalidOverrides());
 	}
 
+	public function test_overrides_with_a_trailing_line_break_are_invalid(): void {
+		$s = $this->settings(['media' => ['bg' => "#123456\n"]]);
+
+		$this->assertSame('', $s->get('media', 'bg'));
+		$this->assertSame(['media.bg'], $s->invalidOverrides());
+	}
+
 	public function test_update_validates_and_stores_the_full_set(): void {
 		$s = $this->settings();
 
@@ -122,6 +131,13 @@ final class SettingsTest extends WP_UnitTestCase {
 			'unknown role' => [['media' => ['roles' => ['administrator']]]],
 			'duplicate items' => [['media' => ['roles' => ['editor', 'editor']]]],
 			'text too long' => [['media' => ['message' => str_repeat('x', 501)]]],
+			'textarea too long' => [['media' => ['notice' => str_repeat('x', 2001)]]],
+			'not a date' => [['media' => ['until' => 'tomorrow']]],
+			// PHP's "$" also matches before a final line break
+			'colour with trailing line break' => [['media' => ['bg' => "#123456\n"]]],
+			'date with trailing line break' => [['media' => ['until' => "2026-10-01T10:00\n"]]],
+			'impossible month' => [['media' => ['until' => '2026-13-01T10:00']]],
+			'date with injected text' => [['media' => ['until' => "2026-10-01T10:00\n<script>"]]],
 			'unknown key' => [['comments' => ['nope' => true]]],
 			'unknown module' => [['nope' => ['x' => true]]],
 			'module not an object' => [['comments' => 'x']],
@@ -134,6 +150,22 @@ final class SettingsTest extends WP_UnitTestCase {
 		$s->update(['media' => ['message' => "<script>alert(1)</script>Hi\n there"]]);
 
 		$this->assertSame('Hi there', $s->get('media', 'message'));
+	}
+
+	public function test_textarea_keeps_line_breaks_but_no_markup(): void {
+		$s = $this->settings();
+
+		$s->update(['media' => ['notice' => "<script>alert(1)</script>Line one\nLine <b>two</b>"]]);
+
+		$this->assertSame("Line one\nLine two", $s->get('media', 'notice'));
+	}
+
+	public function test_dates_are_stored_as_given(): void {
+		$s = $this->settings();
+
+		$this->assertTrue($s->update(['media' => ['until' => '2026-10-01T18:30']]));
+		$this->assertSame('2026-10-01T18:30', $s->get('media', 'until'));
+		$this->assertTrue($s->update(['media' => ['until' => '']]), 'empty = no date');
 	}
 
 	public function test_update_cannot_change_locked_values(): void {

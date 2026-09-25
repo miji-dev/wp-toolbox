@@ -160,7 +160,27 @@ final class Settings {
 	 * @param array<mixed> $input
 	 */
 	private function validate(array $input): true|WP_Error {
-		return rest_validate_value_from_schema($input, $this->schema(), self::OPTION);
+		$result = rest_validate_value_from_schema($input, $this->schema(), self::OPTION);
+		if ($result !== true) {
+			return $result;
+		}
+		foreach ($this->fields as $module => $fields) {
+			foreach ($fields as $key => $field) {
+				$values = $input[$module] ?? null;
+				if (is_array($values) && array_key_exists($key, $values) && self::endsInLineBreak($field, $values[$key])) {
+					/* translators: %s: setting name, e.g. "login.background_color" */
+					return new WP_Error('rest_invalid_pattern', sprintf(__('%s has an invalid format.', 'wptb'), self::OPTION . "[$module][$key]"));
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Schema patterns end in "$", which in PHP also matches before a final line break ("#123456\n").
+	 */
+	private static function endsInLineBreak(Field $field, mixed $value): bool {
+		return in_array($field->type, [FieldType::Color, FieldType::DateTime], true) && is_string($value) && str_contains($value, "\n");
 	}
 
 	/**
@@ -183,6 +203,8 @@ final class Settings {
 					$value = rest_sanitize_value_from_schema($input[$module][$key], $field->schema(), "$module.$key");
 					if ($field->type === FieldType::Text) {
 						$value = is_string($value) ? sanitize_text_field($value) : $field->default;
+					} elseif ($field->type === FieldType::Textarea) {
+						$value = is_string($value) ? sanitize_textarea_field($value) : $field->default;
 					}
 				} else {
 					$value = array_key_exists($key, $stored[$module] ?? []) ? $stored[$module][$key] : $field->default;
@@ -255,7 +277,7 @@ final class Settings {
 	 * @return mixed the value coerced to the field type, or null if invalid
 	 */
 	private function normalize(Field $field, mixed $value, array $schema): mixed {
-		if (rest_validate_value_from_schema($value, $schema) !== true) {
+		if (rest_validate_value_from_schema($value, $schema) !== true || self::endsInLineBreak($field, $value)) {
 			return null;
 		}
 		$value = rest_sanitize_value_from_schema($value, $schema);

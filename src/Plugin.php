@@ -10,6 +10,7 @@ use Miji\Toolbox\Modules\Comments\CommentsModule;
 use Miji\Toolbox\Modules\Dashboard\DashboardModule;
 use Miji\Toolbox\Modules\Head\HeadModule;
 use Miji\Toolbox\Modules\Login\LoginModule;
+use Miji\Toolbox\Modules\Maintenance\MaintenanceModule;
 use Miji\Toolbox\Modules\Media\MediaModule;
 use Miji\Toolbox\Modules\Security\SecurityModule;
 use Miji\Toolbox\Settings\Settings;
@@ -60,6 +61,7 @@ final class Plugin {
 			new DashboardModule(),
 			new MediaModule(),
 			new LoginModule(),
+			new MaintenanceModule(),
 		];
 	}
 

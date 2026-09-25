@@ -70,6 +70,14 @@ final class FieldTest extends TestCase {
 		$this->assertSame(['type' => 'integer', 'minimum' => 0, 'default' => 0], Field::attachment('logo', 'Logo', 'Desc.')->schema());
 	}
 
+	public function test_textarea_and_datetime_schemas(): void {
+		$this->assertSame(['type' => 'string', 'maxLength' => 2000, 'default' => ''], Field::textarea('msg', '', 'Msg', 'Desc.')->schema());
+		$this->assertSame(
+			['type' => 'string', 'pattern' => '^(\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T([01]\\d|2[0-3]):[0-5]\\d)?$', 'default' => ''],
+			Field::datetime('until', 'Until', 'Desc.')->schema(),
+		);
+	}
+
 	public function test_keys_are_restricted_to_snake_case(): void {
 		$this->expectException(InvalidArgumentException::class);
 		Field::bool('Bad-Key', false, 'L', 'D');
